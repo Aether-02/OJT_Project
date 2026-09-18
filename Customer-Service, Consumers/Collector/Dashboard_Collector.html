@@ -1,0 +1,1764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Collector Dashboard - Janopol Oriental Waterworks</title>
+  <link rel="shortcut icon" type="image/x-icon" href="../Customer_Service/JALOGO2.ico">
+  <style>
+    /* Reset & Base Styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: #f8fafc;
+      color: #334155;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .svg-icon {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex-shrink: 0;
+    }
+
+    /* Navbar Header */
+    .app-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background-color: #0b6293;
+      color: #ffffff;
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1.5rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      height: 60px;
+      width: 100%;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .sidebar-toggle-btn {
+      background: rgba(255, 255, 255, 0.15);
+      border: none;
+      color: #ffffff;
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .sidebar-toggle-btn:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    .logo-circle {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background-color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .logo-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .brand-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-title {
+      font-size: 1rem;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .brand-subtitle {
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.75);
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-left: auto;
+    }
+
+    /* Notification Bell Component Styles */
+    .notification-wrapper {
+      position: relative;
+    }
+
+    .notif-bell-btn {
+      background: rgba(255, 255, 255, 0.15);
+      border: none;
+      color: #ffffff;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      position: relative;
+      transition: background 0.2s ease;
+    }
+
+    .notif-bell-btn:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    .notif-badge {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      background-color: #ef4444;
+      color: #ffffff;
+      font-size: 0.65rem;
+      font-weight: 800;
+      min-width: 17px;
+      height: 17px;
+      border-radius: 9999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #0b6293;
+      padding: 0 3px;
+    }
+
+    .notif-dropdown {
+      position: absolute;
+      right: 0;
+      top: 48px;
+      width: 340px;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15);
+      display: none;
+      flex-direction: column;
+      z-index: 2000;
+      overflow: hidden;
+      animation: fadeInDown 0.2s ease-out forwards;
+    }
+
+    .notif-dropdown.show {
+      display: flex;
+    }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .notif-header {
+      padding: 0.85rem 1rem;
+      background-color: #f8fafc;
+      border-bottom: 1px solid #e2e8f0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .notif-header h3 {
+      font-size: 0.875rem;
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    .mark-read-btn {
+      font-size: 0.725rem;
+      color: #0284c7;
+      background: none;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .mark-read-btn:hover {
+      text-decoration: underline;
+    }
+
+    .notif-list {
+      max-height: 320px;
+      overflow-y: auto;
+    }
+
+    .notif-item {
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid #f1f5f9;
+      display: flex;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: inherit;
+      transition: background-color 0.15s ease;
+    }
+
+    .notif-item:hover {
+      background-color: #f8fafc;
+    }
+
+    .notif-item.unread {
+      background-color: #f0f9ff;
+    }
+
+    .notif-icon-box {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .notif-icon-box.info {
+      background-color: #e0f2fe;
+      color: #0284c7;
+    }
+
+    .notif-icon-box.success {
+      background-color: #dcfce7;
+      color: #16a34a;
+    }
+
+    .notif-content {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+
+    .notif-title {
+      font-size: 0.825rem;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .notif-text {
+      font-size: 0.75rem;
+      color: #475569;
+      line-height: 1.35;
+    }
+
+    .notif-time {
+      font-size: 0.675rem;
+      color: #94a3b8;
+      margin-top: 0.2rem;
+    }
+
+    /* User Profile Container & Dropdown Styles */
+    .user-profile-wrapper {
+      position: relative;
+    }
+
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+      background: rgba(255, 255, 255, 0.15);
+      padding: 0.35rem 0.75rem;
+      border-radius: 9999px;
+      white-space: nowrap;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.2s ease;
+    }
+
+    .user-profile:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    .profile-dropdown {
+      position: absolute;
+      right: 0;
+      top: 48px;
+      width: 210px;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15);
+      display: none;
+      flex-direction: column;
+      z-index: 2000;
+      overflow: hidden;
+      animation: fadeInDown 0.2s ease-out forwards;
+    }
+
+    .profile-dropdown.show {
+      display: flex;
+    }
+
+    .profile-dropdown-header {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid #f1f5f9;
+      background-color: #f8fafc;
+    }
+
+    .profile-dropdown-header .user-name {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .profile-dropdown-header .user-role {
+      font-size: 0.75rem;
+      color: #64748b;
+    }
+
+    .profile-dropdown-item {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.65rem 1rem;
+      font-size: 0.825rem;
+      color: #334155;
+      text-decoration: none;
+      font-weight: 500;
+      transition: background-color 0.15s ease;
+    }
+
+    .profile-dropdown-item:hover {
+      background-color: #f8fafc;
+      color: #0284c7;
+    }
+
+    .profile-dropdown-item.logout {
+      color: #dc2626;
+      border-top: 1px solid #f1f5f9;
+    }
+
+    .profile-dropdown-item.logout:hover {
+      background-color: #fee2e2;
+      color: #b91c1c;
+    }
+
+    /* App Portal Container */
+    .app-portal-body {
+      position: relative;
+      flex: 1;
+      width: 100%;
+      display: flex;
+    }
+
+    /* Fixed Sidebar Positioned Below Top Header */
+    .app-sidebar {
+      position: fixed;
+      top: 60px;
+      left: 0;
+      bottom: 0;
+      width: 270px;
+      height: calc(100vh - 60px);
+      background-color: #ffffff;
+      border-right: 1px solid #e2e8f0;
+      display: flex;
+      flex-direction: column;
+      z-index: 900;
+      box-shadow: 4px 0 16px rgba(0, 0, 0, 0.08);
+      transform: translateX(-100%);
+      transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      overflow-y: auto;
+    }
+
+    .app-sidebar.show {
+      transform: translateX(0);
+    }
+
+    /* Sidebar Backdrop */
+    .sidebar-backdrop {
+      position: fixed;
+      top: 60px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(15, 23, 42, 0.2);
+      backdrop-filter: blur(2px);
+      z-index: 850;
+      display: none;
+    }
+
+    .sidebar-backdrop.show {
+      display: block;
+    }
+
+    .sidebar-menu {
+      list-style: none;
+      padding: 1rem 0.75rem 2rem 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .sidebar-section-title {
+      font-size: 0.7rem;
+      font-weight: 800;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 1rem 0.75rem 0.35rem 0.75rem;
+    }
+
+    .sidebar-link {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.65rem 0.85rem;
+      color: #475569;
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 600;
+      border-radius: 8px;
+      transition: all 0.15s ease;
+    }
+
+    .sidebar-link:hover {
+      background-color: #f1f5f9;
+      color: #0284c7;
+    }
+
+    .sidebar-link.active {
+      background-color: #e0f2fe;
+      color: #0284c7;
+    }
+
+    .sidebar-link.logout-link {
+      color: #dc2626;
+      margin-top: 1rem;
+    }
+
+    .sidebar-link.logout-link:hover {
+      background-color: #fee2e2;
+      color: #b91c1c;
+    }
+
+    /* Main Content */
+    .main-content {
+      width: 100%;
+      padding: 1.5rem 2rem;
+      min-width: 0;
+    }
+
+    .dashboard-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .page-title-group h2 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    .page-title-group p {
+      font-size: 0.85rem;
+      color: #64748b;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .btn-action-primary {
+      background-color: #0284c7;
+      color: #ffffff;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    .btn-action-primary:hover {
+      background-color: #0369a1;
+    }
+
+    .date-pill {
+      background-color: #ffffff;
+      border: 1px solid #e2e8f0;
+      color: #334155;
+      padding: 0.5rem 0.85rem;
+      border-radius: 8px;
+      font-size: 0.825rem;
+      font-weight: 600;
+    }
+
+    /* Filter Card */
+    .filter-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 1.25rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      margin-bottom: 1.5rem;
+    }
+
+    .filter-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      align-items: end;
+    }
+
+    .form-group-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .form-group-item label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #475569;
+    }
+
+    .form-select, .form-input, .form-textarea {
+      width: 100%;
+      padding: 0.55rem 0.75rem;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      outline: none;
+      background-color: #ffffff;
+      transition: border-color 0.15s ease;
+    }
+
+    .form-textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .form-select:focus, .form-input:focus, .form-textarea:focus {
+      border-color: #0284c7;
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.1);
+    }
+
+    .filter-btn-group {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .btn-filter {
+      flex: 1;
+      background-color: #0284c7;
+      color: #ffffff;
+      border: none;
+      padding: 0.6rem 1rem;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn-filter:hover {
+      background-color: #0369a1;
+    }
+
+    .btn-reset {
+      background-color: #f1f5f9;
+      color: #475569;
+      border: 1px solid #cbd5e1;
+      padding: 0.6rem;
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-reset:hover {
+      background-color: #e2e8f0;
+    }
+
+    /* Custom File Upload Styling */
+    .custom-file-upload {
+      display: flex;
+      align-items: center;
+      border: 1px dashed #cbd5e1;
+      background-color: #f8fafc;
+      border-radius: 8px;
+      padding: 0.4rem 0.5rem;
+      gap: 0.75rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .custom-file-upload:hover {
+      border-color: #0284c7;
+      background-color: #f0f9ff;
+    }
+
+    .custom-file-btn {
+      background-color: #0284c7;
+      color: #ffffff;
+      padding: 0.4rem 0.85rem;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      flex-shrink: 0;
+      transition: background-color 0.15s ease;
+    }
+
+    .custom-file-upload:hover .custom-file-btn {
+      background-color: #0369a1;
+    }
+
+    .custom-file-name {
+      font-size: 0.8rem;
+      color: #64748b;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      flex: 1;
+    }
+
+    /* KPI Cards Grid */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .kpi-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .kpi-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.06);
+    }
+
+    .kpi-unpaid { border-top: 4px solid #ef4444; }
+    .kpi-collector { border-top: 4px solid #16a34a; }
+    .kpi-cashier { border-top: 4px solid #0284c7; }
+    .kpi-foc { border-top: 4px solid #8b5cf6; }
+    .kpi-sales { border-top: 4px solid #06b6d4; }
+    .kpi-active { border-top: 4px solid #22c55e; }
+    .kpi-disconnected { border-top: 4px solid #f43f5e; }
+    .kpi-members { border-top: 4px solid #6366f1; }
+
+    .kpi-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .kpi-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .kpi-badge {
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 0.2rem 0.6rem;
+      border-radius: 20px;
+      background: #f1f5f9;
+      color: #1e293b;
+    }
+
+    .kpi-subtitle {
+      font-size: 0.78rem;
+      color: #94a3b8;
+      margin-bottom: 0.25rem;
+    }
+
+    .kpi-value {
+      font-size: 1.5rem;
+      font-weight: 800;
+      line-height: 1.2;
+    }
+
+    .text-danger { color: #ef4444; }
+    .text-success { color: #16a34a; }
+    .text-primary { color: #0284c7; }
+    .text-purple { color: #8b5cf6; }
+    .text-info { color: #06b6d4; }
+
+    .status-banner {
+      font-size: 1.25rem;
+      font-weight: 900;
+      letter-spacing: 1px;
+      text-align: center;
+      margin-top: 0.5rem;
+    }
+
+    /* Tables Card */
+    .data-table-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 1.5rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      margin-bottom: 1.5rem;
+    }
+
+    .table-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .table-card-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .table-btn-group {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-sm-primary {
+      background-color: #0284c7;
+      color: #ffffff;
+      border: none;
+      padding: 0.4rem 0.85rem;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn-sm-outline {
+      background-color: transparent;
+      color: #0284c7;
+      border: 1px solid #0284c7;
+      padding: 0.4rem 0.85rem;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .table-responsive {
+      overflow-x: auto;
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.875rem;
+      text-align: left;
+    }
+
+    .data-table th {
+      background-color: #f8fafc;
+      color: #475569;
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      padding: 0.75rem 0.85rem;
+      border-bottom: 2px solid #e2e8f0;
+    }
+
+    .data-table td {
+      padding: 0.75rem 0.85rem;
+      border-bottom: 1px solid #f1f5f9;
+      color: #334155;
+    }
+
+    .data-table tbody tr:hover {
+      background-color: #f8fafc;
+    }
+
+    .badge-status-pill {
+      display: inline-block;
+      padding: 0.25rem 0.6rem;
+      font-size: 0.7rem;
+      font-weight: 700;
+      border-radius: 9999px;
+      text-transform: uppercase;
+    }
+
+    .badge-unpaid { background-color: #fee2e2; color: #dc2626; }
+    .badge-paid { background-color: #dcfce7; color: #16a34a; }
+    .badge-partial { background-color: #fef3c7; color: #d97706; }
+
+    /* Custom Submit Request Modal Styling */
+    .request-modal-card {
+      background: #ffffff;
+      border-radius: 16px;
+      width: 90%;
+      max-width: 650px;
+      padding: 1.75rem;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      animation: scaleUp 0.2s ease-out forwards;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      position: relative;
+    }
+
+    .request-modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #f1f5f9;
+      padding-bottom: 0.75rem;
+    }
+
+    .request-modal-header h3 {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    .modal-close-btn {
+      background: none;
+      border: none;
+      color: #94a3b8;
+      cursor: pointer;
+      padding: 0.25rem;
+      border-radius: 6px;
+      transition: color 0.15s ease;
+    }
+
+    .modal-close-btn:hover {
+      color: #0f172a;
+    }
+
+    .request-type-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #64748b;
+      margin-bottom: 0.5rem;
+    }
+
+    .request-type-toggle {
+      display: flex;
+      background-color: #f1f5f9;
+      padding: 0.25rem;
+      border-radius: 10px;
+      gap: 0.25rem;
+      margin-bottom: 1rem;
+    }
+
+    .type-toggle-btn {
+      flex: 1;
+      padding: 0.6rem 1rem;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      background: transparent;
+      color: #64748b;
+      transition: all 0.2s ease;
+    }
+
+    .type-toggle-btn.active {
+      background-color: #0284c7;
+      color: #ffffff;
+      box-shadow: 0 2px 4px rgba(2, 132, 199, 0.2);
+    }
+
+    .request-form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+
+    @media (max-width: 640px) {
+      .request-form-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .full-width-field {
+      grid-column: span 2;
+    }
+
+    @media (max-width: 640px) {
+      .full-width-field {
+        grid-column: span 1;
+      }
+    }
+
+    .file-input-wrapper {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .file-hint {
+      font-size: 0.725rem;
+      color: #94a3b8;
+    }
+
+    .request-modal-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid #f1f5f9;
+      padding-top: 1rem;
+      margin-top: 0.5rem;
+    }
+
+    .submitted-by-tag {
+      font-size: 0.8rem;
+      color: #64748b;
+      font-style: italic;
+    }
+
+    /* ── Footer ── */
+        .footer {
+            text-align: center;
+            padding: 24px;
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .footer-brand {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+    /* Custom Logout Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(15, 23, 42, 0.5);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 3000;
+      animation: fadeIn 0.2s ease-out forwards;
+    }
+
+    .modal-overlay.show {
+      display: flex;
+    }
+
+    .modal-card {
+      background: #ffffff;
+      border-radius: 16px;
+      width: 90%;
+      max-width: 400px;
+      padding: 1.5rem;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      animation: scaleUp 0.2s ease-out forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes scaleUp {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .modal-icon-circle {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background-color: #fee2e2;
+      color: #dc2626;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1rem auto;
+    }
+
+    .modal-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 0.35rem;
+    }
+
+    .modal-text {
+      font-size: 0.85rem;
+      color: #64748b;
+      margin-bottom: 1.5rem;
+      line-height: 1.4;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .btn-modal {
+      padding: 0.65rem 1.25rem;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      transition: background-color 0.15s ease;
+    }
+
+    .btn-modal-cancel {
+      background-color: #f1f5f9;
+      color: #475569;
+    }
+
+    .btn-modal-cancel:hover {
+      background-color: #e2e8f0;
+    }
+
+    .btn-modal-logout {
+      background-color: #dc2626;
+      color: #ffffff;
+    }
+
+    .btn-modal-logout:hover {
+      background-color: #b91c1c;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar Header -->
+  <header class="app-header">
+    <div class="header-left">
+      <button class="sidebar-toggle-btn" onclick="toggleSidebar()" aria-label="Toggle Sidebar">
+        <svg class="svg-icon" viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+      </button>
+      <div class="logo-circle">
+        <img src="../Customer_Service/JALOGO.png" alt="Janopol Oriental Logo" class="logo-img">
+      </div>
+      <div class="brand-info">
+        <span class="brand-title">Janopol Oriental Waterworks</span>
+        <span class="brand-subtitle">Collector Portal</span>
+      </div>
+    </div>
+
+    <div class="header-right">
+      <!-- Notification Bell Component -->
+      <div class="notification-wrapper">
+        <button class="notif-bell-btn" id="notifBellBtn" onclick="toggleNotificationDropdown()" aria-label="View Notifications">
+          <svg class="svg-icon" viewBox="0 0 24 24">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+          </svg>
+          <span class="notif-badge" id="notifBadge">3</span>
+        </button>
+
+        <!-- Dropdown Menu -->
+        <div class="notif-dropdown" id="notifDropdown">
+          <div class="notif-header">
+            <h3>Collector Notifications</h3>
+            <button class="mark-read-btn" onclick="markAllNotificationsAsRead()">Mark all as read</button>
+          </div>
+
+          <div class="notif-list">
+            <a href="#" class="notif-item unread">
+              <div class="notif-icon-box info">
+                <svg class="svg-icon" viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+              </div>
+              <div class="notif-content">
+                <span class="notif-title">New Collection Route Assigned</span>
+                <span class="notif-text">Area 3 - Purok 2 list has been updated for September.</span>
+                <span class="notif-time">1 hour ago</span>
+              </div>
+            </a>
+
+            <a href="#" class="notif-item unread">
+              <div class="notif-icon-box success">
+                <svg class="svg-icon" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+              </div>
+              <div class="notif-content">
+                <span class="notif-title">Payment Synced</span>
+                <span class="notif-text">Receipt #OR-9823 successfully logged to cashier.</span>
+                <span class="notif-time">3 hours ago</span>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- User Profile Component with Dropdown -->
+      <div class="user-profile-wrapper">
+        <div class="user-profile" id="userProfileBtn" onclick="toggleProfileDropdown()" aria-label="User Profile Menu">
+          <svg class="svg-icon" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+          <span>Gali Adrian Nones</span>
+        </div>
+
+        <!-- Profile Dropdown Menu -->
+        <div class="profile-dropdown" id="profileDropdown">
+          <div class="profile-dropdown-header">
+            <div class="user-name">Gali Adrian Nones</div>
+            <div class="user-role">Collector Staff (ID: COL-004)</div>
+          </div>
+          <a href="#" class="profile-dropdown-item">
+            <svg class="svg-icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="M12 4v16"></path><path d="M2 12h20"></path></svg>
+            <span>My Routes</span>
+          </a>
+          <a href="#" class="profile-dropdown-item logout" onclick="handleLogout(event)">
+            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+            <span>Log Out</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Portal Container -->
+  <div class="app-portal-body">
+
+    <!-- Backdrop Mask for Closing Sidebar -->
+    <div class="sidebar-backdrop" id="sidebarBackdrop" onclick="closeSidebar()"></div>
+
+    <!-- Overlay Sidebar Component -->
+    <aside class="app-sidebar" id="appSidebar">
+      <ul class="sidebar-menu">
+        <!-- Dashboard Item -->
+        <li>
+          <a href="Dashboard_Collector.html" class="sidebar-link active">
+            <svg class="svg-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+            <span>Dashboard</span>
+          </a>
+        </li>
+
+        <!-- REPORTS Section -->
+        <li class="sidebar-section-title">Reports</li>
+        <li>
+          <a href="Reading_Collector.html" class="sidebar-link">
+            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+            <span>Reading Reports</span>
+          </a>
+        </li>
+        <li>
+          <a href="Add_Collector.html" class="sidebar-link">
+            <svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+            <span>Add Reading</span>
+          </a>
+        </li>
+        <li>
+          <a href="Previous_Collector.html" class="sidebar-link">
+            <svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            <span>Previous Readings</span>
+          </a>
+        </li>
+        <li>
+          <a href="Invoice_Collector.html" class="sidebar-link">
+            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+            <span>Service/Invoice Reports</span>
+          </a>
+        </li>
+        <li>
+          <a href="Daily_Collector.html" class="sidebar-link">
+            <svg class="svg-icon" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"></rect><circle cx="12" cy="12" r="2"></circle><path d="M6 12h.01M18 12h.01"></path></svg>
+            <span>Daily Collection Reports</span>
+          </a>
+        </li>
+
+        <!-- CONNECTIONS Section -->
+        <li class="sidebar-section-title">Connections</li>
+        <li>
+          <a href="Reconnected_Collector.html" class="sidebar-link">
+            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M18 2v4M6 2v4M12 2v4M5 8h14a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2a2 2 0 0 1 2-2zM12 14v8"></path></svg>
+            <span>Reconnected</span>
+          </a>
+        </li>
+        <li>
+          <a href="Disconnected_Collector.html" class="sidebar-link">
+            <svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+            <span>Disconnected</span>
+          </a>
+        </li>
+
+        <!-- PAYMENTS Section -->
+        <li class="sidebar-section-title">Payments</li>
+        <li>
+          <a href="Materials_Collector.html" class="sidebar-link">
+            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+            <span>Materials</span>
+          </a>
+        </li>
+        <li>
+          <a href="Other_Collector.html" class="sidebar-link">
+            <svg class="svg-icon" viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+            <span>Other Payments</span>
+          </a>
+        </li>
+        <li>
+          <a href="Advances_Collector.html" class="sidebar-link">
+            <svg class="svg-icon" viewBox="0 0 24 24"><polygon points="13 19 22 12 13 5 13 19"></polygon><polygon points="2 19 11 12 2 5 2 19"></polygon></svg>
+            <span>Advances</span>
+          </a>
+        </li>
+
+        <!-- MEMBERS Section -->
+        <li class="sidebar-section-title">Members</li>
+        <li>
+          <a href="Vote_Collector.html" class="sidebar-link">
+            <svg class="svg-icon" viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+            <span>Vote List</span>
+          </a>
+        </li>
+
+      </ul>
+    </aside>
+
+    <!-- Main Dashboard Body -->
+    <main class="main-content">
+      <div class="dashboard-header">
+        <div class="page-title-group">
+          <h2>Collector Dashboard</h2>
+          <p>Real-time water billing & operational collection summary</p>
+        </div>
+        <div class="header-actions">
+          <button type="button" class="btn-action-primary" onclick="openRequestModal()">Submit Request</button>
+          <span class="date-pill" id="currentDateDisplay">Sep 17, 2026</span>
+        </div>
+      </div>
+
+      <!-- Filter Card -->
+      <div class="filter-card">
+        <div class="filter-grid">
+          <div class="form-group-item">
+            <label>Filter by Area:</label>
+            <select class="form-select" id="areaFilter">
+              <option value="">- SELECT AREA -</option>
+              <option value="Purok 1">Purok 1</option>
+              <option value="Purok 2">Purok 2</option>
+              <option value="Purok 3">Purok 3</option>
+            </select>
+          </div>
+          <div class="form-group-item">
+            <label>From Date:</label>
+            <input type="date" class="form-input" id="fromDate">
+          </div>
+          <div class="form-group-item">
+            <label>To Date:</label>
+            <input type="date" class="form-input" id="toDate">
+          </div>
+          <div class="filter-btn-group">
+            <button type="button" class="btn-filter" onclick="applyFilters()">Filter</button>
+            <button type="button" class="btn-reset" title="Clear Filters" onclick="resetFilters()">
+              <svg class="svg-icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- KPI Metric Cards Grid -->
+      <div class="kpi-grid">
+        <!-- 1. Unpaid -->
+        <div class="kpi-card kpi-unpaid">
+          <div class="kpi-top">
+            <span class="kpi-title">Total Unpaid</span>
+            <span class="kpi-badge">42</span>
+          </div>
+          <div>
+            <div class="kpi-subtitle">Unpaid + remaining partial balance</div>
+            <div class="kpi-value text-danger">₱ 102,850.00</div>
+          </div>
+        </div>
+
+        <!-- 2. Paid to Collector -->
+        <div class="kpi-card kpi-collector">
+          <div class="kpi-top">
+            <span class="kpi-title">Paid to Collector</span>
+            <span class="kpi-badge">128</span>
+          </div>
+          <div>
+            <div class="kpi-subtitle">Total Collected Field</div>
+            <div class="kpi-value text-success">₱ 313,600.00</div>
+          </div>
+        </div>
+
+        <!-- 3. Paid to Cashier -->
+        <div class="kpi-card kpi-cashier">
+          <div class="kpi-top">
+            <span class="kpi-title">Paid to Cashier</span>
+            <span class="kpi-badge">95</span>
+          </div>
+          <div>
+            <div class="kpi-subtitle">Total Office Paid</div>
+            <div class="kpi-value text-primary">₱ 232,750.00</div>
+          </div>
+        </div>
+
+        <!-- 4. Free of Charge -->
+        <div class="kpi-card kpi-foc">
+          <div class="kpi-top">
+            <span class="kpi-title">Free of Charge</span>
+            <span class="kpi-badge">12</span>
+          </div>
+          <div>
+            <div class="kpi-subtitle">Institutional Exemption</div>
+            <div class="kpi-value text-purple">₱ 29,400.00</div>
+          </div>
+        </div>
+
+        <!-- 5. Total Watersales -->
+        <div class="kpi-card kpi-sales">
+          <div class="kpi-top">
+            <span class="kpi-title">Total Watersales</span>
+            <span class="kpi-badge">277</span>
+          </div>
+          <div>
+            <div class="kpi-subtitle">Total Revenue Generated</div>
+            <div class="kpi-value text-info">₱ 678,600.00</div>
+          </div>
+        </div>
+
+        <!-- 6. Total Active -->
+        <div class="kpi-card kpi-active">
+          <div class="kpi-top">
+            <span class="kpi-title">Total Active</span>
+            <span class="kpi-badge">845</span>
+          </div>
+          <div class="status-banner text-success">ACTIVE</div>
+        </div>
+
+        <!-- 7. Total Disconnected -->
+        <div class="kpi-card kpi-disconnected">
+          <div class="kpi-top">
+            <span class="kpi-title">Total Disconnected</span>
+            <span class="kpi-badge">18</span>
+          </div>
+          <div class="status-banner text-danger">DISCONNECTED</div>
+        </div>
+
+        <!-- 8. Members & Collectors -->
+        <div class="kpi-card kpi-members">
+          <div class="kpi-top">
+            <span class="kpi-title">Total Members</span>
+            <span style="font-weight: 800; font-size: 1.1rem; color: #0f172a;">863</span>
+          </div>
+          <div class="kpi-top" style="margin-bottom: 0;">
+            <span class="kpi-title">Total Collectors</span>
+            <span style="font-weight: 800; font-size: 1.1rem; color: #0f172a;">6</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Bills Table -->
+      <div class="data-table-card">
+        <div class="table-card-header">
+          <h3 class="table-card-title">Recent Bills</h3>
+          <div class="table-btn-group">
+            <label style="font-size: 0.8rem; cursor: pointer; display: flex; align-items: center; gap: 0.35rem; margin-right: 0.5rem;">
+              <input type="checkbox" id="selectAllCheckbox" onchange="toggleSelectAll(this)"> Select visible
+            </label>
+            <button type="button" class="btn-sm-primary" onclick="alert('Printing selected receipts...')">Print Selected Receipts</button>
+            <button type="button" class="btn-sm-outline" onclick="alert('Printing filtered receipts...')">Print Filtered Receipts</button>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Status</th>
+                <th>Account</th>
+                <th>Name</th>
+                <th>Purok</th>
+                <th>Month</th>
+                <th>Consumed</th>
+                <th>Amount</th>
+                <th>Remaining</th>
+                <th>O.R.</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><input type="checkbox" class="row-checkbox"></td>
+                <td><span class="badge-status-pill badge-unpaid">Unpaid</span></td>
+                <td style="font-family: monospace; font-weight: 700;">JP12025-0002UP</td>
+                <td>Ulpiano Pamplona</td>
+                <td>Purok 1</td>
+                <td>Sep 2026</td>
+                <td>18 cu.m</td>
+                <td>₱ 2,450.00</td>
+                <td class="text-danger" style="font-weight: 700;">₱ 2,450.00</td>
+                <td style="font-family: monospace;">—</td>
+                <td><button type="button" class="btn-sm-outline" onclick="alert('Printing receipt...')">Print</button></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" class="row-checkbox"></td>
+                <td><span class="badge-status-pill badge-paid">Paid (Collector)</span></td>
+                <td style="font-family: monospace; font-weight: 700;">JP12025-0005GA</td>
+                <td>Gali Adrian Nones</td>
+                <td>Purok 2</td>
+                <td>Sep 2026</td>
+                <td>22 cu.m</td>
+                <td>₱ 2,800.00</td>
+                <td class="text-success" style="font-weight: 700;">₱ 0.00</td>
+                <td style="font-family: monospace;">OR-9823</td>
+                <td><button type="button" class="btn-sm-outline" onclick="alert('Printing receipt...')">Print</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- System Logs Table -->
+      <div class="data-table-card">
+        <div class="table-card-header">
+          <h3 class="table-card-title">System Logs</h3>
+          <span class="badge-status-pill" style="background-color: #f1f5f9; color: #475569;">Audit Trail</span>
+        </div>
+
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>USERNAME</th>
+                <th>LOGIN TIME</th>
+                <th>LOGOUT TIME</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="font-weight: 700; color: #0f172a;">collector_gali</td>
+                <td>September 17, 2026 8:30 AM</td>
+                <td><span class="text-danger" style="font-weight: 700;">Still Logged In</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Submit Request Modal -->
+  <div class="modal-overlay" id="requestModal" role="dialog" aria-modal="true">
+    <div class="request-modal-card">
+      <div class="request-modal-header">
+        <h3>Submit Request</h3>
+        <button type="button" class="modal-close-btn" onclick="closeRequestModal()" aria-label="Close modal">
+          <svg class="svg-icon" viewBox="0 0 24 24" style="width: 20px; height: 20px;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+
+      <div>
+        <div class="request-type-label">Request Type</div>
+        <div class="request-type-toggle">
+          <button type="button" class="type-toggle-btn active" id="tabNewConn" onclick="switchRequestTab('new')">New Connection</button>
+          <button type="button" class="type-toggle-btn" id="tabReconn" onclick="switchRequestTab('reconnect')">Reconnection</button>
+        </div>
+      </div>
+
+      <!-- New Connection Form Fields -->
+      <form id="requestForm" onsubmit="handleRequestSubmit(event)">
+        <div id="newConnectionFields" class="request-form-grid">
+          <div class="form-group-item">
+            <label for="reqCustomerName">Customer Name</label>
+            <input type="text" class="form-input" id="reqCustomerName" placeholder="Full Name" required>
+          </div>
+
+          <div class="form-group-item">
+            <label for="reqServiceAddress">Service Address</label>
+            <input type="text" class="form-input" id="reqServiceAddress" placeholder="Street, Barangay, Purok" required>
+          </div>
+
+          <div class="form-group-item">
+            <label for="reqContactNumber">Contact Number</label>
+            <input type="text" class="form-input" id="reqContactNumber" placeholder="09XXXXXXXXX" required>
+          </div>
+
+          <div class="form-group-item">
+            <label for="reqServicePlan">Meter Type / Service Plan</label>
+            <select class="form-select" id="reqServicePlan">
+              <option value="Residential">Residential</option>
+              <option value="Commercial">Commercial</option>
+              <option value="Institutional">Institutional</option>
+            </select>
+          </div>
+
+          <!-- Custom File Upload Field -->
+          <div class="form-group-item full-width-field">
+            <label for="reqIdProof">Identification Proof</label>
+            <div class="file-input-wrapper">
+              <input type="file" id="reqIdProof" accept="image/jpeg,image/png,application/pdf" style="display: none;" onchange="updateFileName(this)">
+              <div class="custom-file-upload" onclick="document.getElementById('reqIdProof').click()">
+                <div class="custom-file-btn">
+                  <svg class="svg-icon" viewBox="0 0 24 24" style="width: 15px; height: 15px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                  <span>Choose File</span>
+                </div>
+                <span class="custom-file-name" id="fileNameDisplay">No file chosen</span>
+              </div>
+              <span class="file-hint">PDF, JPEG, or PNG. 5MB max.</span>
+            </div>
+          </div>
+
+          <div class="form-group-item full-width-field">
+            <label for="reqNotes">Notes / Remarks</label>
+            <textarea class="form-textarea" id="reqNotes" placeholder="Additional details or instructions..."></textarea>
+          </div>
+        </div>
+
+        <!-- Reconnection Form Fields (Initially Hidden) -->
+        <div id="reconnectionFields" class="request-form-grid" style="display: none;">
+          <div class="form-group-item">
+            <label for="reqAccountNumber">Account Number</label>
+            <input type="text" class="form-input" id="reqAccountNumber" placeholder="e.g. JP12025-0002UP">
+          </div>
+
+          <div class="form-group-item">
+            <label for="reqReconnName">Customer Name</label>
+            <input type="text" class="form-input" id="reqReconnName" placeholder="Full Name">
+          </div>
+
+          <div class="form-group-item">
+            <label for="reqReconnAddress">Service Address</label>
+            <input type="text" class="form-input" id="reqReconnAddress" placeholder="Street, Barangay, Purok">
+          </div>
+
+          <div class="form-group-item">
+            <label for="reqReconnContact">Contact Number</label>
+            <input type="text" class="form-input" id="reqReconnContact" placeholder="09XXXXXXXXX">
+          </div>
+
+          <div class="form-group-item full-width-field">
+            <label for="reqReconnNotes">Notes / Remarks</label>
+            <textarea class="form-textarea" id="reqReconnNotes" placeholder="Additional details regarding reconnection..."></textarea>
+          </div>
+        </div>
+
+        <div class="request-modal-footer">
+          <span class="submitted-by-tag">Submitted by: Gali Adrian Nones (collector)</span>
+          <div style="display: flex; gap: 0.5rem;">
+            <button type="button" class="btn-modal btn-modal-cancel" onclick="closeRequestModal()">Close</button>
+            <button type="submit" class="btn-action-primary">Submit Request</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+   <!-- Footer -->
+        <div class="footer">
+            <div class="footer-brand">Janopol Oriental Waterworks</div>
+            <div>Janopol, Tanauan City, Batangas</div>
+            <div>&copy; Copyright 2026. All Rights Reserved</div>
+        </div>
+
+  <!-- Custom Logout Modal -->
+  <div class="modal-overlay" id="logoutModal" role="dialog" aria-modal="true">
+    <div class="modal-card">
+      <div class="modal-icon-circle">
+        <svg class="svg-icon" viewBox="0 0 24 24" style="width: 26px; height: 26px;">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+          <polyline points="16 17 21 12 16 7"></polyline>
+          <line x1="21" y1="12" x2="9" y2="12"></line>
+        </svg>
+      </div>
+      <h3 class="modal-title">Log Out Confirmation</h3>
+      <p class="modal-text">Are you sure you want to log out of the Collector Portal?</p>
+      <div class="modal-actions" style="justify-content: center;">
+        <button type="button" class="btn-modal btn-modal-cancel" onclick="closeLogoutModal()">Cancel</button>
+        <button type="button" class="btn-modal btn-modal-logout" onclick="confirmLogout()">Log Out</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* File Name Display Helper */
+    function updateFileName(input) {
+      const display = document.getElementById('fileNameDisplay');
+      if (input.files && input.files.length > 0) {
+        display.textContent = input.files[0].name;
+        display.style.color = '#0f172a';
+        display.style.fontWeight = '600';
+      } else {
+        display.textContent = 'No file chosen';
+        display.style.color = '#64748b';
+        display.style.fontWeight = 'normal';
+      }
+    }
+
+    /* Request Modal Functions */
+    function openRequestModal() {
+      const modal = document.getElementById('requestModal');
+      if (modal) modal.classList.add('show');
+    }
+
+    function closeRequestModal() {
+      const modal = document.getElementById('requestModal');
+      if (modal) modal.classList.remove('show');
+    }
+
+    function switchRequestTab(type) {
+      const tabNew = document.getElementById('tabNewConn');
+      const tabReconn = document.getElementById('tabReconn');
+      const newFields = document.getElementById('newConnectionFields');
+      const reconnFields = document.getElementById('reconnectionFields');
+
+      if (type === 'new') {
+        tabNew.classList.add('active');
+        tabReconn.classList.remove('active');
+        newFields.style.display = 'grid';
+        reconnFields.style.display = 'none';
+      } else {
+        tabReconn.classList.add('active');
+        tabNew.classList.remove('active');
+        reconnFields.style.display = 'grid';
+        newFields.style.display = 'none';
+      }
+    }
+
+    function handleRequestSubmit(e) {
+      e.preventDefault();
+      alert('Connection Request Submitted Successfully!');
+      closeRequestModal();
+    }
+
+    /* Sidebar Functions */
+    function toggleSidebar() {
+      const sidebar = document.getElementById('appSidebar');
+      const backdrop = document.getElementById('sidebarBackdrop');
+      sidebar.classList.toggle('show');
+      backdrop.classList.toggle('show');
+    }
+
+    function closeSidebar() {
+      const sidebar = document.getElementById('appSidebar');
+      const backdrop = document.getElementById('sidebarBackdrop');
+      sidebar.classList.remove('show');
+      backdrop.classList.remove('show');
+    }
+
+    /* Dropdown Functions */
+    function toggleNotificationDropdown() {
+      const dropdown = document.getElementById('notifDropdown');
+      const profileDropdown = document.getElementById('profileDropdown');
+      if (profileDropdown) profileDropdown.classList.remove('show');
+      dropdown.classList.toggle('show');
+    }
+
+    function toggleProfileDropdown() {
+      const dropdown = document.getElementById('profileDropdown');
+      const notifDropdown = document.getElementById('notifDropdown');
+      if (notifDropdown) notifDropdown.classList.remove('show');
+      dropdown.classList.toggle('show');
+    }
+
+    /* Logout Functions */
+    function handleLogout(event) {
+      event.preventDefault();
+      closeSidebar();
+      const profileDropdown = document.getElementById('profileDropdown');
+      if (profileDropdown) profileDropdown.classList.remove('show');
+
+      const modal = document.getElementById('logoutModal');
+      if (modal) modal.classList.add('show');
+    }
+
+    function closeLogoutModal() {
+      const modal = document.getElementById('logoutModal');
+      if (modal) modal.classList.remove('show');
+    }
+
+    function confirmLogout() {
+      window.location.href = "login.html";
+    }
+
+    function markAllNotificationsAsRead() {
+      const items = document.querySelectorAll('.notif-item');
+      items.forEach(item => item.classList.remove('unread'));
+      const badge = document.getElementById('notifBadge');
+      if (badge) {
+        badge.style.display = 'none';
+      }
+    }
+
+    function toggleSelectAll(masterCheckbox) {
+      const checkboxes = document.querySelectorAll('.row-checkbox');
+      checkboxes.forEach(cb => cb.checked = masterCheckbox.checked);
+    }
+
+    function applyFilters() {
+      alert('Filters applied!');
+    }
+
+    function resetFilters() {
+      document.getElementById('areaFilter').value = '';
+      document.getElementById('fromDate').value = '';
+      document.getElementById('toDate').value = '';
+    }
+
+    document.addEventListener('click', function(event) {
+      const notifWrapper = document.querySelector('.notification-wrapper');
+      if (notifWrapper && !notifWrapper.contains(event.target)) {
+        const notifDropdown = document.getElementById('notifDropdown');
+        if (notifDropdown) notifDropdown.classList.remove('show');
+      }
+
+      const profileWrapper = document.querySelector('.user-profile-wrapper');
+      if (profileWrapper && !profileWrapper.contains(event.target)) {
+        const profileDropdown = document.getElementById('profileDropdown');
+        if (profileDropdown) profileDropdown.classList.remove('show');
+      }
+    });
+  </script>
+</body>
+</html>

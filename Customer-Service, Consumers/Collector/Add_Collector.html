@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Reading - Janopol Oriental Waterworks</title>
+  <link rel="shortcut icon" type="image/x-icon" href="../Customer_Service/JALOGO2.ico">
+  <style>
+    /* Reset & Base Styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: #f1f5f9;
+      color: #1e293b;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      overflow-x: hidden;
+      padding-bottom: 2rem;
+    }
+
+    .svg-icon {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex-shrink: 0;
+    }
+
+    /* Navbar Header */
+    .app-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background-color: #0b6293;
+      color: #ffffff;
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1.5rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      height: 60px;
+      width: 100%;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .sidebar-toggle-btn {
+      background: rgba(255, 255, 255, 0.15);
+      border: none;
+      color: #ffffff;
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .sidebar-toggle-btn:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    .logo-circle {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background-color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .logo-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .brand-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-title {
+      font-size: 1rem;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .brand-subtitle {
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.75);
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-left: auto;
+    }
+
+    .notification-wrapper, .user-profile-wrapper {
+      position: relative;
+    }
+
+    .notif-bell-btn {
+      background: rgba(255, 255, 255, 0.15);
+      border: none;
+      color: #ffffff;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .notif-badge {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      background-color: #ef4444;
+      color: #ffffff;
+      font-size: 0.65rem;
+      font-weight: 800;
+      min-width: 17px;
+      height: 17px;
+      border-radius: 9999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #0b6293;
+      padding: 0 3px;
+    }
+
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+      background: rgba(255, 255, 255, 0.15);
+      padding: 0.35rem 0.75rem;
+      border-radius: 9999px;
+      white-space: nowrap;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    /* Fixed Sidebar */
+    .app-sidebar {
+      position: fixed;
+      top: 60px;
+      left: 0;
+      bottom: 0;
+      width: 270px;
+      height: calc(100vh - 60px);
+      background-color: #ffffff;
+      border-right: 1px solid #e2e8f0;
+      display: flex;
+      flex-direction: column;
+      z-index: 900;
+      box-shadow: 4px 0 16px rgba(0, 0, 0, 0.08);
+      transform: translateX(-100%);
+      transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      overflow-y: auto;
+    }
+
+    .app-sidebar.show {
+      transform: translateX(0);
+    }
+
+    .sidebar-backdrop {
+      position: fixed;
+      top: 60px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(15, 23, 42, 0.2);
+      backdrop-filter: blur(2px);
+      z-index: 850;
+      display: none;
+    }
+
+    .sidebar-backdrop.show {
+      display: block;
+    }
+
+    .sidebar-menu {
+      list-style: none;
+      padding: 1rem 0.75rem 2rem 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .sidebar-section-title {
+      font-size: 0.7rem;
+      font-weight: 800;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 1rem 0.75rem 0.35rem 0.75rem;
+    }
+
+    .sidebar-link {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.65rem 0.85rem;
+      color: #475569;
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 600;
+      border-radius: 8px;
+      transition: all 0.15s ease;
+    }
+
+    .sidebar-link:hover {
+      background-color: #f1f5f9;
+      color: #0284c7;
+    }
+
+    .sidebar-link.active {
+      background-color: #e0f2fe;
+      color: #0284c7;
+    }
+
+    /* Main Area Container */
+    .main-content {
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 1.5rem 1rem;
+      min-width: 0;
+    }
+
+    .breadcrumb {
+      font-size: 0.8rem;
+      color: #64748b;
+      margin-bottom: 1rem;
+    }
+
+    .breadcrumb a {
+      color: #0284c7;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    /* Card Containers */
+    .reading-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      margin-bottom: 1rem;
+      position: relative;
+    }
+
+    .reading-card:focus-within {
+      border-color: #93c5fd;
+      box-shadow: 0 4px 16px rgba(37,99,235,.12);
+    }
+
+    .card-header-title {
+      font-size: 0.98rem;
+      font-weight: 700;
+      color: #1e293b;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .card-header-title svg {
+      color: #0b6293;
+    }
+
+    .card-header-sub {
+      font-size: 0.78rem;
+      color: #64748b;
+      margin-top: 0.2rem;
+      margin-bottom: 1rem;
+    }
+
+    /* Grid System */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+    }
+
+    .form-group-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .form-group-item label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #334155;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+
+    .form-select, .form-input {
+      width: 100%;
+      padding: 0.55rem 0.75rem;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      outline: none;
+      background-color: #f8fafc;
+      color: #0f172a;
+    }
+
+    .form-select:focus, .form-input:focus {
+      background-color: #ffffff;
+      border-color: #0284c7;
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+    }
+
+    .form-input[readonly] {
+      background-color: #f1f5f9;
+      color: #64748b;
+    }
+
+    .btn-install-meter {
+      background-color: #ffffff;
+      color: #0284c7;
+      border: 1px solid #0284c7;
+      padding: 0.55rem 0.85rem;
+      border-radius: 8px;
+      font-size: 0.825rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      transition: all 0.15s ease;
+    }
+
+    .btn-install-meter:hover {
+      background-color: #e0f2fe;
+    }
+
+    /* Switch Toggles */
+    .switch-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 38px;
+      height: 20px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #cbd5e1;
+      transition: .2s;
+      border-radius: 20px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 14px;
+      width: 14px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .2s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: #0284c7;
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(18px);
+    }
+
+    /* Unpaid Table */
+    .unpaid-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.825rem;
+      margin-top: 0.5rem;
+    }
+
+    .unpaid-table th {
+      background-color: #f8fafc;
+      color: #475569;
+      padding: 0.5rem 0.75rem;
+      border-bottom: 1px solid #e2e8f0;
+      text-align: left;
+    }
+
+    .unpaid-table td {
+      padding: 0.55rem 0.75rem;
+      border-bottom: 1px solid #f1f5f9;
+    }
+
+    /* Sticky Action Card Container (Aligned & Sticky Bottom) */
+    .actions-card-container {
+      position: sticky;
+      bottom: 16px;
+      z-index: 950;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(8px);
+      border: 1px solid #cbd5e1;
+      border-radius: 12px;
+      padding: 1rem 1.5rem;
+      box-shadow: 0 4px 20px rgba(15, 23, 42, 0.12);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .badge-toggles-group {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .toggle-badge-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .badge-circle {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      color: #ffffff;
+      font-weight: 800;
+      font-size: 0.7rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      transition: transform 0.15s ease;
+    }
+
+    .badge-circle:hover {
+      transform: scale(1.05);
+    }
+
+    /* Badge Colors */
+    .badge-foc { background-color: #eab308; }    /* Yellow */
+    .badge-fom { background-color: #3b82f6; }    /* Blue */
+    .badge-cd  { background-color: #a855f7; }    /* Purple */
+
+    .badge-text-title {
+      font-size: 0.75rem;
+      font-weight: 800;
+      line-height: 1;
+      color: #0f172a;
+    }
+
+    .badge-text-sub {
+      font-size: 0.65rem;
+      color: #64748b;
+      line-height: 1.2;
+    }
+
+    .actions-right-group {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .btn-cancel {
+      background-color: #f1f5f9;
+      color: #475569;
+      border: 1px solid #cbd5e1;
+      padding: 0.55rem 1.1rem;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn-cancel:hover {
+      background-color: #e2e8f0;
+    }
+
+    .btn-submit {
+      background-color: #16a34a;
+      color: #ffffff;
+      border: none;
+      padding: 0.55rem 1.35rem;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      box-shadow: 0 2px 4px rgba(22, 163, 74, 0.25);
+    }
+
+    .btn-submit:hover {
+      background-color: #15803d;
+    }
+
+    /* ── Footer ── */
+    .footer {
+      text-align: center;
+      padding: 24px;
+      font-size: 12px;
+      color: var(--text-muted, #94a3b8);
+      margin-top: 20px;
+      border-top: 1px solid var(--border-color, #cbd5e1);
+    }
+
+    .footer-brand {
+      color: var(--primary, #0b6293);
+      font-weight: 600;
+    }
+
+    .d-none { display: none !important; }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar Header -->
+  <header class="app-header">
+    <div class="header-left">
+      <button class="sidebar-toggle-btn" onclick="toggleSidebar()" aria-label="Toggle Sidebar">
+        <svg class="svg-icon" viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+      </button>
+      <div class="logo-circle">
+        <img src="../Customer_Service/JALOGO.png" alt="Janopol Oriental Logo" class="logo-img">
+      </div>
+      <div class="brand-info">
+        <span class="brand-title">Janopol Oriental Waterworks</span>
+        <span class="brand-subtitle">Collector Portal</span>
+      </div>
+    </div>
+
+    <div class="header-right">
+      <div class="notification-wrapper">
+        <button class="notif-bell-btn" aria-label="View Notifications">
+          <svg class="svg-icon" viewBox="0 0 24 24">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+          </svg>
+          <span class="notif-badge">3</span>
+        </button>
+      </div>
+
+      <div class="user-profile-wrapper">
+        <div class="user-profile">
+          <svg class="svg-icon" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+          <span>Gali Adrian Nones</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="app-portal-body">
+    <div class="sidebar-backdrop" id="sidebarBackdrop" onclick="closeSidebar()"></div>
+
+    <!-- Overlay Sidebar Component -->
+    <aside class="app-sidebar" id="appSidebar">
+      <ul class="sidebar-menu">
+        <!-- Dashboard Item -->
+        <li>
+          <a href="Dashboard_Collector.html" class="sidebar-link active">
+            <svg class="svg-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+            <span>Dashboard</span>
+          </a>
+        </li>
+
+        <!-- REPORTS Section -->
+        <li class="sidebar-section-title">Reports</li>
+        <li>
+          <a href="Reading_Collector.html" class="sidebar-link">
+            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+            <span>Reading Reports</span>
+          </a>
+        </li>
+        <li>
+          <a href="Add_Collector.html" class="sidebar-link">
+            <svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+            <span>Add Reading</span>
+          </a>
+        </li>
+        <li>
+          <a href="Previous_Collector.html" class="sidebar-link">
+            <svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            <span>Previous Readings</span>
+          </a>
+        </li>
+        <li>
+          <a href="Invoice_Collector.html" class="sidebar-link">
+            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+            <span>Service/Invoice Reports</span>
+          </a>
+        </li>
+        <li>
+          <a href="Daily_Collector.html" class="sidebar-link">
+            <svg class="svg-icon" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"></rect><circle cx="12" cy="12" r="2"></circle><path d="M6 12h.01M18 12h.01"></path></svg>
+            <span>Daily Collection Reports</span>
+          </a>
+        </li>
+
+        <!-- CONNECTIONS Section -->
+        <li class="sidebar-section-title">Connections</li>
+        <li>
+          <a href="Reconnected_Collector.html" class="sidebar-link">
+            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M18 2v4M6 2v4M12 2v4M5 8h14a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2a2 2 0 0 1 2-2zM12 14v8"></path></svg>
+            <span>Reconnected</span>
+          </a>
+        </li>
+        <li>
+          <a href="Disconnected_Collector.html" class="sidebar-link">
+            <svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+            <span>Disconnected</span>
+          </a>
+        </li>
+
+        <!-- PAYMENTS Section -->
+        <li class="sidebar-section-title">Payments</li>
+        <li>
+          <a href="Materials_Collector.html" class="sidebar-link">
+            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+            <span>Materials</span>
+          </a>
+        </li>
+        <li>
+          <a href="Other_Collector.html" class="sidebar-link">
+            <svg class="svg-icon" viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+            <span>Other Payments</span>
+          </a>
+        </li>
+        <li>
+          <a href="Advances_Collector.html" class="sidebar-link">
+            <svg class="svg-icon" viewBox="0 0 24 24"><polygon points="13 19 22 12 13 5 13 19"></polygon><polygon points="2 19 11 12 2 5 2 19"></polygon></svg>
+            <span>Advances</span>
+          </a>
+        </li>
+
+        <!-- MEMBERS Section -->
+        <li class="sidebar-section-title">Members</li>
+        <li>
+          <a href="Vote_Collector.html" class="sidebar-link">
+            <svg class="svg-icon" viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+            <span>Vote List</span>
+          </a>
+        </li>
+
+      </ul>
+    </aside>
+
+    <main class="main-content">
+      <div class="breadcrumb">
+        <a href="Dashboard_Collector.html">Home</a> / <a href="Reading_Collector.html">Reading</a> / Reading Entry
+      </div>
+
+      <form id="addReadingForm">
+        <input type="hidden" id="rd-client-id" value="">
+        <input type="hidden" id="rd-usage" value="RESIDENTIAL">
+        <input type="hidden" id="rd-is-new-meter" value="0">
+        <input type="hidden" id="rd-consumer-status-hidden" value="ACTIVE">
+
+        <!-- Card 1: Consumer Information -->
+        <div class="reading-card">
+          <div class="card-header-title">
+            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            Consumer Information
+          </div>
+          <div class="card-header-sub">Search by account number or name — details auto-fill and lock in billing schedule.</div>
+
+          <div class="form-grid">
+            <div class="form-group-item">
+              <label>ACCOUNT NUMBER</label>
+              <input type="text" class="form-input" id="rd-account" placeholder="e.g. A2-014" onchange="lookupConsumer()">
+            </div>
+            <div class="form-group-item">
+              <label>NAME</label>
+              <input type="text" class="form-input" id="rd-name" placeholder="Consumer Name">
+            </div>
+            <div class="form-group-item">
+              <label>AREA</label>
+              <input type="text" class="form-input" id="rd-area" placeholder="Area">
+            </div>
+            <div class="form-group-item">
+              <label>BLOCK</label>
+              <input type="text" class="form-input" id="rd-block" placeholder="Block / Lot">
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2: Meter Readings -->
+        <div class="reading-card">
+          <div class="card-header-title">
+            <svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            Meter Readings
+          </div>
+          <div class="card-header-sub">Present − Previous = Consumed. Updates instantly and drives bill computation below.</div>
+
+          <div class="form-grid" style="align-items: flex-end;">
+            <div class="form-group-item">
+              <label>PRESENT READING *</label>
+              <input type="number" class="form-input" id="rd-present-new" value="0" min="0" oninput="recalculateBill()">
+            </div>
+            <div class="form-group-item">
+              <label>PREVIOUS READING *</label>
+              <input type="number" class="form-input" id="rd-prev-new" value="0" min="0" oninput="recalculateBill()">
+            </div>
+            <div class="form-group-item">
+              <label>CONSUMED (AUTO)</label>
+              <input type="number" class="form-input" id="rd-consumed-inline" value="0" readonly style="font-weight: 800; color: #0b6293;">
+              <span id="rd-consumed-hint" style="font-size: 0.7rem; color: #0284c7; font-weight: 600;">0 Cu.M</span>
+            </div>
+            <div class="form-group-item">
+              <button type="button" class="btn-install-meter" id="rd-toggle-meter" onclick="toggleNewMeterRow()">
+                <svg class="svg-icon" viewBox="0 0 24 24"><path d="M16 3h5v5"></path><path d="M8 21H3v-5"></path><path d="M21 3l-7.5 7.5"></path><path d="M3 21l7.5-7.5"></path></svg>
+                Install New Meter
+              </button>
+            </div>
+            <div class="form-group-item">
+              <input type="text" class="form-input" id="rd-meter-serial" value="Current meter: —" readonly>
+            </div>
+          </div>
+
+          <!-- New Meter Replacement Row (Hidden by default) -->
+          <div class="form-grid d-none" id="rd-new-meter-row" style="margin-top: 1rem; padding-top: 1rem; border-top: 1px dashed #cbd5e1;">
+            <div class="form-group-item">
+              <label>OLD METER FINAL READING</label>
+              <input type="number" class="form-input" id="rd-old-final" value="0" oninput="recalculateBill()">
+            </div>
+            <div class="form-group-item">
+              <label>NEW METER SERIAL NO.</label>
+              <input type="text" class="form-input" id="rd-serial-new" placeholder="e.g. 220511063">
+            </div>
+            <div class="form-group-item">
+              <label>NEW METER INITIAL READING</label>
+              <input type="number" class="form-input" id="rd-init-new" value="0" oninput="recalculateBill()">
+            </div>
+            <div class="form-group-item">
+              <label>OLD CONSUMPTION</label>
+              <input type="number" class="form-input" id="rd-consumed-old" value="0" readonly>
+            </div>
+            <div class="form-group-item">
+              <label>NEW CONSUMPTION</label>
+              <input type="number" class="form-input" id="rd-consumed-new" value="0" readonly>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3: Billing & Schedule -->
+        <div class="reading-card">
+          <div class="card-header-title">
+            <svg class="svg-icon" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+            Billing & Schedule
+          </div>
+          <div class="card-header-sub">Billing period and due dates. Period auto-calculates from month/year.</div>
+
+          <div class="form-grid">
+            <div class="form-group-item">
+              <label>MONTH</label>
+              <select class="form-select" id="rd-month" onchange="updatePeriodDates()">
+                <option value="September" selected>September</option>
+                <option value="October">October</option>
+                <option value="November">November</option>
+                <option value="December">December</option>
+              </select>
+            </div>
+            <div class="form-group-item">
+              <label>YEAR</label>
+              <input type="number" class="form-input" id="rd-year" value="2026" onchange="updatePeriodDates()">
+            </div>
+            <div class="form-group-item">
+              <label>DUE DATE</label>
+              <input type="date" class="form-input" id="rd-due" onchange="updateDisconnFromDue()">
+            </div>
+            <div class="form-group-item">
+              <label>DISCONNECTION DATE</label>
+              <input type="date" class="form-input" id="rd-disconn">
+            </div>
+            <div class="form-group-item">
+              <label>BILLING PERIOD COVERED</label>
+              <input type="text" class="form-input" id="rd-period" readonly>
+            </div>
+            <div class="form-group-item">
+              <label>REMARKS</label>
+              <input type="text" class="form-input" id="rd-remarks" placeholder="Notes...">
+            </div>
+            <div class="form-group-item">
+              <label>METER READER NAME</label>
+              <input type="text" class="form-input" id="rd-reader" value="Gali Adrian Nones" readonly>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 4: Discounts & Consumption Totals -->
+        <div class="reading-card">
+          <div class="card-header-title">
+            <svg class="svg-icon" viewBox="0 0 24 24"><line x1="19" y1="5" x2="5" y2="19"></line><circle cx="6.5" cy="6.5" r="2.5"></circle><circle cx="17.5" cy="17.5" r="2.5"></circle></svg>
+            Discounts & Consumption Totals
+          </div>
+          <div class="card-header-sub">Senior 5% (max 30 Cu.M), Free ₱300 minimum, and custom discounts — all recomputed live from consumed volume.</div>
+
+          <div class="form-grid" style="align-items: flex-end;">
+            <div class="form-group-item">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <label>SENIOR (5%) ₱</label>
+                <div class="switch-wrapper">
+                  <label class="switch">
+                    <input type="checkbox" id="rd-senior-toggle" onchange="recalculateBill()">
+                    <span class="slider"></span>
+                  </label>
+                </div>
+              </div>
+              <input type="number" class="form-input" id="rd-senior" value="0.00" readonly>
+            </div>
+
+            <div class="form-group-item">
+              <label id="rd-free-min-label">FREE OF MIN. (₱300.00)</label>
+              <input type="number" class="form-input" id="rd-free-min" value="0.00" readonly style="color: #16a34a; font-weight: 700;">
+            </div>
+
+            <div class="form-group-item">
+              <label>CUSTOM DISCOUNT %</label>
+              <input type="number" class="form-input" id="rd-custom-pct" value="0" oninput="recalculateBill()">
+            </div>
+
+            <div class="form-group-item">
+              <label>CUSTOM DISCOUNT AMT</label>
+              <input type="number" class="form-input" id="rd-custom-amt" value="0.00" oninput="recalculateBill()">
+            </div>
+
+            <div class="form-group-item">
+              <label>CONSUMED</label>
+              <input type="number" class="form-input" id="rd-consumed" value="0" readonly style="text-align: center;">
+            </div>
+
+            <div class="form-group-item">
+              <label>TOTAL CONSUMED</label>
+              <input type="number" class="form-input" id="rd-total-consumed" value="0" readonly style="text-align: center; font-weight: 700;">
+            </div>
+          </div>
+
+          <div class="form-grid" style="margin-top: 1rem;">
+            <div class="form-group-item">
+              <label>FREE OF CHARGE (FOC)</label>
+              <input type="text" class="form-input" id="rd-foc-label" value="No" readonly>
+            </div>
+            <div class="form-group-item">
+              <label>CURRENT WATER BILL AMOUNT</label>
+              <input type="number" class="form-input" id="rd-amount" value="300.00" readonly style="font-weight: 700;">
+            </div>
+            <div class="form-group-item">
+              <label>GRAND TOTAL (CURRENT MO.)</label>
+              <input type="number" class="form-input" id="rd-grand" value="300.00" readonly style="font-weight: 800; color: #0284c7;">
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 5: Status Summary -->
+        <div class="reading-card">
+          <div class="card-header-title">
+            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+            Status Summary
+          </div>
+          <div class="card-header-sub">Live totals — Total Due = Payment Status reflects discounts, consumption, and unpaid history.</div>
+
+          <div class="form-grid">
+            <div class="form-group-item">
+              <label>TOTAL AMOUNT DUE</label>
+              <input type="number" class="form-input" id="rd-due-amount" value="330.00" readonly style="border: 2px solid #ef4444; background: #fef2f2; color: #dc2626; font-weight: 800; font-size: 1.1rem;">
+            </div>
+            <div class="form-group-item">
+              <label>PAYMENT STATUS</label>
+              <input type="text" class="form-input" id="rd-pay-status" value="Unpaid" readonly style="border: 1px solid #fca5a5; background: #fef2f2; color: #dc2626; font-weight: 700; text-align: center;">
+            </div>
+            <div class="form-group-item">
+              <label>CONSUMER ACCOUNT STATUS</label>
+              <input type="text" class="form-input" id="rd-consumer-status" value="Active" readonly style="text-align: center; color: #16a34a; font-weight: 700;">
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 6: Payment & Collection -->
+        <div class="reading-card">
+          <div class="card-header-title">
+            <svg class="svg-icon" viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+            Payment & Collection
+          </div>
+          <div class="card-header-sub">Amount paid, O.R. number, and penalty toggle — remaining balance updates as you type.</div>
+
+          <div class="form-grid" style="align-items: flex-end;">
+            <div class="form-group-item">
+              <label>MODE OF PAYMENT</label>
+              <select class="form-select" id="rd-mode">
+                <option value="COLLECTOR" selected>Collector</option>
+                <option value="CASHIER">Cashier</option>
+              </select>
+            </div>
+            <div class="form-group-item">
+              <label>AMOUNT PAID (PHP)</label>
+              <input type="number" class="form-input" id="rd-amount-paid" value="0.00" oninput="recalculateBill()">
+            </div>
+            <div class="form-group-item">
+              <label>O.R. NUMBER</label>
+              <input type="text" class="form-input" id="rd-or" placeholder="Auto-filled when paid">
+            </div>
+            <div class="form-group-item">
+              <label>PENALTY (10% OVERDUE)</label>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <input type="number" class="form-input" id="rd-penalty" value="30.00" readonly>
+                <div class="switch-wrapper">
+                  <label class="switch">
+                    <input type="checkbox" id="rd-penalty-toggle" checked onchange="recalculateBill()">
+                    <span class="slider"></span>
+                  </label>
+                  <span style="font-size: 0.75rem; font-weight: 700;">On</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-grid" style="margin-top: 1rem;">
+            <div class="form-group-item">
+              <label>ADVANCE CREDIT</label>
+              <input type="number" class="form-input" id="rd-advance" value="0.00" readonly style="color: #16a34a; font-weight: 700;">
+            </div>
+            <div class="form-group-item">
+              <label>REMAINING BALANCE</label>
+              <input type="number" class="form-input" id="rd-remaining" value="330.00" readonly style="color: #ef4444; font-weight: 800;">
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 7: Unpaid Balance History -->
+        <div class="reading-card">
+          <div class="card-header-title">
+            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 8v4l3 3"></path><circle cx="12" cy="12" r="10"></circle></svg>
+            Unpaid Balance History
+          </div>
+          <div class="card-header-sub">Prior unpaid months for this consumer — checked rows add to 'Total Amount Due'.</div>
+
+          <table class="unpaid-table" id="rd-unpaid-table">
+            <thead>
+              <tr>
+                <th style="width: 30px; text-align: center;"></th>
+                <th>Month / Year</th>
+                <th>Amount</th>
+                <th>Penalty</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td colspan="5" style="text-align: center; color: #94a3b8; padding: 1.25rem;">Select a consumer to load unpaid balances.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div style="text-align: right; margin-top: 1rem; font-size: 0.85rem; font-weight: 700;">
+            TOTAL OVERDUE UNPAID BALANCE: <span style="color: #dc2626;" id="rd-unpaid-total-txt">₱ 0.00</span>
+          </div>
+        </div>
+
+        <!-- Card 8: Sticky Bottom Action Card Container -->
+        <div class="actions-card-container">
+          <div class="badge-toggles-group">
+
+            <!-- FOC Toggle -->
+            <label class="toggle-badge-item" title="Free of Charge">
+              <input type="checkbox" id="rd-foc-toggle" style="display:none;" onchange="syncToggleBadges()">
+              <div class="badge-circle badge-foc" id="badgeFoc">FOC</div>
+              <div>
+                <div class="badge-text-title">FOC</div>
+                <div class="badge-text-sub">(Free of Charge)</div>
+              </div>
+            </label>
+
+            <!-- FOM Toggle -->
+            <label class="toggle-badge-item" title="Free of Minimum">
+              <input type="checkbox" id="rd-fom-toggle" style="display:none;" onchange="syncToggleBadges()">
+              <div class="badge-circle badge-fom" id="badgeFom">FOM</div>
+              <div>
+                <div class="badge-text-title">FOM</div>
+                <div class="badge-text-sub">(Free of Min)</div>
+              </div>
+            </label>
+
+            <!-- C.D Toggle -->
+            <label class="toggle-badge-item" title="Customer Discount">
+              <input type="checkbox" id="rd-custom-discount-toggle" style="display:none;" onchange="syncToggleBadges()">
+              <div class="badge-circle badge-cd" id="badgeCd">C.D</div>
+              <div>
+                <div class="badge-text-title">C.D</div>
+                <div class="badge-text-sub">(Customer Disc)</div>
+              </div>
+            </label>
+
+          </div>
+
+          <div class="actions-right-group">
+            <button type="button" class="btn-cancel" onclick="resetForm()">Cancel/Reset</button>
+            <button type="button" class="btn-submit" onclick="submitForm()">
+              <svg class="svg-icon" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+              Submit Reading
+            </button>
+          </div>
+        </div>
+
+      </form>
+
+      <!-- Footer -->
+      <div class="footer">
+        <div class="footer-brand">Janopol Oriental Waterworks</div>
+        <div>Janopol, Tanauan City, Batangas</div>
+        <div>&copy; Copyright 2026. All Rights Reserved</div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // Sidebar Toggles
+    function toggleSidebar() {
+      document.getElementById('appSidebar').classList.toggle('show');
+      document.getElementById('sidebarBackdrop').classList.toggle('show');
+    }
+
+    function closeSidebar() {
+      document.getElementById('appSidebar').classList.remove('show');
+      document.getElementById('sidebarBackdrop').classList.remove('show');
+    }
+
+    // Toggle New Meter Replacement Controls
+    function toggleNewMeterRow() {
+      const isNew = document.getElementById('rd-is-new-meter').value === '1';
+      document.getElementById('rd-is-new-meter').value = isNew ? '0' : '1';
+      document.getElementById('rd-new-meter-row').classList.toggle('d-none', isNew);
+      document.getElementById('rd-toggle-meter').innerHTML = isNew 
+        ? `<svg class="svg-icon" viewBox="0 0 24 24"><path d="M16 3h5v5"></path><path d="M8 21H3v-5"></path><path d="M21 3l-7.5 7.5"></path><path d="M3 21l7.5-7.5"></path></svg> Install New Meter`
+        : `<svg class="svg-icon" viewBox="0 0 24 24"><path d="M16 3h5v5"></path><path d="M8 21H3v-5"></path><path d="M21 3l-7.5 7.5"></path><path d="M3 21l7.5-7.5"></path></svg> Use Existing Meter`;
+      recalculateBill();
+    }
+
+    // Date Auto-Fill Logic
+    function setDefaultDates() {
+      const today = new Date();
+      const due = new Date();
+      due.setDate(today.getDate() + 10);
+      
+      const yyyy = due.getFullYear();
+      const mm = String(due.getMonth() + 1).padStart(2, '0');
+      const dd = String(due.getDate()).padStart(2, '0');
+      document.getElementById('rd-due').value = `${yyyy}-${mm}-${dd}`;
+      
+      updateDisconnFromDue();
+      updatePeriodDates();
+    }
+
+    function updateDisconnFromDue() {
+      const dueVal = document.getElementById('rd-due').value;
+      if (dueVal) {
+        const d = new Date(dueVal);
+        d.setDate(d.getDate() + 7);
+        const yyyy = d.getFullYear();
+        const mm = String(d.getMonth() + 1).padStart(2, '0');
+        const dd = String(d.getDate()).padStart(2, '0');
+        document.getElementById('rd-disconn').value = `${yyyy}-${mm}-${dd}`;
+      }
+    }
+
+    function updatePeriodDates() {
+      const month = document.getElementById('rd-month').value;
+      const year = document.getElementById('rd-year').value || '2026';
+      document.getElementById('rd-period').value = `August 26, ${year} to ${month} 25, ${year}`;
+    }
+
+    // Badge Highlights
+    function syncToggleBadges() {
+      const foc = document.getElementById('rd-foc-toggle').checked;
+      const fom = document.getElementById('rd-fom-toggle').checked;
+      const cd = document.getElementById('rd-custom-discount-toggle').checked;
+
+      document.getElementById('badgeFoc').style.outline = foc ? '3px solid #0284c7' : 'none';
+      document.getElementById('badgeFom').style.outline = fom ? '3px solid #0284c7' : 'none';
+      document.getElementById('badgeCd').style.outline = cd ? '3px solid #0284c7' : 'none';
+
+      document.getElementById('rd-foc-label').value = foc ? "FOC Applied" : "No";
+
+      recalculateBill();
+    }
+
+    // Bill Calculation Algorithm
+    function recalculateBill() {
+      const isNewMeter = document.getElementById('rd-is-new-meter').value === '1';
+      const prev = parseFloat(document.getElementById('rd-prev-new').value) || 0;
+      const pres = parseFloat(document.getElementById('rd-present-new').value) || 0;
+
+      let consumed = 0;
+      if (isNewMeter) {
+        const oldFinal = parseFloat(document.getElementById('rd-old-final').value) || 0;
+        const newInit = parseFloat(document.getElementById('rd-init-new').value) || 0;
+        const oldConsumed = Math.max(0, oldFinal - prev);
+        const newConsumed = Math.max(0, pres - newInit);
+        document.getElementById('rd-consumed-old').value = oldConsumed;
+        document.getElementById('rd-consumed-new').value = newConsumed;
+        consumed = oldConsumed + newConsumed;
+      } else {
+        consumed = Math.max(0, pres - prev);
+      }
+
+      document.getElementById('rd-consumed-inline').value = consumed;
+      document.getElementById('rd-consumed-hint').textContent = `${consumed} Cu.M`;
+      document.getElementById('rd-consumed').value = consumed;
+      document.getElementById('rd-total-consumed').value = consumed;
+
+      // Badges
+      const isFoc = document.getElementById('rd-foc-toggle').checked;
+      const isFom = document.getElementById('rd-fom-toggle').checked;
+      const isSenior = document.getElementById('rd-senior-toggle').checked;
+      const isCustom = document.getElementById('rd-custom-discount-toggle').checked;
+
+      if (isFoc) {
+        document.getElementById('rd-amount').value = "0.00";
+        document.getElementById('rd-senior').value = "0.00";
+        document.getElementById('rd-free-min').value = "0.00";
+        document.getElementById('rd-grand').value = "0.00";
+        document.getElementById('rd-due-amount').value = "0.00";
+        document.getElementById('rd-remaining').value = "0.00";
+        document.getElementById('rd-pay-status').value = "FOC";
+        document.getElementById('rd-pay-status').style.color = "#16a34a";
+        return;
+      }
+
+      // Base Tariff Tier (₱300 base minimum up to 10m³, ₱35/m³ thereafter)
+      const baseMin = 300.00;
+      let bill = consumed <= 10 ? baseMin : baseMin + ((consumed - 10) * 35.00);
+
+      // Senior Discount (5% max 30m³)
+      let seniorDisc = 0;
+      if (isSenior && consumed > 0 && consumed <= 30) {
+        seniorDisc = bill * 0.05;
+      }
+      document.getElementById('rd-senior').value = seniorDisc.toFixed(2);
+      bill -= seniorDisc;
+
+      // Free of Minimum Exemption
+      let freeMinAmt = isFom ? baseMin : 0;
+      document.getElementById('rd-free-min').value = freeMinAmt.toFixed(2);
+      bill = Math.max(0, bill - freeMinAmt);
+
+      // Custom Discounts
+      let customPct = isCustom ? (parseFloat(document.getElementById('rd-custom-pct').value) || 0) : 0;
+      let customAmt = isCustom ? (parseFloat(document.getElementById('rd-custom-amt').value) || 0) : 0;
+      if (isCustom && customPct > 0) {
+        customAmt = (bill * customPct) / 100;
+        document.getElementById('rd-custom-amt').value = customAmt.toFixed(2);
+      }
+      bill = Math.max(0, bill - customAmt);
+
+      document.getElementById('rd-amount').value = bill.toFixed(2);
+      document.getElementById('rd-grand').value = bill.toFixed(2);
+
+      // Penalty (10% Overdue Rule)
+      const penaltyOn = document.getElementById('rd-penalty-toggle').checked;
+      const penalty = penaltyOn ? 30.00 : 0.00;
+      document.getElementById('rd-penalty').value = penalty.toFixed(2);
+
+      const totalDue = bill + penalty;
+      document.getElementById('rd-due-amount').value = totalDue.toFixed(2);
+
+      // Payment Status & Remaining Balance
+      const paid = parseFloat(document.getElementById('rd-amount-paid').value) || 0;
+      const rem = Math.max(0, totalDue - paid);
+      document.getElementById('rd-remaining').value = rem.toFixed(2);
+
+      const payStatusEl = document.getElementById('rd-pay-status');
+      if (paid >= totalDue && totalDue > 0) {
+        payStatusEl.value = "Paid";
+        payStatusEl.style.color = "#16a34a";
+        payStatusEl.style.backgroundColor = "#f0fdf4";
+        payStatusEl.style.borderColor = "#86efac";
+      } else if (paid > 0) {
+        payStatusEl.value = "Partial Payment";
+        payStatusEl.style.color = "#dc2626";
+      } else {
+        payStatusEl.value = "Unpaid";
+        payStatusEl.style.color = "#dc2626";
+        payStatusEl.style.backgroundColor = "#fef2f2";
+        payStatusEl.style.borderColor = "#fca5a5";
+      }
+
+      // Auto Peek O.R Number
+      if (paid > 0 && !document.getElementById('rd-or').value) {
+        document.getElementById('rd-or').value = "OR-" + Math.floor(100000 + Math.random() * 900000);
+      }
+    }
+
+    // Consumer Account Search Lookup
+    function lookupConsumer() {
+      const acc = document.getElementById('rd-account').value.trim();
+      if (acc.toUpperCase() === 'A2-014') {
+        document.getElementById('rd-client-id').value = "CL-9082";
+        document.getElementById('rd-name').value = "Alfredo Fuentes Suarez";
+        document.getElementById('rd-area').value = "Purok 2";
+        document.getElementById('rd-block').value = "Block 4, Lot 12";
+        document.getElementById('rd-prev-new').value = "150";
+        document.getElementById('rd-present-new').value = "172";
+        document.getElementById('rd-meter-serial').value = "Current meter: MTR-9982";
+        recalculateBill();
+      }
+    }
+
+    function resetForm() {
+      document.getElementById('addReadingForm').reset();
+      setDefaultDates();
+      syncToggleBadges();
+      recalculateBill();
+    }
+
+    function submitForm() {
+      alert('Meter Reading submitted successfully!');
+      window.location.href = "Reading_Collector.html";
+    }
+
+    // Init Page State
+    window.onload = function() {
+      setDefaultDates();
+      recalculateBill();
+    };
+  </script>
+</body>
+</html>
