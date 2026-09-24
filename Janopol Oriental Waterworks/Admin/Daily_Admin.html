@@ -1,0 +1,1565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Collection Report - Janopol Oriental Waterworks</title>
+    <link rel="shortcut icon" type="image/x-icon" href="../Customer_Service/JALOGO.ico">
+    <style>
+        :root {
+            --primary: #0284c7;
+            --primary-hover: #0369a1;
+            --primary-light: #e0f2fe;
+            --bg-main: #f8fafc;
+            --card-bg: #ffffff;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --sidebar-width: 260px;
+            --success: #16a34a;
+            --success-bg: #dcfce7;
+            --warning: #f59e0b;
+            --warning-bg: #fef3c7;
+            --danger: #ef4444;
+            --danger-bg: #fee2e2;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-dark);
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+            font-size: 14px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        .svg-icon {
+            width: 18px;
+            height: 18px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            flex-shrink: 0;
+        }
+
+        /* ── Header Navigation ── */
+        .header {
+            background: linear-gradient(135deg, #0284c7 0%, #0369a1 50%, #075985 100%);
+            color: #fff;
+            padding: 0 24px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            box-shadow: 0 2px 8px rgba(2, 132, 199, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .sidebar-toggle-btn {
+            background: rgba(255, 255, 255, 0.15);
+            border: none;
+            color: #ffffff;
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .sidebar-toggle-btn:hover { background: rgba(255, 255, 255, 0.25); }
+
+        .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: #fff;
+        }
+
+        .header-brand img {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.3);
+            object-fit: contain;
+            background: #fff;
+            flex-shrink: 0;
+        }
+
+        .header-brand-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header-brand-name {
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+        }
+
+        .header-brand-sub {
+            font-size: 11px;
+            opacity: 0.8;
+            font-weight: 400;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-left: auto;
+        }
+
+        /* Notification Bell Component */
+        .notification-wrapper { position: relative; }
+
+        .notif-bell-btn {
+            background: rgba(255, 255, 255, 0.15);
+            border: none;
+            color: #ffffff;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            transition: background 0.2s ease;
+        }
+
+        .notif-bell-btn:hover { background: rgba(255, 255, 255, 0.25); }
+
+        .notif-badge {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            background-color: #ef4444;
+            color: #ffffff;
+            font-size: 0.65rem;
+            font-weight: 800;
+            min-width: 17px;
+            height: 17px;
+            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #0369a1;
+            padding: 0 3px;
+        }
+
+        .notif-dropdown {
+            position: absolute;
+            right: 0;
+            top: 48px;
+            width: 340px;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15);
+            display: none;
+            flex-direction: column;
+            z-index: 2000;
+            overflow: hidden;
+            animation: fadeInDown 0.2s ease-out forwards;
+        }
+
+        .notif-dropdown.show { display: flex; }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .notif-header {
+            padding: 0.85rem 1rem;
+            background-color: #f8fafc;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .notif-header h3 { font-size: 0.875rem; font-weight: 800; color: #0f172a; }
+
+        .mark-read-btn {
+            font-size: 0.725rem;
+            color: #0284c7;
+            background: none;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .mark-read-btn:hover { text-decoration: underline; }
+
+        .notif-list { max-height: 320px; overflow-y: auto; }
+
+        .notif-item {
+            padding: 0.85rem 1rem;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: inherit;
+            transition: background-color 0.15s ease;
+        }
+
+        .notif-item:hover { background-color: #f8fafc; }
+        .notif-item.unread { background-color: #f0f9ff; }
+
+        .notif-icon-box {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .notif-icon-box.info { background-color: #e0f2fe; color: #0284c7; }
+        .notif-icon-box.success { background-color: #dcfce7; color: #16a34a; }
+
+        .notif-content { display: flex; flex-direction: column; gap: 0.15rem; }
+        .notif-title { font-size: 0.825rem; font-weight: 700; color: #0f172a; }
+        .notif-text { font-size: 0.75rem; color: #475569; line-height: 1.35; }
+        .notif-time { font-size: 0.675rem; color: #94a3b8; margin-top: 0.2rem; }
+
+        /* User Profile Dropdown */
+        .user-profile-wrapper { position: relative; }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 0.35rem 0.75rem;
+            border-radius: 9999px;
+            white-space: nowrap;
+            cursor: pointer;
+            user-select: none;
+            transition: background 0.2s ease;
+        }
+
+        .user-profile:hover { background: rgba(255, 255, 255, 0.25); }
+
+        .profile-dropdown {
+            position: absolute;
+            right: 0;
+            top: 48px;
+            width: 210px;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15);
+            display: none;
+            flex-direction: column;
+            z-index: 2000;
+            overflow: hidden;
+            animation: fadeInDown 0.2s ease-out forwards;
+        }
+
+        .profile-dropdown.show { display: flex; }
+
+        .profile-dropdown-header {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid #f1f5f9;
+            background-color: #f8fafc;
+        }
+
+        .profile-dropdown-header .user-name { font-size: 0.85rem; font-weight: 700; color: #0f172a; }
+        .profile-dropdown-header .user-role { font-size: 0.75rem; color: #64748b; }
+
+        .profile-dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.65rem 1rem;
+            font-size: 0.825rem;
+            color: #334155;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background-color 0.15s ease;
+        }
+
+        .profile-dropdown-item:hover { background-color: #f8fafc; color: #0284c7; }
+        .profile-dropdown-item.logout { color: #dc2626; border-top: 1px solid #f1f5f9; }
+        .profile-dropdown-item.logout:hover { background-color: #fee2e2; color: #b91c1c; }
+
+        /* ── Layout Wrapper ── */
+        .app-layout {
+            display: flex;
+            flex: 1;
+            min-height: calc(100vh - 64px);
+            position: relative;
+        }
+
+        /* ── Backdrop Mask for Overlay Sidebar ── */
+        .sidebar-backdrop {
+            position: fixed;
+            top: 64px;
+            left: 0;
+            width: 100vw;
+            height: calc(100vh - 64px);
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(2px);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.25s ease, visibility 0.25s ease;
+            z-index: 1100;
+        }
+
+        .sidebar-backdrop.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* ── Pure Overlay Sidebar (Fully Hidden by Default) ── */
+        .app-sidebar {
+            position: fixed;
+            top: 64px;
+            left: 0;
+            width: var(--sidebar-width);
+            height: calc(100vh - 64px);
+            background: #ffffff;
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            z-index: 1200;
+            box-shadow: 4px 0 15px rgba(0,0,0,0.08);
+            transform: translateX(-100%);
+            transition: transform 0.25s ease;
+        }
+
+        .app-sidebar.show {
+            transform: translateX(0);
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 14px 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            width: 100%;
+        }
+
+        .sidebar-section-title {
+            font-size: 11px;
+            font-weight: 800;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 16px 12px 6px 12px;
+            white-space: nowrap;
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 10px 14px;
+            border-radius: 10px;
+            color: #334155;
+            text-decoration: none;
+            font-size: 13.5px;
+            font-weight: 600;
+            transition: all 0.15s ease;
+            white-space: nowrap;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            width: 100%;
+            text-align: left;
+        }
+
+        .sidebar-link-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sidebar-link:hover {
+            background-color: #f0f9ff;
+            color: var(--primary);
+        }
+
+        .sidebar-link.active {
+            background-color: #f0f9ff;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .chevron-icon {
+            transition: transform 0.2s ease;
+            color: #64748b;
+        }
+
+        .sidebar-dropdown.open .chevron-icon {
+            transform: rotate(180deg);
+        }
+
+        .sidebar-submenu {
+            display: none;
+            list-style: none;
+            flex-direction: column;
+            gap: 2px;
+            padding-left: 28px;
+            margin-top: 2px;
+            margin-bottom: 4px;
+        }
+
+        .sidebar-dropdown.open + .sidebar-submenu {
+            display: flex;
+        }
+
+        .sidebar-subitem {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            color: #475569;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.15s ease;
+        }
+
+        .sidebar-subitem:hover {
+            background-color: #f1f5f9;
+            color: var(--primary);
+        }
+
+        /* ── Main Workspace Container ── */
+        .container {
+            flex: 1;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 28px 32px;
+            width: 100%;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .page-header-left {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .page-title {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .breadcrumb-text {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .page-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            margin-bottom: 28px;
+        }
+
+        /* Toolbar Actions */
+        .toolbar-actions {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        /* Filter Form Layout */
+        .filter-card {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 24px;
+        }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr) auto;
+            gap: 12px;
+            align-items: end;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-label {
+            font-size: 11.5px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .form-select, .form-input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 13px;
+            color: var(--text-dark);
+            outline: none;
+            background: #ffffff;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .form-select:focus, .form-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+        }
+
+        /* Button Component Styles */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .btn-primary { background: var(--primary); color: #ffffff; }
+        .btn-primary:hover { background: var(--primary-hover); }
+        .btn-outline { background: #ffffff; border: 1px solid var(--border-color); color: var(--text-muted); }
+        .btn-outline:hover { background: #f1f5f9; color: var(--text-dark); }
+        .btn-outline-success { background: #ffffff; border: 1px solid var(--success); color: var(--success); }
+        .btn-outline-success:hover { background: var(--success-bg); }
+        .btn-outline-primary { background: #ffffff; border: 1px solid var(--primary); color: var(--primary); }
+        .btn-outline-primary:hover { background: var(--primary-light); }
+        .btn-action { padding: 4px 8px; font-size: 11px; border-radius: 6px; }
+
+        /* Table Styling */
+        .table-responsive { overflow-x: auto; }
+        
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        .table th {
+            background: #f8fafc;
+            padding: 12px 14px;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-bottom: 1px solid var(--border-color);
+            white-space: nowrap;
+        }
+
+        .table td {
+            padding: 12px 14px;
+            font-size: 13px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-dark);
+            white-space: nowrap;
+        }
+
+        .table tr:hover { background: #f8fafc; }
+
+        .table tfoot tr {
+            background-color: #f1f5f9;
+            font-weight: 800;
+        }
+
+        .badge-cat {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            background-color: #f1f5f9;
+            color: #334155;
+            border: 1px solid var(--border-color);
+        }
+
+        /* Metric Summary Cards */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-top: 24px;
+            margin-bottom: 16px;
+        }
+
+        .summary-card {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+        }
+
+        .summary-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .icon-water { background: #dbeafe; color: #2563eb; }
+        .icon-fees { background: #fef3c7; color: #d97706; }
+        .icon-materials { background: #ffe4e6; color: #e11d48; }
+        .icon-cash { background: #dcfce7; color: #16a34a; }
+
+        .summary-title { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; }
+        .summary-value { font-size: 18px; font-weight: 800; font-family: monospace; color: var(--text-dark); }
+
+        .grand-total-card {
+            background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+            color: #ffffff;
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
+        }
+
+        .grand-total-val { font-size: 26px; font-weight: 900; font-family: monospace; }
+
+        /* Modal Overlays */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(15, 23, 42, 0.5);
+            backdrop-filter: blur(4px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+        }
+
+        .modal-overlay.show { display: flex; }
+
+        .modal-card {
+            background: #ffffff;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 400px;
+            padding: 1.5rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .modal-icon-circle {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background-color: #fee2e2;
+            color: #dc2626;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem auto;
+        }
+
+        .modal-title { font-size: 1.15rem; font-weight: 800; color: #0f172a; margin-bottom: 0.35rem; }
+        .modal-text { font-size: 0.85rem; color: #64748b; margin-bottom: 1.5rem; line-height: 1.4; }
+        .modal-actions { display: flex; gap: 0.75rem; }
+
+        .btn-modal {
+            flex: 1;
+            padding: 0.65rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-modal-cancel { background-color: #f1f5f9; color: #475569; }
+        .btn-modal-cancel:hover { background-color: #e2e8f0; }
+        .btn-modal-logout { background-color: #dc2626; color: #ffffff; }
+        .btn-modal-logout:hover { background-color: #b91c1c; }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 24px;
+            font-size: 12px;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-color);
+            margin-top: auto;
+        }
+
+        .footer-brand { color: var(--primary); font-weight: 600; }
+
+        /* Printable Area CSS */
+        @media print {
+            body * { visibility: hidden; }
+            #printableReport, #printableReport * { visibility: visible; }
+            #printableReport { position: absolute; left: 0; top: 0; width: 100%; }
+        }
+
+        @media (max-width: 1024px) {
+            .filter-grid { grid-template-columns: repeat(3, 1fr); }
+            .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 768px) {
+            .header { padding: 0.75rem 1rem; }
+            .header-brand-sub { display: none; }
+            .container { padding: 16px; }
+            .filter-grid { grid-template-columns: 1fr; }
+            .metrics-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header class="header">
+        <div class="header-left">
+            <button class="sidebar-toggle-btn" onclick="toggleSidebar()" aria-label="Toggle Sidebar">
+                <svg class="svg-icon" viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+            </button>
+            <a href="Admin_Dashboard.html" class="header-brand">
+                <img src="../Customer_Service/JALOGO.png" alt="Logo">
+                <div class="header-brand-text">
+                    <span class="header-brand-name">Janopol Oriental Waterworks</span>
+                    <span class="header-brand-sub">Admin Executive Portal</span>
+                </div>
+            </a>
+        </div>
+
+        <div class="header-right">
+            <!-- Notification Bell -->
+            <div class="notification-wrapper">
+                <button class="notif-bell-btn" id="notifBellBtn" onclick="toggleNotificationDropdown()" aria-label="View Notifications">
+                    <svg class="svg-icon" viewBox="0 0 24 24">
+                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                        <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                    </svg>
+                    <span class="notif-badge" id="notifBadge">3</span>
+                </button>
+
+                <div class="notif-dropdown" id="notifDropdown">
+                    <div class="notif-header">
+                        <h3>System Alerts &amp; Logs</h3>
+                        <button class="mark-read-btn" onclick="markAllNotificationsAsRead()">Mark all as read</button>
+                    </div>
+
+                    <div class="notif-list">
+                        <a href="#" class="notif-item unread">
+                            <div class="notif-icon-box info">
+                                <svg class="svg-icon" viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                            </div>
+                            <div class="notif-content">
+                                <span class="notif-title">Collector Posting</span>
+                                <span class="notif-text">Collector J. Santos remitted ₱18,450.00 for Purok 1.</span>
+                                <span class="notif-time">10 mins ago</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- User Profile Dropdown -->
+            <div class="user-profile-wrapper">
+                <div class="user-profile" id="userProfileBtn" onclick="toggleProfileDropdown()" aria-label="User Profile Menu">
+                    <svg class="svg-icon" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    <span>System Administrator</span>
+                </div>
+
+                <div class="profile-dropdown" id="profileDropdown">
+                    <div class="profile-dropdown-header">
+                        <div class="user-name">Admin Executive</div>
+                        <div class="user-role">Role: Super Admin</div>
+                    </div>
+                    <a href="Admin_Dashboard.html" class="profile-dropdown-item">
+                        <svg class="svg-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="#" class="profile-dropdown-item logout" onclick="handleLogout(event)">
+                        <svg class="svg-icon" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                        <span>Log Out</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- App Layout Component -->
+    <div class="app-layout">
+        
+        <!-- Backdrop Mask for Closing Sidebar -->
+        <div class="sidebar-backdrop" id="sidebarBackdrop" onclick="closeSidebar()"></div>
+
+        <!-- Overlay Sidebar Component -->
+        <aside class="app-sidebar" id="appSidebar">
+            <ul class="sidebar-menu">
+                
+                <!-- Dashboard Item -->
+                <li>
+                    <a href="Admin_Dashboard.html" class="sidebar-link" title="Dashboard">
+                        <div class="sidebar-link-content">
+                            <svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polygon points="12 8 8 12 12 16 16 12 12 8"></polygon></svg>
+                            <span>Dashboard</span>
+                        </div>
+                    </a>
+                </li>
+
+                <!-- AREA Section -->
+                <li class="sidebar-section-title">Area Management</li>
+                <li>
+                    <a href="Area_Admin.html" class="sidebar-link" title="Area">
+                        <div class="sidebar-link-content">
+                            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                            <span>Area</span>
+                        </div>
+                    </a>
+                </li>
+
+                <!-- REPORTS Section -->
+                <li class="sidebar-section-title">Reports</li>
+                <li>
+                    <a href="Daily_Admin.html" class="sidebar-link active" title="Daily Collection Report">
+                        <div class="sidebar-link-content">
+                            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><line x1="9" y1="15" x2="15" y2="15"></line></svg>
+                            <span>Daily Collection Report</span>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="PerArea_Admin.html" class="sidebar-link" title="Collected Per Area & Daily Collection">
+                        <div class="sidebar-link-content">
+                            <svg class="svg-icon" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                            <span>Collected Per Area &amp; Daily Collection</span>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="Reading_Admin.html" class="sidebar-link" title="Reading Reports">
+                        <div class="sidebar-link-content">
+                            <svg class="svg-icon" viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+                            <span>Reading Reports</span>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="Aging_Admin.html" class="sidebar-link" title="Aging Report">
+                        <div class="sidebar-link-content">
+                            <svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                            <span>Aging Report</span>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="sidebar-link" title="Revenue Report">
+                        <div class="sidebar-link-content">
+                            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path><path d="M22 12A10 10 0 0 0 12 2v10z"></path></svg>
+                            <span>Revenue Report</span>
+                        </div>
+                    </a>
+                </li>
+
+                <!-- TARIFF & RATES Section -->
+                <li class="sidebar-section-title">Tariff &amp; Rates</li>
+                <li>
+                    <button type="button" class="sidebar-link sidebar-dropdown" id="waterRateDropdown" onclick="toggleSubmenu(this)">
+                        <div class="sidebar-link-content">
+                            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg>
+                            <span>Water Rate Price</span>
+                        </div>
+                        <svg class="svg-icon chevron-icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </button>
+                    <ul class="sidebar-submenu">
+                        <li><a href="#" class="sidebar-subitem"><span>Residential</span></a></li>
+                        <li><a href="#" class="sidebar-subitem"><span>Commercial</span></a></li>
+                        <li><a href="#" class="sidebar-subitem"><span>List of Other Water Tariff</span></a></li>
+                        <li><a href="#" class="sidebar-subitem"><span>Add Water Tariff</span></a></li>
+                    </ul>
+                </li>
+
+                <!-- CONNECTIONS Section -->
+                <li class="sidebar-section-title">Connections</li>
+                <li>
+                    <a href="#" class="sidebar-link" title="New Connection">
+                        <div class="sidebar-link-content">
+                            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><line x1="19" y1="8" x2="19" y2="14"></line><line x1="22" y1="11" x2="16" y2="11"></line></svg>
+                            <span>New Connection</span>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="sidebar-link" title="Active">
+                        <div class="sidebar-link-content">
+                            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle><polyline points="16 11 18 13 22 9"></polyline></svg>
+                            <span>Active</span>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="sidebar-link" title="Reconnected">
+                        <div class="sidebar-link-content">
+                            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                            <span>Reconnected</span>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="sidebar-link" title="Disconnected">
+                        <div class="sidebar-link-content">
+                            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path><line x1="12" y1="2" x2="12" y2="12"></line></svg>
+                            <span>Disconnected</span>
+                        </div>
+                    </a>
+                </li>
+
+                <!-- HARDWARE & INVENTORY Section -->
+                <li class="sidebar-section-title">Hardware &amp; Inventory</li>
+                <li>
+                    <a href="#" class="sidebar-link" title="Meter Replacement">
+                        <div class="sidebar-link-content">
+                            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M16 3h5v5"></path><path d="M4 20L21 3"></path><path d="M21 16v5h-5"></path><path d="M15 15l5 5"></path><path d="M4 4l5 5"></path></svg>
+                            <span>Meter Replacement</span>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="sidebar-link" title="Materials">
+                        <div class="sidebar-link-content">
+                            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>
+                            <span>Materials</span>
+                        </div>
+                    </a>
+                </li>
+
+                <!-- ACCOUNTS & PROFILES Section -->
+                <li class="sidebar-section-title">Accounts &amp; Profiles</li>
+                <li>
+                    <a href="#" class="sidebar-link" title="Statement of Account">
+                        <div class="sidebar-link-content">
+                            <svg class="svg-icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="M12 4v16"></path><path d="M2 12h20"></path></svg>
+                            <span>Statement of Account</span>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="sidebar-link" title="Employees Profile">
+                        <div class="sidebar-link-content">
+                            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                            <span>Employees Profile</span>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="sidebar-link" title="Members Profile">
+                        <div class="sidebar-link-content">
+                            <svg class="svg-icon" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"></rect><line x1="7" y1="8" x2="17" y2="8"></line><line x1="7" y1="12" x2="13" y2="12"></line></svg>
+                            <span>Members Profile</span>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="sidebar-link" title="System Settings">
+                        <div class="sidebar-link-content">
+                            <svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                            <span>System Settings</span>
+                        </div>
+                    </a>
+                </li>
+
+                <!-- EXTERNAL ACCESS Section -->
+                <li class="sidebar-section-title">External Access</li>
+                <li>
+                    <a href="#" class="sidebar-link" title="Cashier Portal">
+                        <div class="sidebar-link-content">
+                            <svg class="svg-icon" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                            <span>Cashier Portal</span>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="sidebar-link" title="Collector Portal">
+                        <div class="sidebar-link-content">
+                            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                            <span>Collector Portal</span>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="customer.html" class="sidebar-link" title="Customer Service">
+                        <div class="sidebar-link-content">
+                            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M3 18v-6a9 9 0 0 1 18 0v6"></path><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path></svg>
+                            <span>Customer Service</span>
+                        </div>
+                    </a>
+                </li>
+
+            </ul>
+        </aside>
+
+        <!-- Main Workspace -->
+        <main class="container">
+            
+            <!-- Page Header -->
+            <div class="page-header">
+                <div class="page-header-left">
+                    <div class="page-title">
+                        <svg class="svg-icon" viewBox="0 0 24 24" style="color: var(--primary);"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><line x1="9" y1="15" x2="15" y2="15"></line></svg>
+                        Daily Collection Report
+                    </div>
+                    <div class="breadcrumb-text">Reports / Daily Collection Report</div>
+                </div>
+            </div>
+
+            <!-- Page Card Container -->
+            <div class="page-card">
+                
+                <!-- Toolbar Actions -->
+                <div class="toolbar-actions">
+                    <button class="btn btn-outline-success" onclick="exportExcel()">
+                        <svg class="svg-icon" viewBox="0 0 24 24" style="width: 14px; height: 14px;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="8" y1="13" x2="16" y2="13"></line><line x1="8" y1="17" x2="16" y2="17"></line></svg>
+                        Export Excel
+                    </button>
+                    <button class="btn btn-outline-primary" onclick="printReportDirect()">
+                        <svg class="svg-icon" viewBox="0 0 24 24" style="width: 14px; height: 14px;"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                        Print Report
+                    </button>
+                </div>
+
+                <!-- Dynamic Filter Form -->
+                <div class="filter-card">
+                    <form id="filterForm" onsubmit="handleFilter(event)">
+                        <div class="filter-grid">
+                            <div class="form-group">
+                                <label class="form-label">Month:</label>
+                                <select class="form-select" id="filterMonth">
+                                    <option value="">All Months</option>
+                                    <option value="1">January</option>
+                                    <option value="2">February</option>
+                                    <option value="3">March</option>
+                                    <option value="4">April</option>
+                                    <option value="5">May</option>
+                                    <option value="6">June</option>
+                                    <option value="7">July</option>
+                                    <option value="8">August</option>
+                                    <option value="9" selected>September</option>
+                                    <option value="10">October</option>
+                                    <option value="11">November</option>
+                                    <option value="12">December</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Day:</label>
+                                <select class="form-select" id="filterDay">
+                                    <option value="">All Days</option>
+                                    <!-- Dynamic days 1 to 31 generated by JS -->
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Year:</label>
+                                <select class="form-select" id="filterYear">
+                                    <option value="2026" selected>2026</option>
+                                    <option value="2025">2025</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Area / Purok:</label>
+                                <select class="form-select" id="filterArea">
+                                    <option value="">All Areas</option>
+                                    <option value="Purok 1 - Janopol Oriental">Purok 1 - Janopol Oriental</option>
+                                    <option value="Purok 2 - Janopol Oriental">Purok 2 - Janopol Oriental</option>
+                                    <option value="Purok 3 - Janopol Oriental">Purok 3 - Janopol Oriental</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Category:</label>
+                                <select class="form-select" id="filterCategory">
+                                    <option value="">All Categories</option>
+                                    <option value="Residential">Residential</option>
+                                    <option value="Commercial">Commercial</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <button type="submit" class="btn btn-primary" style="width: 100%;">Filter</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Collections Table -->
+                <div class="table-responsive">
+                    <table class="table" id="collectionTable">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Bill Month</th>
+                                <th>Date Paid</th>
+                                <th>Area</th>
+                                <th>O.R. #</th>
+                                <th style="text-align: right;">Amount</th>
+                                <th style="text-align: right;">Amount Paid</th>
+                                <th style="text-align: right;">Advance</th>
+                                <th style="text-align: right;">S.C.</th>
+                                <th style="text-align: right;">Penalty</th>
+                                <th style="text-align: right;">Disc.</th>
+                                <th>Category</th>
+                                <th>Remarks</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="collectionTableBody">
+                            <!-- Rows injected dynamically via JS -->
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="5" style="text-align: right; font-weight: 800; text-transform: uppercase;">Overall Data Total:</td>
+                                <td style="text-align: right; font-family: monospace;" id="totalAmount">₱0.00</td>
+                                <td style="text-align: right; font-family: monospace;" id="totalPaid">₱0.00</td>
+                                <td style="text-align: right; font-family: monospace;" id="totalAdvance">₱0.00</td>
+                                <td style="text-align: right; font-family: monospace;" id="totalSC">₱0.00</td>
+                                <td style="text-align: right; font-family: monospace;" id="totalPenalty">₱0.00</td>
+                                <td style="text-align: right; font-family: monospace;" id="totalDisc">₱0.00</td>
+                                <td colspan="3"></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+                <!-- Summary Metric Widgets Grid -->
+                <div class="metrics-grid">
+                    <div class="summary-card">
+                        <div class="summary-icon icon-water">
+                            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg>
+                        </div>
+                        <div>
+                            <div class="summary-title">Water Bill (Expected)</div>
+                            <div class="summary-value" id="summaryWaterBill">₱0.00</div>
+                        </div>
+                    </div>
+
+                    <div class="summary-card">
+                        <div class="summary-icon icon-fees">
+                            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                        </div>
+                        <div>
+                            <div class="summary-title">Other Fees (Recon)</div>
+                            <div class="summary-value" id="summaryOtherFees">₱0.00</div>
+                        </div>
+                    </div>
+
+                    <div class="summary-card">
+                        <div class="summary-icon icon-materials">
+                            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>
+                        </div>
+                        <div>
+                            <div class="summary-title">Materials Total</div>
+                            <div class="summary-value" id="summaryMaterials">₱0.00</div>
+                        </div>
+                    </div>
+
+                    <div class="summary-card">
+                        <div class="summary-icon icon-cash">
+                            <svg class="svg-icon" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"></rect><circle cx="12" cy="12" r="2"></circle></svg>
+                        </div>
+                        <div>
+                            <div class="summary-title">Cash on Hand</div>
+                            <div class="summary-value" id="summaryCashOnHand">₱0.00</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Grand Total Highlight Banner -->
+                <div class="grand-total-card">
+                    <div style="display: flex; align-items: center; gap: 16px;">
+                        <div class="summary-icon" style="background: #ffffff; color: var(--primary);">
+                            <svg class="svg-icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="M12 4v16"></path></svg>
+                        </div>
+                        <div>
+                            <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; opacity: 0.9;">Grand Total Collection</div>
+                            <div class="grand-total-val" id="summaryGrandTotal">₱0.00</div>
+                        </div>
+                    </div>
+                    <span style="background: rgba(255,255,255,0.2); padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 800; text-transform: uppercase;">
+                        Verified Summary
+                    </span>
+                </div>
+
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Hidden Printable Report Area -->
+    <div id="printableReport" style="display: none; padding: 20px; background: white;">
+        <h2 style="text-align: center;">JANOPOL ORIENTAL WATERWORKS</h2>
+        <h4 style="text-align: center;">Daily Collection Report</h4>
+        <hr style="margin: 15px 0;">
+        <table style="width: 100%; border-collapse: collapse;" border="1" cellPadding="6">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Date Paid</th>
+                    <th>O.R. #</th>
+                    <th>Amount Paid</th>
+                    <th>Category</th>
+                </tr>
+            </thead>
+            <tbody id="printTableBody"></tbody>
+        </table>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <div class="footer-brand">Janopol Oriental Waterworks</div>
+        <div>Janopol, Tanauan City, Batangas</div>
+        <div>&copy; Copyright 2026. All Rights Reserved</div>
+    </div>
+
+    <!-- Logout Confirmation Modal -->
+    <div class="modal-overlay" id="logoutModal" role="dialog" aria-modal="true">
+        <div class="modal-card">
+            <div class="modal-icon-circle">
+                <svg class="svg-icon" viewBox="0 0 24 24" style="width: 26px; height: 26px;">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                    <polyline points="16 17 21 12 16 7"></polyline>
+                    <line x1="21" y1="12" x2="9" y2="12"></line>
+                </svg>
+            </div>
+            <h3 class="modal-title">Log Out Confirmation</h3>
+            <p class="modal-text">Are you sure you want to log out of the Admin Portal?</p>
+            <div class="modal-actions">
+                <button type="button" class="btn-modal btn-modal-cancel" onclick="closeLogoutModal()">Cancel</button>
+                <button type="button" class="btn-modal btn-modal-logout" onclick="confirmLogout()">Log Out</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample collection dataset reflecting PHP backend models
+        let collections = [
+            {
+                id: 101,
+                client_name: "Juan Dela Cruz",
+                account_number: "JP12025-0001AM",
+                bill_label: "October 2026",
+                date_paid: "2026-09-23",
+                area_name: "Purok 1 - Janopol Oriental",
+                or_number: "OR-2026-9481",
+                amount: 580.00,
+                amount_paid: 580.00,
+                advance_payment: 0.00,
+                sc_discount: 0.00,
+                penalty: 0.00,
+                other_discount: 0.00,
+                category: "Residential",
+                payment_type: "WATER_BILL",
+                cheque_amount: 0.00,
+                remarks: "Regular Payment"
+            },
+            {
+                id: 102,
+                client_name: "Ulpiano Pamplona",
+                account_number: "JP12025-0002UP",
+                bill_label: "October 2026",
+                date_paid: "2026-09-23",
+                area_name: "Purok 1 - Janopol Oriental",
+                or_number: "OR-2026-9482",
+                amount: 520.00,
+                amount_paid: 520.00,
+                advance_payment: 100.00,
+                sc_discount: 0.00,
+                penalty: 0.00,
+                other_discount: 0.00,
+                category: "Residential",
+                payment_type: "WATER_BILL",
+                cheque_amount: 0.00,
+                remarks: "With Advance"
+            },
+            {
+                id: 103,
+                client_name: "Maria Santos",
+                account_number: "JP12025-0003MS",
+                bill_label: "October 2026",
+                date_paid: "2026-09-22",
+                area_name: "Purok 2 - Janopol Oriental",
+                or_number: "OR-2026-9400",
+                amount: 350.00,
+                amount_paid: 350.00,
+                advance_payment: 0.00,
+                sc_discount: 70.00,
+                penalty: 0.00,
+                other_discount: 0.00,
+                category: "Commercial",
+                payment_type: "RECON_FEE",
+                cheque_amount: 0.00,
+                remarks: "Reconnection Fee"
+            }
+        ];
+
+        // Populates Day Options in Filter
+        function populateDayOptions() {
+            const daySelect = document.getElementById('filterDay');
+            for (let i = 1; i <= 31; i++) {
+                let opt = document.createElement('option');
+                opt.value = i;
+                opt.textContent = String(i).padStart(2, '0');
+                daySelect.appendChild(opt);
+            }
+        }
+
+        // Render Table & Metrics
+        function renderCollections(data) {
+            const tbody = document.getElementById('collectionTableBody');
+            tbody.innerHTML = '';
+
+            let totals = {
+                amount: 0, paid: 0, advance: 0, sc: 0, penalty: 0, disc: 0,
+                waterBill: 0, otherFees: 0, materials: 0, cashOnHand: 0, grandTotal: 0
+            };
+
+            if (data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="14" style="text-align: center; color: var(--text-muted); padding: 24px;">No collection records found</td></tr>';
+            } else {
+                data.forEach(row => {
+                    totals.amount += row.amount;
+                    totals.paid += row.amount_paid;
+                    totals.advance += row.advance_payment;
+                    totals.sc += row.sc_discount;
+                    totals.penalty += row.penalty;
+                    totals.disc += row.other_discount;
+
+                    let type = row.payment_type.toUpperCase();
+                    if (type === 'WATER_BILL') totals.waterBill += row.amount_paid;
+                    else if (['RECON_FEE', 'OTHER', 'NEW_CONNECTION', 'RECONNECTION'].includes(type)) totals.otherFees += row.amount_paid;
+                    else if (type === 'MATERIALS') totals.materials += row.amount_paid;
+
+                    totals.grandTotal += row.amount_paid;
+
+                    let tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td style="font-weight: 600;">${row.client_name}</td>
+                        <td>${row.bill_label}</td>
+                        <td>${row.date_paid}</td>
+                        <td>${row.area_name}</td>
+                        <td style="font-family: monospace; font-weight: 700; color: var(--primary);">${row.or_number}</td>
+                        <td style="text-align: right; font-family: monospace;">₱${row.amount.toFixed(2)}</td>
+                        <td style="text-align: right; font-family: monospace; font-weight: 700; color: var(--success);">₱${row.amount_paid.toFixed(2)}</td>
+                        <td style="text-align: right; font-family: monospace;">₱${row.advance_payment.toFixed(2)}</td>
+                        <td style="text-align: right; font-family: monospace;">₱${row.sc_discount.toFixed(2)}</td>
+                        <td style="text-align: right; font-family: monospace;">₱${row.penalty.toFixed(2)}</td>
+                        <td style="text-align: right; font-family: monospace;">₱${row.other_discount.toFixed(2)}</td>
+                        <td><span class="badge-cat">${row.category}</span></td>
+                        <td>${row.remarks}</td>
+                        <td>
+                            <div style="display: flex; gap: 4px;">
+                                <button class="btn btn-outline btn-action" onclick="dcrViewRow(${row.id})" title="View">👁️</button>
+                                <button class="btn btn-outline btn-action" onclick="dcrEditRow(${row.id})" title="Edit">✏️</button>
+                                <button class="btn btn-outline btn-action" onclick="dcrDeleteRow(${row.id})" title="Delete" style="color: var(--danger);">🗑️</button>
+                            </div>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
+
+            totals.cashOnHand = totals.paid;
+
+            // Update Footer Totals
+            document.getElementById('totalAmount').textContent = `₱${totals.amount.toFixed(2)}`;
+            document.getElementById('totalPaid').textContent = `₱${totals.paid.toFixed(2)}`;
+            document.getElementById('totalAdvance').textContent = `₱${totals.advance.toFixed(2)}`;
+            document.getElementById('totalSC').textContent = `₱${totals.sc.toFixed(2)}`;
+            document.getElementById('totalPenalty').textContent = `₱${totals.penalty.toFixed(2)}`;
+            document.getElementById('totalDisc').textContent = `₱${totals.disc.toFixed(2)}`;
+
+            // Update Summary Cards
+            document.getElementById('summaryWaterBill').textContent = `₱${totals.waterBill.toFixed(2)}`;
+            document.getElementById('summaryOtherFees').textContent = `₱${totals.otherFees.toFixed(2)}`;
+            document.getElementById('summaryMaterials').textContent = `₱${totals.materials.toFixed(2)}`;
+            document.getElementById('summaryCashOnHand').textContent = `₱${totals.cashOnHand.toFixed(2)}`;
+            document.getElementById('summaryGrandTotal').textContent = `₱${totals.grandTotal.toFixed(2)}`;
+        }
+
+        // Action Handlers
+        function dcrViewRow(id) {
+            let row = collections.find(c => c.id === id);
+            if (row) {
+                alert(`O.R. #: ${row.or_number}\nName: ${row.client_name}\nAmount Paid: ₱${row.amount_paid.toFixed(2)}\nCategory: ${row.category}\nDate: ${row.date_paid}\nRemarks: ${row.remarks}`);
+            }
+        }
+
+        function dcrEditRow(id) {
+            let row = collections.find(c => c.id === id);
+            if (!row) return;
+
+            let newOR = prompt("O.R. Number:", row.or_number);
+            if (newOR === null) return;
+            let newPaid = prompt("Amount Paid:", row.amount_paid);
+            if (newPaid === null) return;
+
+            row.or_number = newOR;
+            row.amount_paid = parseFloat(newPaid) || row.amount_paid;
+            renderCollections(collections);
+            alert("Record updated successfully!");
+        }
+
+        function dcrDeleteRow(id) {
+            if (confirm("Are you sure you want to delete this row?")) {
+                collections = collections.filter(c => c.id !== id);
+                renderCollections(collections);
+            }
+        }
+
+        function handleFilter(e) {
+            e.preventDefault();
+            let areaVal = document.getElementById('filterArea').value;
+            let catVal = document.getElementById('filterCategory').value;
+
+            let filtered = collections.filter(item => {
+                let matchArea = !areaVal || item.area_name === areaVal;
+                let matchCat = !catVal || item.category === catVal;
+                return matchArea && matchCat;
+            });
+
+            renderCollections(filtered);
+        }
+
+        function printReportDirect() {
+            let printTbody = document.getElementById('printTableBody');
+            printTbody.innerHTML = collections.map(r => `
+                <tr>
+                    <td>${r.client_name}</td>
+                    <td>${r.date_paid}</td>
+                    <td>${r.or_number}</td>
+                    <td>₱${r.amount_paid.toFixed(2)}</td>
+                    <td>${r.category}</td>
+                </tr>
+            `).join('');
+
+            window.print();
+        }
+
+        function exportExcel() {
+            alert("Exporting collection data to Excel format...");
+        }
+
+        /* Sidebar and Overlay Mechanics */
+        function toggleSidebar() {
+            const sidebar = document.getElementById('appSidebar');
+            const backdrop = document.getElementById('sidebarBackdrop');
+            sidebar.classList.toggle('show');
+            backdrop.classList.toggle('show');
+        }
+
+        function closeSidebar() {
+            const sidebar = document.getElementById('appSidebar');
+            const backdrop = document.getElementById('sidebarBackdrop');
+            sidebar.classList.remove('show');
+            backdrop.classList.remove('show');
+        }
+
+        function toggleSubmenu(button) {
+            button.classList.toggle('open');
+        }
+
+        function toggleNotificationDropdown() {
+            const dropdown = document.getElementById('notifDropdown');
+            const profileDropdown = document.getElementById('profileDropdown');
+            if (profileDropdown) profileDropdown.classList.remove('show');
+            dropdown.classList.toggle('show');
+        }
+
+        function toggleProfileDropdown() {
+            const dropdown = document.getElementById('profileDropdown');
+            const notifDropdown = document.getElementById('notifDropdown');
+            if (notifDropdown) notifDropdown.classList.remove('show');
+            dropdown.classList.toggle('show');
+        }
+
+        function handleLogout(event) {
+            event.preventDefault();
+            document.getElementById('logoutModal').classList.add('show');
+        }
+
+        function closeLogoutModal() {
+            document.getElementById('logoutModal').classList.remove('show');
+        }
+
+        function confirmLogout() {
+            window.location.href = "login.html";
+        }
+
+        function markAllNotificationsAsRead() {
+            const badge = document.getElementById('notifBadge');
+            if (badge) badge.style.display = 'none';
+        }
+
+        // Initialize Page
+        populateDayOptions();
+        renderCollections(collections);
+    </script>
+</body>
+</html>

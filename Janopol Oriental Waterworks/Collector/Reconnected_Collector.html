@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reconnected Accounts - Janopol Oriental Waterworks</title>
+  <link rel="shortcut icon" type="image/x-icon" href="../Customer_Service/JALOGO2.ico">
+  <style>
+    /* Reset & Base Styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: #f1f5f9;
+      color: #1e293b;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .svg-icon {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex-shrink: 0;
+    }
+
+    /* Navbar Header */
+    .app-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background-color: #0b6293;
+      color: #ffffff;
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1.5rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      height: 60px;
+      width: 100%;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .sidebar-toggle-btn {
+      background: rgba(255, 255, 255, 0.15);
+      border: none;
+      color: #ffffff;
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .sidebar-toggle-btn:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    .logo-circle {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background-color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .logo-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .brand-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-title {
+      font-size: 1rem;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .brand-subtitle {
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.75);
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-left: auto;
+    }
+
+    /* Notification Bell Component Styles */
+    .notification-wrapper {
+      position: relative;
+    }
+
+    .notif-bell-btn {
+      background: rgba(255, 255, 255, 0.15);
+      border: none;
+      color: #ffffff;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      position: relative;
+      transition: background 0.2s ease;
+    }
+
+    .notif-bell-btn:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    .notif-badge {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      background-color: #ef4444;
+      color: #ffffff;
+      font-size: 0.65rem;
+      font-weight: 800;
+      min-width: 17px;
+      height: 17px;
+      border-radius: 9999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #0b6293;
+      padding: 0 3px;
+    }
+
+    .notif-dropdown {
+      position: absolute;
+      right: 0;
+      top: 48px;
+      width: 340px;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15);
+      display: none;
+      flex-direction: column;
+      z-index: 2000;
+      overflow: hidden;
+      animation: fadeInDown 0.2s ease-out forwards;
+    }
+
+    .notif-dropdown.show {
+      display: flex;
+    }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .notif-header {
+      padding: 0.85rem 1rem;
+      background-color: #f8fafc;
+      border-bottom: 1px solid #e2e8f0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .notif-header h3 {
+      font-size: 0.875rem;
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    .mark-read-btn {
+      font-size: 0.725rem;
+      color: #0284c7;
+      background: none;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .mark-read-btn:hover {
+      text-decoration: underline;
+    }
+
+    .notif-list {
+      max-height: 320px;
+      overflow-y: auto;
+    }
+
+    .notif-item {
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid #f1f5f9;
+      display: flex;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: inherit;
+      transition: background-color 0.15s ease;
+    }
+
+    .notif-item:hover {
+      background-color: #f8fafc;
+    }
+
+    .notif-item.unread {
+      background-color: #f0f9ff;
+    }
+
+    .notif-icon-box {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .notif-icon-box.success {
+      background-color: #dcfce7;
+      color: #16a34a;
+    }
+
+    .notif-content {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+
+    .notif-title {
+      font-size: 0.825rem;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .notif-text {
+      font-size: 0.75rem;
+      color: #475569;
+      line-height: 1.35;
+    }
+
+    .notif-time {
+      font-size: 0.675rem;
+      color: #94a3b8;
+      margin-top: 0.2rem;
+    }
+
+    /* User Profile Container & Dropdown Styles */
+    .user-profile-wrapper {
+      position: relative;
+    }
+
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+      background: rgba(255, 255, 255, 0.15);
+      padding: 0.35rem 0.75rem;
+      border-radius: 9999px;
+      white-space: nowrap;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.2s ease;
+    }
+
+    .user-profile:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    .profile-dropdown {
+      position: absolute;
+      right: 0;
+      top: 48px;
+      width: 210px;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15);
+      display: none;
+      flex-direction: column;
+      z-index: 2000;
+      overflow: hidden;
+      animation: fadeInDown 0.2s ease-out forwards;
+    }
+
+    .profile-dropdown.show {
+      display: flex;
+    }
+
+    .profile-dropdown-header {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid #f1f5f9;
+      background-color: #f8fafc;
+    }
+
+    .profile-dropdown-header .user-name {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .profile-dropdown-header .user-role {
+      font-size: 0.75rem;
+      color: #64748b;
+    }
+
+    .profile-dropdown-item {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.65rem 1rem;
+      font-size: 0.825rem;
+      color: #334155;
+      text-decoration: none;
+      font-weight: 500;
+      transition: background-color 0.15s ease;
+    }
+
+    .profile-dropdown-item:hover {
+      background-color: #f8fafc;
+      color: #0284c7;
+    }
+
+    .profile-dropdown-item.logout {
+      color: #dc2626;
+      border-top: 1px solid #f1f5f9;
+    }
+
+    .profile-dropdown-item.logout:hover {
+      background-color: #fee2e2;
+      color: #b91c1c;
+    }
+
+    /* Fixed Sidebar */
+    .app-sidebar {
+      position: fixed;
+      top: 60px;
+      left: 0;
+      bottom: 0;
+      width: 270px;
+      height: calc(100vh - 60px);
+      background-color: #ffffff;
+      border-right: 1px solid #e2e8f0;
+      display: flex;
+      flex-direction: column;
+      z-index: 900;
+      box-shadow: 4px 0 16px rgba(0, 0, 0, 0.08);
+      transform: translateX(-100%);
+      transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      overflow-y: auto;
+    }
+
+    .app-sidebar.show {
+      transform: translateX(0);
+    }
+
+    .sidebar-backdrop {
+      position: fixed;
+      top: 60px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(15, 23, 42, 0.2);
+      backdrop-filter: blur(2px);
+      z-index: 850;
+      display: none;
+    }
+
+    .sidebar-backdrop.show {
+      display: block;
+    }
+
+    .sidebar-menu {
+      list-style: none;
+      padding: 1rem 0.75rem 2rem 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .sidebar-section-title {
+      font-size: 0.7rem;
+      font-weight: 800;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 1rem 0.75rem 0.35rem 0.75rem;
+    }
+
+    .sidebar-link {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.65rem 0.85rem;
+      color: #475569;
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 600;
+      border-radius: 8px;
+      transition: all 0.15s ease;
+    }
+
+    .sidebar-link:hover {
+      background-color: #f1f5f9;
+      color: #0284c7;
+    }
+
+    .sidebar-link.active {
+      background-color: #e0f2fe;
+      color: #0284c7;
+    }
+
+    /* Main Content Area */
+    .app-portal-body {
+      display: flex;
+      flex: 1;
+    }
+
+    .main-content {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1.5rem 1rem 2rem 1rem;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .breadcrumb {
+      font-size: 0.8rem;
+      color: #64748b;
+      margin-bottom: 1rem;
+    }
+
+    .breadcrumb a {
+      color: #0284c7;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    /* Filter Component */
+    .filter-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      margin-bottom: 1.5rem;
+    }
+
+    .filter-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      align-items: flex-end;
+    }
+
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .filter-group label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #334155;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+
+    .filter-input {
+      width: 100%;
+      padding: 0.55rem 0.75rem;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      outline: none;
+      background-color: #f8fafc;
+      color: #0f172a;
+    }
+
+    .filter-input:focus {
+      background-color: #ffffff;
+      border-color: #0284c7;
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+    }
+
+    .btn-search {
+      background-color: #0b6293;
+      color: #ffffff;
+      border: none;
+      padding: 0.6rem 1.25rem;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      transition: background 0.15s ease;
+    }
+
+    .btn-search:hover {
+      background-color: #084c72;
+    }
+
+    /* Table Component */
+    .table-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+      margin-bottom: auto;
+    }
+
+    .table-container {
+      overflow-x: auto;
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      text-align: left;
+    }
+
+    .data-table th {
+      background-color: #f8fafc;
+      color: #475569;
+      font-weight: 700;
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid #e2e8f0;
+      white-space: nowrap;
+    }
+
+    .data-table td {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid #f1f5f9;
+      color: #334155;
+      white-space: nowrap;
+    }
+
+    .data-table tbody tr:hover {
+      background-color: #f8fafc;
+    }
+
+    .badge-status {
+      display: inline-block;
+      padding: 0.2rem 0.55rem;
+      border-radius: 9999px;
+      font-size: 0.725rem;
+      font-weight: 700;
+      text-align: center;
+      background-color: #dcfce7;
+      color: #15803d;
+    }
+
+    /* Pagination */
+    .pagination-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.85rem 1.25rem;
+      border-top: 1px solid #e2e8f0;
+      background-color: #ffffff;
+      font-size: 0.8rem;
+      color: #64748b;
+    }
+
+    .pagination-btns {
+      display: flex;
+      gap: 0.35rem;
+    }
+
+    .pg-btn {
+      background-color: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      color: #475569;
+      padding: 0.35rem 0.65rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .pg-btn:hover {
+      background-color: #e2e8f0;
+    }
+
+    .pg-btn.active {
+      background-color: #0b6293;
+      color: #ffffff;
+      border-color: #0b6293;
+    }
+
+    /* ── Footer ── */
+    .footer {
+      text-align: center;
+      padding: 24px;
+      font-size: 12px;
+      color: #64748b;
+      margin-top: 40px;
+      border-top: 1px solid #cbd5e1;
+    }
+
+    .footer-brand {
+      color: #0b6293;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar Header -->
+  <header class="app-header">
+    <div class="header-left">
+      <button class="sidebar-toggle-btn" onclick="toggleSidebar()" aria-label="Toggle Sidebar">
+        <svg class="svg-icon" viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+      </button>
+      <div class="logo-circle">
+        <img src="../Customer_Service/JALOGO.png" alt="Janopol Oriental Logo" class="logo-img">
+      </div>
+      <div class="brand-info">
+        <span class="brand-title">Janopol Oriental Waterworks</span>
+        <span class="brand-subtitle">Collector Portal</span>
+      </div>
+    </div>
+
+    <div class="header-right">
+      <!-- Notification Bell Component -->
+      <div class="notification-wrapper">
+        <button class="notif-bell-btn" id="notifBellBtn" onclick="toggleNotificationDropdown()" aria-label="View Notifications">
+          <svg class="svg-icon" viewBox="0 0 24 24">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+          </svg>
+          <span class="notif-badge" id="notifBadge">1</span>
+        </button>
+
+        <div class="notif-dropdown" id="notifDropdown">
+          <div class="notif-header">
+            <h3>Collector Notifications</h3>
+            <button class="mark-read-btn" onclick="markAllNotificationsAsRead()">Mark all as read</button>
+          </div>
+
+          <div class="notif-list">
+            <a href="#" class="notif-item unread">
+              <div class="notif-icon-box success">
+                <svg class="svg-icon" viewBox="0 0 24 24"><path d="M18 2v4M6 2v4M12 2v4M5 8h14a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2a2 2 0 0 1 2-2zM12 14v8"></path></svg>
+              </div>
+              <div class="notif-content">
+                <span class="notif-title">Reconnection Approved</span>
+                <span class="notif-text">Account A2-014 service line has been reconnected.</span>
+                <span class="notif-time">2 hours ago</span>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- User Profile Component with Dropdown -->
+      <div class="user-profile-wrapper">
+        <div class="user-profile" id="userProfileBtn" onclick="toggleProfileDropdown()" aria-label="User Profile Menu">
+          <svg class="svg-icon" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+          <span>Gali Adrian Nones</span>
+        </div>
+
+        <div class="profile-dropdown" id="profileDropdown">
+          <div class="profile-dropdown-header">
+            <div class="user-name">Gali Adrian Nones</div>
+            <div class="user-role">Collector Staff (ID: COL-004)</div>
+          </div>
+          <a href="#" class="profile-dropdown-item">
+            <svg class="svg-icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="M12 4v16"></path><path d="M2 12h20"></path></svg>
+            <span>My Routes</span>
+          </a>
+          <a href="#" class="profile-dropdown-item logout" onclick="handleLogout(event)">
+            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+            <span>Log Out</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="app-portal-body">
+    <div class="sidebar-backdrop" id="sidebarBackdrop" onclick="closeSidebar()"></div>
+
+    <!-- Sidebar Component -->
+    <aside class="app-sidebar" id="appSidebar">
+      <ul class="sidebar-menu">
+        <li>
+          <a href="Dashboard_Collector.html" class="sidebar-link">
+            <svg class="svg-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+            <span>Dashboard</span>
+          </a>
+        </li>
+
+        <li class="sidebar-section-title">Reports</li>
+        <li>
+          <a href="Reading_Collector.html" class="sidebar-link">
+            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+            <span>Reading Reports</span>
+          </a>
+        </li>
+        <li>
+          <a href="Add_Collector.html" class="sidebar-link">
+            <svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+            <span>Add Reading</span>
+          </a>
+        </li>
+        <li>
+          <a href="Previous_Collector.html" class="sidebar-link">
+            <svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            <span>Previous Readings</span>
+          </a>
+        </li>
+        <li>
+          <a href="Invoice_Collector.html" class="sidebar-link">
+            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+            <span>Service/Invoice Reports</span>
+          </a>
+        </li>
+        <li>
+          <a href="Daily_Collector.html" class="sidebar-link">
+            <svg class="svg-icon" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"></rect><circle cx="12" cy="12" r="2"></circle><path d="M6 12h.01M18 12h.01"></path></svg>
+            <span>Daily Collection Reports</span>
+          </a>
+        </li>
+
+        <li class="sidebar-section-title">Connections</li>
+        <li>
+          <a href="Reconnected_Collector.html" class="sidebar-link active">
+            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M18 2v4M6 2v4M12 2v4M5 8h14a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2a2 2 0 0 1 2-2zM12 14v8"></path></svg>
+            <span>Reconnected</span>
+          </a>
+        </li>
+        <li>
+          <a href="Disconnected_Collector.html" class="sidebar-link">
+            <svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+            <span>Disconnected</span>
+          </a>
+        </li>
+
+        <li class="sidebar-section-title">Payments</li>
+        <li>
+          <a href="Materials_Collector.html" class="sidebar-link">
+            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+            <span>Materials</span>
+          </a>
+        </li>
+        <li>
+          <a href="Other_Collector.html" class="sidebar-link">
+            <svg class="svg-icon" viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+            <span>Other Payments</span>
+          </a>
+        </li>
+        <li>
+          <a href="Advances_Collector.html" class="sidebar-link">
+            <svg class="svg-icon" viewBox="0 0 24 24"><polygon points="13 19 22 12 13 5 13 19"></polygon><polygon points="2 19 11 12 2 5 2 19"></polygon></svg>
+            <span>Advances</span>
+          </a>
+        </li>
+
+        <li class="sidebar-section-title">Members</li>
+        <li>
+          <a href="Vote_Collector.html" class="sidebar-link">
+            <svg class="svg-icon" viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+            <span>Vote List</span>
+          </a>
+        </li>
+      </ul>
+    </aside>
+
+    <main class="main-content">
+      <div class="breadcrumb">
+        <a href="Dashboard_Collector.html">Home</a> / Reconnected Accounts
+      </div>
+
+      <!-- Filter Section -->
+      <div class="filter-card">
+        <div class="filter-grid">
+          <div class="filter-group">
+            <label>Search Account / Consumer</label>
+            <input type="text" class="filter-input" placeholder="Search Account No. or Name...">
+          </div>
+          <div class="filter-group">
+            <label>Reconnection Date</label>
+            <input type="date" class="filter-input">
+          </div>
+          <div class="filter-group">
+            <button type="button" class="btn-search">
+              <svg class="svg-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+              Filter List
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Table Section -->
+      <div class="table-card">
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Account No.</th>
+                <th>Consumer Name</th>
+                <th>Reconnection Date</th>
+                <th>Fee Paid</th>
+                <th>O.R. No.</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>A2-014</strong></td>
+                <td>Alfredo Fuentes Suarez</td>
+                <td>2026-09-14</td>
+                <td>₱ 150.00</td>
+                <td>OR-481870</td>
+                <td><span class="badge-status">Active</span></td>
+              </tr>
+              <tr>
+                <td><strong>C1-042</strong></td>
+                <td>Elena Gutierrez</td>
+                <td>2026-09-02</td>
+                <td>₱ 150.00</td>
+                <td>OR-481710</td>
+                <td><span class="badge-status">Active</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="pagination-bar">
+          <div>Showing 1 to 2 of 2 reconnected records</div>
+          <div class="pagination-btns">
+            <button class="pg-btn" disabled>Prev</button>
+            <button class="pg-btn active">1</button>
+            <button class="pg-btn" disabled>Next</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="footer">
+        <div class="footer-brand">Janopol Oriental Waterworks</div>
+        <div>Janopol, Tanauan City, Batangas</div>
+        <div>&copy; Copyright 2026. All Rights Reserved</div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    function toggleSidebar() {
+      document.getElementById('appSidebar').classList.toggle('show');
+      document.getElementById('sidebarBackdrop').classList.toggle('show');
+    }
+
+    function closeSidebar() {
+      document.getElementById('appSidebar').classList.remove('show');
+      document.getElementById('sidebarBackdrop').classList.remove('show');
+    }
+
+    /* Dropdown Functions */
+    function toggleNotificationDropdown() {
+      const dropdown = document.getElementById('notifDropdown');
+      const profileDropdown = document.getElementById('profileDropdown');
+      if (profileDropdown) profileDropdown.classList.remove('show');
+      dropdown.classList.toggle('show');
+    }
+
+    function toggleProfileDropdown() {
+      const dropdown = document.getElementById('profileDropdown');
+      const notifDropdown = document.getElementById('notifDropdown');
+      if (notifDropdown) notifDropdown.classList.remove('show');
+      dropdown.classList.toggle('show');
+    }
+
+    function markAllNotificationsAsRead() {
+      const badge = document.getElementById('notifBadge');
+      if (badge) badge.style.display = 'none';
+      const unreadItems = document.querySelectorAll('.notif-item.unread');
+      unreadItems.forEach(item => item.classList.remove('unread'));
+    }
+
+    function handleLogout(e) {
+      e.preventDefault();
+      alert('Logging out...');
+    }
+
+    document.addEventListener('click', function(event) {
+      const notifWrapper = document.querySelector('.notification-wrapper');
+      if (notifWrapper && !notifWrapper.contains(event.target)) {
+        const notifDropdown = document.getElementById('notifDropdown');
+        if (notifDropdown) notifDropdown.classList.remove('show');
+      }
+
+      const profileWrapper = document.querySelector('.user-profile-wrapper');
+      if (profileWrapper && !profileWrapper.contains(event.target)) {
+        const profileDropdown = document.getElementById('profileDropdown');
+        if (profileDropdown) profileDropdown.classList.remove('show');
+      }
+    });
+  </script>
+</body>
+</html>

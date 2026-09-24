@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Billing System - Janopol Oriental Waterworks</title>
+  <link rel="shortcut icon" type="image/x-icon" href="../Customer_Service/JALOGO2.ico">
+  <style>
+    /* Reset & Base Styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: #f1f5f9;
+      color: #1e293b;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .svg-icon {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex-shrink: 0;
+    }
+
+    /* Navbar Header */
+    .app-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background-color: #0b6293;
+      color: #ffffff;
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1.5rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      height: 60px;
+      width: 100%;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-shrink: 0;
+    }
+
+    .logo-circle {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background-color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .logo-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .brand-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-title {
+      font-size: 1rem;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .brand-subtitle {
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.75);
+    }
+
+    /* Header Right Navigation */
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      margin-left: auto;
+    }
+
+    .header-nav {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      list-style: none;
+    }
+
+    .header-nav-link {
+      color: rgba(255, 255, 255, 0.85);
+      text-decoration: none;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.4rem 0.65rem;
+      border-radius: 6px;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .header-nav-link:hover {
+      background-color: rgba(255, 255, 255, 0.15);
+      color: #ffffff;
+    }
+
+    .header-nav-link.active {
+      background-color: #ffffff;
+      color: #0b6293;
+    }
+
+    /* Notification Bell Component Styles */
+    .notification-wrapper {
+      position: relative;
+    }
+
+    .notif-bell-btn {
+      background: rgba(255, 255, 255, 0.15);
+      border: none;
+      color: #ffffff;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      position: relative;
+      transition: background 0.2s ease;
+    }
+
+    .notif-bell-btn:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    .notif-badge {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      background-color: #ef4444;
+      color: #ffffff;
+      font-size: 0.65rem;
+      font-weight: 800;
+      min-width: 17px;
+      height: 17px;
+      border-radius: 9999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #0b6293;
+      padding: 0 3px;
+    }
+
+    .notif-dropdown {
+      position: absolute;
+      right: 0;
+      top: 48px;
+      width: 340px;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15);
+      display: none;
+      flex-direction: column;
+      z-index: 2000;
+      overflow: hidden;
+      animation: fadeInDown 0.2s ease-out forwards;
+    }
+
+    .notif-dropdown.show {
+      display: flex;
+    }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .notif-header {
+      padding: 0.85rem 1rem;
+      background-color: #f8fafc;
+      border-bottom: 1px solid #e2e8f0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .notif-header h3 {
+      font-size: 0.875rem;
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    .mark-read-btn {
+      font-size: 0.725rem;
+      color: #0284c7;
+      background: none;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .mark-read-btn:hover {
+      text-decoration: underline;
+    }
+
+    .notif-list {
+      max-height: 320px;
+      overflow-y: auto;
+    }
+
+    .notif-item {
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid #f1f5f9;
+      display: flex;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: inherit;
+      transition: background-color 0.15s ease;
+    }
+
+    .notif-item:hover {
+      background-color: #f8fafc;
+    }
+
+    .notif-item.unread {
+      background-color: #f0f9ff;
+    }
+
+    .notif-icon-box {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .notif-icon-box.info {
+      background-color: #e0f2fe;
+      color: #0284c7;
+    }
+
+    .notif-icon-box.success {
+      background-color: #dcfce7;
+      color: #16a34a;
+    }
+
+    .notif-content {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+
+    .notif-title {
+      font-size: 0.825rem;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .notif-text {
+      font-size: 0.75rem;
+      color: #475569;
+      line-height: 1.35;
+    }
+
+    .notif-time {
+      font-size: 0.675rem;
+      color: #94a3b8;
+      margin-top: 0.2rem;
+    }
+
+    /* User Profile Container & Dropdown Styles */
+    .user-profile-wrapper {
+      position: relative;
+    }
+
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+      background: rgba(255, 255, 255, 0.15);
+      padding: 0.35rem 0.75rem;
+      border-radius: 9999px;
+      white-space: nowrap;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.2s ease;
+    }
+
+    .user-profile:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    .profile-dropdown {
+      position: absolute;
+      right: 0;
+      top: 48px;
+      width: 210px;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15);
+      display: none;
+      flex-direction: column;
+      z-index: 2000;
+      overflow: hidden;
+      animation: fadeInDown 0.2s ease-out forwards;
+    }
+
+    .profile-dropdown.show {
+      display: flex;
+    }
+
+    .profile-dropdown-header {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid #f1f5f9;
+      background-color: #f8fafc;
+    }
+
+    .profile-dropdown-header .user-name {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .profile-dropdown-header .user-role {
+      font-size: 0.75rem;
+      color: #64748b;
+    }
+
+    .profile-dropdown-item {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.65rem 1rem;
+      font-size: 0.825rem;
+      color: #334155;
+      text-decoration: none;
+      font-weight: 500;
+      transition: background-color 0.15s ease;
+    }
+
+    .profile-dropdown-item:hover {
+      background-color: #f8fafc;
+      color: #0284c7;
+    }
+
+    .profile-dropdown-item.logout {
+      color: #dc2626;
+      border-top: 1px solid #f1f5f9;
+    }
+
+    .profile-dropdown-item.logout:hover {
+      background-color: #fee2e2;
+      color: #b91c1c;
+    }
+
+    /* Main Content Area */
+    .app-portal-body {
+      display: flex;
+      flex: 1;
+    }
+
+    .main-content {
+      width: 100%;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 1.5rem 1rem 2rem 1rem;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .breadcrumb {
+      font-size: 0.8rem;
+      color: #64748b;
+      margin-bottom: 1rem;
+    }
+
+    .breadcrumb a {
+      color: #0284c7;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    /* 3-Column Workspace Layout Grid */
+    .workspace-grid {
+      display: grid;
+      grid-template-columns: 310px 1fr 280px;
+      gap: 1.25rem;
+      align-items: start;
+    }
+
+    @media (max-width: 1200px) {
+      .workspace-grid {
+        grid-template-columns: 310px 1fr;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .workspace-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Cards */
+    .page-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 1.25rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      margin-bottom: 1.25rem;
+    }
+
+    .card-header-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #1e293b;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.85rem;
+    }
+
+    .card-header-title svg {
+      color: #0b6293;
+    }
+
+    /* Form Fields */
+    .form-group {
+      margin-bottom: 0.75rem;
+    }
+
+    .form-label {
+      font-size: 0.725rem;
+      font-weight: 700;
+      color: #475569;
+      text-transform: uppercase;
+      margin-bottom: 0.25rem;
+      display: block;
+    }
+
+    .form-input, .form-select {
+      width: 100%;
+      padding: 0.45rem 0.65rem;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 0.825rem;
+      outline: none;
+      background-color: #f8fafc;
+      color: #0f172a;
+    }
+
+    .form-input:focus, .form-select:focus {
+      background-color: #ffffff;
+      border-color: #0284c7;
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+    }
+
+    .input-group {
+      display: flex;
+      align-items: center;
+    }
+
+    .input-group-text {
+      background-color: #e2e8f0;
+      border: 1px solid #cbd5e1;
+      border-right: none;
+      padding: 0.45rem 0.6rem;
+      font-size: 0.825rem;
+      color: #475569;
+      border-radius: 6px 0 0 6px;
+      font-family: monospace;
+    }
+
+    .input-group .form-input {
+      border-radius: 0 6px 6px 0;
+    }
+
+    .checkbox-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      margin-top: 0.5rem;
+    }
+
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #475569;
+      cursor: pointer;
+    }
+
+    /* Status Badges */
+    .badge-status {
+      display: block;
+      text-align: center;
+      padding: 0.4rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      margin-bottom: 0.85rem;
+    }
+
+    .badge-unpaid {
+      background-color: #fee2e2;
+      color: #b91c1c;
+      border: 1px solid #fca5a5;
+    }
+
+    .badge-active {
+      background-color: #dcfce7;
+      color: #15803d;
+      border: 1px solid #86efac;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      padding: 0.5rem 0.85rem;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.15s ease;
+      border: 1px solid transparent;
+      width: 100%;
+    }
+
+    .btn-primary { background-color: #0b6293; color: #ffffff; }
+    .btn-primary:hover { background-color: #084c72; }
+
+    .btn-secondary { background-color: #64748b; color: #ffffff; }
+    .btn-secondary:hover { background-color: #475569; }
+
+    .btn-warning { background-color: #d97706; color: #ffffff; }
+    .btn-warning:hover { background-color: #b45309; }
+
+    .btn-outline { background-color: #ffffff; border-color: #cbd5e1; color: #334155; }
+    .btn-outline:hover { background-color: #f8fafc; border-color: #0284c7; color: #0284c7; }
+
+    .btn-outline-success { background-color: #ffffff; border-color: #16a34a; color: #16a34a; }
+    .btn-outline-success:hover { background-color: #dcfce7; }
+
+    .btn-dark { background-color: #1e293b; color: #ffffff; }
+    .btn-dark:hover { background-color: #0f172a; }
+
+    .btn-sm {
+      padding: 0.35rem 0.65rem;
+      font-size: 0.75rem;
+    }
+
+    /* Matrix Table Components */
+    .toolbar-box {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      background-color: #f8fafc;
+      border: 1px solid #e2e8f0;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .table-container {
+      overflow-x: auto;
+      max-height: 520px;
+      overflow-y: auto;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.825rem;
+      text-align: left;
+    }
+
+    .data-table th {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background-color: #f8fafc;
+      color: #475569;
+      font-weight: 700;
+      padding: 0.65rem 0.75rem;
+      border-bottom: 2px solid #e2e8f0;
+      white-space: nowrap;
+    }
+
+    .data-table td {
+      padding: 0.5rem 0.75rem;
+      border-bottom: 1px solid #f1f5f9;
+      color: #334155;
+      white-space: nowrap;
+      vertical-align: middle;
+    }
+
+    .data-table tbody tr:hover {
+      background-color: #f8fafc;
+    }
+
+    .matrix-input {
+      padding: 0.3rem 0.5rem;
+      border: 1px solid #cbd5e1;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      font-family: monospace;
+      width: 100%;
+      outline: none;
+    }
+
+    .matrix-input:focus {
+      border-color: #0284c7;
+    }
+
+    /* Modal Styling */
+    .modal-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(15, 23, 42, 0.5);
+      backdrop-filter: blur(2px);
+      z-index: 1050;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-backdrop.show {
+      display: flex;
+    }
+
+    .modal-dialog {
+      background: #ffffff;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 650px;
+      box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+      overflow: hidden;
+      margin: 1rem;
+    }
+
+    .modal-header {
+      background-color: #d97706;
+      color: #ffffff;
+      padding: 0.85rem 1.25rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .modal-close-btn {
+      background: none;
+      border: none;
+      color: #ffffff;
+      font-size: 1.25rem;
+      cursor: pointer;
+    }
+
+    .modal-body {
+      padding: 1.25rem;
+      max-height: 75vh;
+      overflow-y: auto;
+    }
+
+    .modal-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.85rem;
+    }
+
+    @media (max-width: 600px) {
+      .modal-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .modal-footer {
+      padding: 0.85rem 1.25rem;
+      border-top: 1px solid #e2e8f0;
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.5rem;
+      background-color: #f8fafc;
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 24px;
+      font-size: 12px;
+      color: #64748b;
+      margin-top: auto;
+      border-top: 1px solid #cbd5e1;
+    }
+
+    .footer-brand {
+      color: #0b6293;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar Header -->
+  <header class="app-header">
+    <div class="header-left">
+      <div class="logo-circle">
+        <img src="../Customer_Service/JALOGO.png" alt="Janopol Oriental Logo" class="logo-img">
+      </div>
+      <div class="brand-info">
+        <span class="brand-title">Janopol Oriental Waterworks</span>
+        <span class="brand-subtitle">Cashier Portal</span>
+      </div>
+    </div>
+
+    <div class="header-right">
+      <nav>
+        <ul class="header-nav">
+          <li><a href="Cashier_Dashboard.html" class="header-nav-link">DASHBOARD</a></li>
+          <li><a href="Billing_Cashier.html" class="header-nav-link active">BILLING</a></li>
+          <li><a href="Daily_Cashier.html" class="header-nav-link">DAILY COLLECTION</a></li>
+          <li><a href="NRDM_Cashier.html" class="header-nav-link">NRDM</a></li>
+          <li><a href="Official_Cashier.html" class="header-nav-link">OFFICIAL RECEIPT</a></li>
+          <li><a href="Reading_Cashier.html" class="header-nav-link">READING REPORTS</a></li>
+        </ul>
+      </nav>
+
+      <!-- Notification Bell Component -->
+      <div class="notification-wrapper">
+        <button class="notif-bell-btn" id="notifBellBtn" onclick="toggleNotificationDropdown()" aria-label="View Notifications">
+          <svg class="svg-icon" viewBox="0 0 24 24">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+          </svg>
+          <span class="notif-badge" id="notifBadge">3</span>
+        </button>
+
+        <div class="notif-dropdown" id="notifDropdown">
+          <div class="notif-header">
+            <h3>Collector Notifications</h3>
+            <button class="mark-read-btn" onclick="markAllNotificationsAsRead()">Mark all as read</button>
+          </div>
+
+          <div class="notif-list">
+            <a href="#" class="notif-item unread">
+              <div class="notif-icon-box info">
+                <svg class="svg-icon" viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+              </div>
+              <div class="notif-content">
+                <span class="notif-title">New Collection Route Assigned</span>
+                <span class="notif-text">Area 3 - Purok 2 list has been updated for September.</span>
+                <span class="notif-time">1 hour ago</span>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- User Profile Component with Dropdown -->
+      <div class="user-profile-wrapper">
+        <div class="user-profile" id="userProfileBtn" onclick="toggleProfileDropdown()" aria-label="User Profile Menu">
+          <svg class="svg-icon" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+          <span>Gali Adrian Nones</span>
+        </div>
+
+        <div class="profile-dropdown" id="profileDropdown">
+          <div class="profile-dropdown-header">
+            <div class="user-name">Gali Adrian Nones</div>
+            <div class="user-role">Collector Staff (ID: COL-004)</div>
+          </div>
+          <a href="#" class="profile-dropdown-item">
+            <svg class="svg-icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="M12 4v16"></path><path d="M2 12h20"></path></svg>
+            <span>My Routes</span>
+          </a>
+          <a href="#" class="profile-dropdown-item logout" onclick="handleLogout(event)">
+            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+            <span>Log Out</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="app-portal-body">
+    <main class="main-content">
+      <div class="breadcrumb">
+        <a href="Cashier_Dashboard.html">Home</a> / Billing Matrix System
+      </div>
+
+      <!-- 3-Column Workspace Grid -->
+      <div class="workspace-grid">
+
+        <!-- LEFT COLUMN: Customer Profile & Action Panel -->
+        <div>
+          <div class="page-card">
+            <div style="text-align: center; margin-bottom: 1rem; padding-bottom: 0.85rem; border-bottom: 1px solid #e2e8f0;">
+              <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #e0f2fe; color: #0b6293; font-weight: 800; font-size: 0.65rem; display: flex; align-items: center; justify-content: center; margin: 0 auto 0.5rem auto; border: 2px solid #0b6293;">
+                JANOPOL
+              </div>
+              <h3 style="font-size: 1.1rem; font-weight: 800; color: #0f172a;">Billing System</h3>
+              <div style="margin-top: 0.4rem;">
+                <span class="badge-status badge-unpaid">Status: UNPAID</span>
+              </div>
+            </div>
+
+            <!-- Form Fields -->
+            <div class="form-group">
+              <label class="form-label">Account No.</label>
+              <input type="text" class="form-input" style="font-family: monospace; font-weight: 700;" value="A2-014" readonly>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Client Name</label>
+              <input type="text" class="form-input" style="font-weight: 700;" value="Alfredo Fuentes Suarez" readonly>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Unpaid Balance</label>
+              <div class="input-group">
+                <span class="input-group-text">₱</span>
+                <input type="text" class="form-input" style="font-family: monospace; font-weight: 700; color: #dc2626;" value="720.00">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Advance Payment</label>
+              <div class="input-group">
+                <span class="input-group-text">₱</span>
+                <input type="number" step="0.01" class="form-input" placeholder="0.00">
+              </div>
+              <div style="display: flex; justify-content: space-between; margin-top: 0.25rem; font-size: 0.75rem;">
+                <span style="color: #64748b;">Credit Balance:</span>
+                <span style="font-weight: 700; color: #16a34a; font-family: monospace;">₱ 280.00</span>
+              </div>
+              <button type="button" class="btn btn-outline-success btn-sm" style="margin-top: 0.35rem;" onclick="alert('Advance Payment Added')">
+                Add Advance Payment
+              </button>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Area / Purok</label>
+              <input type="text" class="form-input" value="Purok 2" readonly>
+            </div>
+
+            <div class="checkbox-group">
+              <label class="checkbox-label">
+                <input type="checkbox" checked> Senior Citizen Discount
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox"> Free of Charge (FOC)
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox"> Free of Meter (FOM)
+              </label>
+            </div>
+
+            <button type="button" class="btn btn-outline btn-sm" style="margin-top: 0.5rem;" onclick="alert('Account flags saved.')">
+              Save S.C / FOC / FOM
+            </button>
+
+            <div class="form-group" style="margin-top: 0.75rem;">
+              <label class="form-label">Remarks</label>
+              <input type="text" class="form-input" value="Regular monthly billing">
+            </div>
+            <button type="button" class="btn btn-outline btn-sm" onclick="alert('Remarks saved.')">Save Remarks</button>
+
+            <div class="form-group" style="margin-top: 0.75rem;">
+              <label class="form-label">Statement Year</label>
+              <select class="form-select" style="font-weight: 700;">
+                <option value="2026" selected>2026</option>
+                <option value="2025">2025</option>
+                <option value="2024">2024</option>
+              </select>
+            </div>
+
+            <!-- Action Buttons Stack -->
+            <div style="display: flex; flex-direction: column; gap: 0.4rem; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #e2e8f0;">
+              <button class="btn btn-warning btn-sm" onclick="openUpdateModal()">
+                Update Account Details
+              </button>
+              <a href="Denomination_Cashier.html" class="btn btn-primary btn-sm">
+                Denomination
+              </a>
+              <a href="Soa_Cashier.html" class="btn btn-secondary btn-sm">
+                Statement of Account
+              </a>
+              <button class="btn btn-warning btn-sm" onclick="alert('Account Status Toggled')">
+                Activate / Deactivate
+              </button>
+              <button class="btn btn-primary btn-sm" onclick="alert('Updating Records...')">
+                Update Records
+              </button>
+              <a href="Cashier_Dashboard.html" class="btn btn-dark btn-sm">
+                Main Menu
+              </a>
+              <button class="btn btn-outline btn-sm" onclick="alert('Syncing Database...')">
+                Database Sync
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- MIDDLE COLUMN: Monthly Billing Matrix Table (Complete 12 Months) -->
+        <div>
+          <div class="page-card">
+            <div class="card-header-title" style="justify-content: space-between;">
+              <span style="display: flex; align-items: center; gap: 0.4rem;">
+                <svg class="svg-icon" viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                Monthly Billing Matrix
+              </span>
+            </div>
+
+            <!-- Collection Toolbar -->
+            <div class="toolbar-box">
+              <div style="display: flex; align-items: center; gap: 0.4rem;">
+                <label class="form-label" style="margin-bottom: 0;">Paid Via:</label>
+                <select class="form-select" style="width: auto; padding: 0.3rem 0.5rem;">
+                  <option value="CASHIER">Cashier</option>
+                  <option value="COLLECTOR">Collector</option>
+                  <option value="ONLINE">Online</option>
+                  <option value="CHEQUE">Cheque</option>
+                </select>
+              </div>
+
+              <label class="checkbox-label" style="margin-bottom: 0;">
+                <input type="checkbox" checked> Apply 10% penalty
+              </label>
+            </div>
+
+            <!-- Matrix Table -->
+            <div class="table-container">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th style="width: 32px; text-align: center;">
+                      <input type="checkbox" id="selectAll">
+                    </th>
+                    <th>Month</th>
+                    <th>Amount (₱)</th>
+                    <th>O.R. No.</th>
+                    <th>Date Paid</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="text-align: center;"><input type="checkbox"></td>
+                    <td><strong>January</strong></td>
+                    <td><input type="text" class="matrix-input" value="650.00"></td>
+                    <td><input type="text" class="matrix-input" value="OR-470120"></td>
+                    <td><input type="date" class="matrix-input" value="2026-01-25"></td>
+                    <td><span class="badge-status badge-active" style="margin-bottom: 0; padding: 0.2rem 0.5rem; display: inline-block;">PAID</span></td>
+                  </tr>
+                  <tr>
+                    <td style="text-align: center;"><input type="checkbox"></td>
+                    <td><strong>February</strong></td>
+                    <td><input type="text" class="matrix-input" value="680.00"></td>
+                    <td><input type="text" class="matrix-input" value="OR-471012"></td>
+                    <td><input type="date" class="matrix-input" value="2026-02-26"></td>
+                    <td><span class="badge-status badge-active" style="margin-bottom: 0; padding: 0.2rem 0.5rem; display: inline-block;">PAID</span></td>
+                  </tr>
+                  <tr>
+                    <td style="text-align: center;"><input type="checkbox"></td>
+                    <td><strong>March</strong></td>
+                    <td><input type="text" class="matrix-input" value="640.00"></td>
+                    <td><input type="text" class="matrix-input" value="OR-472108"></td>
+                    <td><input type="date" class="matrix-input" value="2026-03-24"></td>
+                    <td><span class="badge-status badge-active" style="margin-bottom: 0; padding: 0.2rem 0.5rem; display: inline-block;">PAID</span></td>
+                  </tr>
+                  <tr>
+                    <td style="text-align: center;"><input type="checkbox"></td>
+                    <td><strong>April</strong></td>
+                    <td><input type="text" class="matrix-input" value="690.00"></td>
+                    <td><input type="text" class="matrix-input" value="OR-473550"></td>
+                    <td><input type="date" class="matrix-input" value="2026-04-28"></td>
+                    <td><span class="badge-status badge-active" style="margin-bottom: 0; padding: 0.2rem 0.5rem; display: inline-block;">PAID</span></td>
+                  </tr>
+                  <tr>
+                    <td style="text-align: center;"><input type="checkbox"></td>
+                    <td><strong>May</strong></td>
+                    <td><input type="text" class="matrix-input" value="710.00"></td>
+                    <td><input type="text" class="matrix-input" value="OR-474912"></td>
+                    <td><input type="date" class="matrix-input" value="2026-05-25"></td>
+                    <td><span class="badge-status badge-active" style="margin-bottom: 0; padding: 0.2rem 0.5rem; display: inline-block;">PAID</span></td>
+                  </tr>
+                  <tr>
+                    <td style="text-align: center;"><input type="checkbox"></td>
+                    <td><strong>June</strong></td>
+                    <td><input type="text" class="matrix-input" value="675.00"></td>
+                    <td><input type="text" class="matrix-input" value="OR-475301"></td>
+                    <td><input type="date" class="matrix-input" value="2026-06-27"></td>
+                    <td><span class="badge-status badge-active" style="margin-bottom: 0; padding: 0.2rem 0.5rem; display: inline-block;">PAID</span></td>
+                  </tr>
+                  <tr>
+                    <td style="text-align: center;"><input type="checkbox"></td>
+                    <td><strong>July</strong></td>
+                    <td><input type="text" class="matrix-input" value="700.00"></td>
+                    <td><input type="text" class="matrix-input" value="OR-476882"></td>
+                    <td><input type="date" class="matrix-input" value="2026-07-26"></td>
+                    <td><span class="badge-status badge-active" style="margin-bottom: 0; padding: 0.2rem 0.5rem; display: inline-block;">PAID</span></td>
+                  </tr>
+                  <tr>
+                    <td style="text-align: center;"><input type="checkbox"></td>
+                    <td><strong>August</strong></td>
+                    <td><input type="text" class="matrix-input" value="715.00"></td>
+                    <td><input type="text" class="matrix-input" value="OR-477940"></td>
+                    <td><input type="date" class="matrix-input" value="2026-08-25"></td>
+                    <td><span class="badge-status badge-active" style="margin-bottom: 0; padding: 0.2rem 0.5rem; display: inline-block;">PAID</span></td>
+                  </tr>
+                  <tr>
+                    <td style="text-align: center;"><input type="checkbox" checked></td>
+                    <td><strong>September</strong></td>
+                    <td><input type="text" class="matrix-input" value="720.00"></td>
+                    <td><input type="text" class="matrix-input" placeholder="OR Number"></td>
+                    <td><input type="date" class="matrix-input" value="2026-09-21"></td>
+                    <td><span class="badge-status badge-unpaid" style="margin-bottom: 0; padding: 0.2rem 0.5rem; display: inline-block;">UNPAID</span></td>
+                  </tr>
+                  <tr>
+                    <td style="text-align: center;"><input type="checkbox"></td>
+                    <td><strong>October</strong></td>
+                    <td><input type="text" class="matrix-input" value="0.00"></td>
+                    <td><input type="text" class="matrix-input" placeholder="OR Number"></td>
+                    <td><input type="date" class="matrix-input"></td>
+                    <td><span class="badge-status badge-unpaid" style="margin-bottom: 0; padding: 0.2rem 0.5rem; display: inline-block; opacity: 0.6;">UNPAID</span></td>
+                  </tr>
+                  <tr>
+                    <td style="text-align: center;"><input type="checkbox"></td>
+                    <td><strong>November</strong></td>
+                    <td><input type="text" class="matrix-input" value="0.00"></td>
+                    <td><input type="text" class="matrix-input" placeholder="OR Number"></td>
+                    <td><input type="date" class="matrix-input"></td>
+                    <td><span class="badge-status badge-unpaid" style="margin-bottom: 0; padding: 0.2rem 0.5rem; display: inline-block; opacity: 0.6;">UNPAID</span></td>
+                  </tr>
+                  <tr>
+                    <td style="text-align: center;"><input type="checkbox"></td>
+                    <td><strong>December</strong></td>
+                    <td><input type="text" class="matrix-input" value="0.00"></td>
+                    <td><input type="text" class="matrix-input" placeholder="OR Number"></td>
+                    <td><input type="date" class="matrix-input"></td>
+                    <td><span class="badge-status badge-unpaid" style="margin-bottom: 0; padding: 0.2rem 0.5rem; display: inline-block; opacity: 0.6;">UNPAID</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Footer Bottom Controls -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #e2e8f0; flex-wrap: wrap; gap: 0.75rem;">
+              <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                <a href="#" class="btn btn-outline btn-sm" style="width: auto;">Reading Reports</a>
+                <a href="Daily_Cashier.html" class="btn btn-primary btn-sm" style="width: auto;">Daily Collection Reports</a>
+                <a href="Confirmation_Cashier_2.html" type="button" class="btn btn-dark btn-sm" style="width: auto;">Print Preview</a>
+                <button type="button" class="btn btn-outline-success btn-sm" style="width: auto;">Excel</button>
+              </div>
+
+              <div style="font-size: 1.1rem; font-weight: 800; color: #16a34a; background-color: #dcfce7; padding: 0.4rem 0.85rem; border-radius: 8px; border: 1px solid #86efac; font-family: monospace;">
+                TOTAL: ₱ 2,050.00
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT COLUMN: Search Directory Quick List -->
+        <div>
+          <div class="page-card">
+            <div class="card-header-title">
+              <svg class="svg-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+              Search Consumer
+            </div>
+
+            <div class="form-group">
+              <input type="text" id="clientSearchInput" class="form-input" placeholder="Type name or account..." value="A2-014">
+            </div>
+
+            <div style="font-size: 0.725rem; font-weight: 800; color: #64748b; text-transform: uppercase; margin-bottom: 0.5rem;">
+              Directory Quick List
+            </div>
+
+            <div style="border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; max-height: 380px; overflow-y: auto;">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>NAME</th>
+                    <th>AREA</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr style="cursor: pointer; background-color: #e0f2fe;">
+                    <td><strong>Alfredo Fuentes Suarez</strong><br><span style="font-size: 0.7rem; color: #64748b; font-family: monospace;">A2-014</span></td>
+                    <td>Purok 2</td>
+                  </tr>
+                  <tr style="cursor: pointer;">
+                    <td><strong>Maria Santos Mercado</strong><br><span style="font-size: 0.7rem; color: #64748b; font-family: monospace;">B1-102</span></td>
+                    <td>Purok 3</td>
+                  </tr>
+                  <tr style="cursor: pointer;">
+                    <td><strong>Juan dela Cruz</strong><br><span style="font-size: 0.7rem; color: #64748b; font-family: monospace;">C3-005</span></td>
+                    <td>Purok 1</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Update Account Details Modal -->
+      <div class="modal-backdrop" id="updateAccountModal">
+        <div class="modal-dialog">
+          <div class="modal-header">
+            <div class="modal-title">Update Account Details</div>
+            <button class="modal-close-btn" onclick="closeUpdateModal()">&times;</button>
+          </div>
+
+          <div class="modal-body">
+            <div class="modal-grid">
+              <div class="form-group">
+                <label class="form-label">Account Number</label>
+                <input type="text" class="form-input" value="A2-014" readonly>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Full Name *</label>
+                <input type="text" class="form-input" value="Alfredo Fuentes Suarez">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Area Name</label>
+                <select class="form-select">
+                  <option value="1">Purok 1</option>
+                  <option value="2" selected>Purok 2</option>
+                  <option value="3">Purok 3</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Contact Number</label>
+                <input type="text" class="form-input" value="09171234567">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Meter Number</label>
+                <input type="text" class="form-input" value="MTR-9982">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Category</label>
+                <select class="form-select">
+                  <option value="RESIDENTIAL" selected>Residential</option>
+                  <option value="COMMERCIAL">Commercial</option>
+                  <option value="INSTITUTIONAL">Institutional</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Status</label>
+                <select class="form-select">
+                  <option value="ACTIVE" selected>ACTIVE</option>
+                  <option value="NEW CONNECTION">NEW CONNECTION</option>
+                  <option value="INACTIVE">INACTIVE</option>
+                  <option value="DISCONNECTED">DISCONNECTED</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button class="btn btn-secondary btn-sm" style="width: auto;" onclick="closeUpdateModal()">Cancel</button>
+            <button class="btn btn-warning btn-sm" style="width: auto;" onclick="alert('Account Details Saved'); closeUpdateModal();">Save Account Updates</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="footer">
+        <div class="footer-brand">Janopol Oriental Waterworks</div>
+        <div>Janopol, Tanauan City, Batangas</div>
+        <div>&copy; Copyright 2026. All Rights Reserved</div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    /* Dropdown Functions */
+    function toggleNotificationDropdown() {
+      const dropdown = document.getElementById('notifDropdown');
+      const profileDropdown = document.getElementById('profileDropdown');
+      if (profileDropdown) profileDropdown.classList.remove('show');
+      dropdown.classList.toggle('show');
+    }
+
+    function toggleProfileDropdown() {
+      const dropdown = document.getElementById('profileDropdown');
+      const notifDropdown = document.getElementById('notifDropdown');
+      if (notifDropdown) notifDropdown.classList.remove('show');
+      dropdown.classList.toggle('show');
+    }
+
+    function markAllNotificationsAsRead() {
+      const badge = document.getElementById('notifBadge');
+      if (badge) badge.style.display = 'none';
+      const items = document.querySelectorAll('.notif-item.unread');
+      items.forEach(item => item.classList.remove('unread'));
+    }
+
+    function handleLogout(event) {
+      event.preventDefault();
+      if (confirm('Are you sure you want to log out?')) {
+        alert('Logged out successfully.');
+      }
+    }
+
+    function openUpdateModal() {
+      document.getElementById('updateAccountModal').classList.add('show');
+    }
+
+    function closeUpdateModal() {
+      document.getElementById('updateAccountModal').classList.remove('show');
+    }
+
+    document.addEventListener('click', function(event) {
+      const notifWrapper = document.querySelector('.notification-wrapper');
+      if (notifWrapper && !notifWrapper.contains(event.target)) {
+        const notifDropdown = document.getElementById('notifDropdown');
+        if (notifDropdown) notifDropdown.classList.remove('show');
+      }
+
+      const profileWrapper = document.querySelector('.user-profile-wrapper');
+      if (profileWrapper && !profileWrapper.contains(event.target)) {
+        const profileDropdown = document.getElementById('profileDropdown');
+        if (profileDropdown) profileDropdown.classList.remove('show');
+      }
+    });
+  </script>
+</body>
+</html>

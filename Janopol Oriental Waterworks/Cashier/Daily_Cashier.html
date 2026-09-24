@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daily Collection Report - Janopol Oriental Waterworks</title>
+  <link rel="shortcut icon" type="image/x-icon" href="../Customer_Service/JALOGO2.ico">
+  <style>
+    /* Reset & Base Styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: #f1f5f9;
+      color: #1e293b;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .svg-icon {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex-shrink: 0;
+    }
+
+    /* Navbar Header */
+    .app-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background-color: #0b6293;
+      color: #ffffff;
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1.5rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      height: 60px;
+      width: 100%;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-shrink: 0;
+    }
+
+    .logo-circle {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background-color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .logo-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .brand-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-title {
+      font-size: 1rem;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .brand-subtitle {
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.75);
+    }
+
+    /* Header Navigation */
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      margin-left: auto;
+    }
+
+    .header-nav {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      list-style: none;
+    }
+
+    .header-nav-link {
+      color: rgba(255, 255, 255, 0.85);
+      text-decoration: none;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.4rem 0.65rem;
+      border-radius: 6px;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .header-nav-link:hover {
+      background-color: rgba(255, 255, 255, 0.15);
+      color: #ffffff;
+    }
+
+    .header-nav-link.active {
+      background-color: #ffffff;
+      color: #0b6293;
+    }
+
+    /* Notification Bell Component Styles */
+    .notification-wrapper {
+      position: relative;
+    }
+
+    .notif-bell-btn {
+      background: rgba(255, 255, 255, 0.15);
+      border: none;
+      color: #ffffff;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      position: relative;
+      transition: background 0.2s ease;
+    }
+
+    .notif-bell-btn:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    .notif-badge {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      background-color: #ef4444;
+      color: #ffffff;
+      font-size: 0.65rem;
+      font-weight: 800;
+      min-width: 17px;
+      height: 17px;
+      border-radius: 9999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #0b6293;
+      padding: 0 3px;
+    }
+
+    .notif-dropdown {
+      position: absolute;
+      right: 0;
+      top: 48px;
+      width: 340px;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15);
+      display: none;
+      flex-direction: column;
+      z-index: 2000;
+      overflow: hidden;
+      animation: fadeInDown 0.2s ease-out forwards;
+    }
+
+    .notif-dropdown.show {
+      display: flex;
+    }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .notif-header {
+      padding: 0.85rem 1rem;
+      background-color: #f8fafc;
+      border-bottom: 1px solid #e2e8f0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .notif-header h3 {
+      font-size: 0.875rem;
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    .mark-read-btn {
+      font-size: 0.725rem;
+      color: #0284c7;
+      background: none;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .mark-read-btn:hover {
+      text-decoration: underline;
+    }
+
+    .notif-list {
+      max-height: 320px;
+      overflow-y: auto;
+    }
+
+    .notif-item {
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid #f1f5f9;
+      display: flex;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: inherit;
+      transition: background-color 0.15s ease;
+    }
+
+    .notif-item:hover {
+      background-color: #f8fafc;
+    }
+
+    .notif-item.unread {
+      background-color: #f0f9ff;
+    }
+
+    .notif-icon-box {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .notif-icon-box.info {
+      background-color: #e0f2fe;
+      color: #0284c7;
+    }
+
+    .notif-content {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+
+    .notif-title {
+      font-size: 0.825rem;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .notif-text {
+      font-size: 0.75rem;
+      color: #475569;
+      line-height: 1.35;
+    }
+
+    .notif-time {
+      font-size: 0.675rem;
+      color: #94a3b8;
+      margin-top: 0.2rem;
+    }
+
+    /* User Profile & Dropdown Styles */
+    .user-profile-wrapper {
+      position: relative;
+    }
+
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+      background: rgba(255, 255, 255, 0.15);
+      padding: 0.35rem 0.75rem;
+      border-radius: 9999px;
+      white-space: nowrap;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.2s ease;
+    }
+
+    .user-profile:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    .profile-dropdown {
+      position: absolute;
+      right: 0;
+      top: 48px;
+      width: 220px;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15);
+      display: none;
+      flex-direction: column;
+      z-index: 2000;
+      overflow: hidden;
+      animation: fadeInDown 0.2s ease-out forwards;
+    }
+
+    .profile-dropdown.show {
+      display: flex;
+    }
+
+    .profile-dropdown-header {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid #f1f5f9;
+      background-color: #f8fafc;
+    }
+
+    .profile-dropdown-header .user-name {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .profile-dropdown-header .user-role {
+      font-size: 0.75rem;
+      color: #64748b;
+    }
+
+    .profile-dropdown-item {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.65rem 1rem;
+      font-size: 0.825rem;
+      color: #334155;
+      text-decoration: none;
+      font-weight: 500;
+      transition: background-color 0.15s ease;
+    }
+
+    .profile-dropdown-item:hover {
+      background-color: #f8fafc;
+      color: #0284c7;
+    }
+
+    .profile-dropdown-item.logout {
+      color: #dc2626;
+      border-top: 1px solid #f1f5f9;
+    }
+
+    .profile-dropdown-item.logout:hover {
+      background-color: #fee2e2;
+      color: #b91c1c;
+    }
+
+    /* Main Container Layout */
+    .app-portal-body {
+      display: flex;
+      flex: 1;
+    }
+
+    .main-content {
+      width: 100%;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 1.5rem 1rem 2rem 1rem;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .breadcrumb {
+      font-size: 0.8rem;
+      color: #64748b;
+      margin-bottom: 1rem;
+    }
+
+    .breadcrumb a {
+      color: #0284c7;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .page-title-strip {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.25rem;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .title-group {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .title-group h1 {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    .title-group svg {
+      color: #0b6293;
+    }
+
+    .user-pill-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.35rem 0.85rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      background-color: #e0f2fe;
+      color: #0369a1;
+      border: 1px solid #7dd3fc;
+    }
+
+    .main-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 1.25rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      margin-bottom: 1.25rem;
+    }
+
+    /* Action Buttons */
+    .toolbar-actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      padding: 0.45rem 0.85rem;
+      border-radius: 8px;
+      font-size: 0.825rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.15s ease;
+      border: 1px solid transparent;
+    }
+
+    .btn-outline-success { background-color: #ffffff; border-color: #16a34a; color: #16a34a; }
+    .btn-outline-success:hover { background-color: #dcfce7; }
+
+    .btn-outline-primary { background-color: #ffffff; border-color: #0b6293; color: #0b6293; }
+    .btn-outline-primary:hover { background-color: #e0f2fe; }
+
+    .btn-primary { background-color: #0b6293; color: #ffffff; }
+    .btn-primary:hover { background-color: #084c73; }
+
+    .btn-secondary { background-color: #ffffff; border-color: #cbd5e1; color: #334155; }
+    .btn-secondary:hover { background-color: #f8fafc; border-color: #0284c7; color: #0284c7; }
+
+    .btn-icon {
+      padding: 0.25rem 0.4rem;
+      font-size: 0.75rem;
+      border-radius: 6px;
+    }
+
+    /* Filter Panel */
+    .filter-card {
+      background-color: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 1rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .filter-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)) 100px;
+      gap: 0.75rem;
+      align-items: end;
+    }
+
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .field-label {
+      font-size: 0.725rem;
+      font-weight: 700;
+      color: #64748b;
+      text-transform: uppercase;
+    }
+
+    .form-select {
+      width: 100%;
+      padding: 0.45rem 0.65rem;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      outline: none;
+      background-color: #ffffff;
+      color: #0f172a;
+    }
+
+    .form-select:focus {
+      border-color: #0284c7;
+    }
+
+    /* Data Table */
+    .table-container {
+      overflow-x: auto;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      margin-bottom: 1.25rem;
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.825rem;
+      text-align: left;
+      min-width: 1100px;
+    }
+
+    .data-table th {
+      background-color: #f8fafc;
+      color: #475569;
+      font-weight: 700;
+      padding: 0.65rem 0.75rem;
+      border-bottom: 2px solid #e2e8f0;
+      white-space: nowrap;
+      text-transform: uppercase;
+      font-size: 0.725rem;
+    }
+
+    .data-table td {
+      padding: 0.65rem 0.75rem;
+      border-bottom: 1px solid #f1f5f9;
+      color: #334155;
+      white-space: nowrap;
+      vertical-align: middle;
+    }
+
+    .data-table tbody tr:hover {
+      background-color: #f8fafc;
+    }
+
+    .data-table tfoot tr {
+      background-color: #f1f5f9;
+      font-weight: 800;
+    }
+
+    .data-table tfoot td {
+      border-top: 2px solid #cbd5e1;
+      color: #0f172a;
+    }
+
+    .badge-category {
+      background-color: #f1f5f9;
+      color: #475569;
+      border: 1px solid #cbd5e1;
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      font-weight: 700;
+    }
+
+    /* Summary Widgets Grid */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .summary-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+    }
+
+    .summary-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .icon-water { background: #dbeafe; color: #2563eb; }
+    .icon-fees { background: #fef3c7; color: #d97706; }
+    .icon-materials { background: #ffe4e6; color: #e11d48; }
+    .icon-cash { background: #dcfce7; color: #16a34a; }
+
+    .summary-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .summary-title {
+      font-size: 0.725rem;
+      font-weight: 700;
+      color: #64748b;
+      text-transform: uppercase;
+    }
+
+    .summary-val {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #0f172a;
+      font-family: monospace;
+    }
+
+    .summary-sub {
+      font-size: 0.7rem;
+      color: #64748b;
+    }
+
+    /* Grand Total Banner */
+    .grand-total-card {
+      background: linear-gradient(135deg, #0b6293 0%, #0369a1 100%);
+      color: #ffffff;
+      border-radius: 10px;
+      padding: 1.25rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .grand-title {
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      opacity: 0.85;
+    }
+
+    .grand-amount {
+      font-size: 1.85rem;
+      font-weight: 800;
+      font-family: monospace;
+    }
+
+    /* Modal Component */
+    .modal-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(15, 23, 42, 0.5);
+      backdrop-filter: blur(2px);
+      z-index: 1050;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-backdrop.show {
+      display: flex;
+    }
+
+    .modal-dialog {
+      background: #ffffff;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 500px;
+      box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+      overflow: hidden;
+      margin: 1rem;
+    }
+
+    .modal-header {
+      background-color: #0b6293;
+      color: #ffffff;
+      padding: 0.85rem 1.25rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+    }
+
+    .modal-close-btn {
+      background: none;
+      border: none;
+      color: #ffffff;
+      font-size: 1.25rem;
+      cursor: pointer;
+    }
+
+    .modal-body {
+      padding: 1.25rem;
+      background-color: #f8fafc;
+      font-size: 0.85rem;
+      line-height: 1.6;
+    }
+
+    .modal-footer {
+      padding: 0.85rem 1.25rem;
+      border-top: 1px solid #e2e8f0;
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.5rem;
+      background-color: #ffffff;
+    }
+
+    /* Print View Printable Area */
+    #printableReport {
+      display: none;
+    }
+
+    @media print {
+      body { background-color: #ffffff; padding: 0; }
+      .app-header, .breadcrumb, .no-print { display: none !important; }
+      .main-content { max-width: 100%; padding: 0; }
+      .main-card { border: none; box-shadow: none; padding: 0; }
+      #printableReport {
+        display: block !important;
+        background: #ffffff;
+        color: #000000;
+        font-family: 'Courier New', Courier, monospace;
+        padding: 1rem;
+      }
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 24px;
+      font-size: 12px;
+      color: #64748b;
+      margin-top: auto;
+      border-top: 1px solid #cbd5e1;
+    }
+
+    .footer-brand {
+      color: #0b6293;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar Header -->
+  <header class="app-header">
+    <div class="header-left">
+      <div class="logo-circle">
+        <img src="../Customer_Service/JALOGO.png" alt="Janopol Oriental Logo" class="logo-img">
+      </div>
+      <div class="brand-info">
+        <span class="brand-title">Janopol Oriental Waterworks</span>
+        <span class="brand-subtitle">Cashier Portal</span>
+      </div>
+    </div>
+
+    <div class="header-right">
+      <nav>
+        <ul class="header-nav">
+          <li><a href="Cashier_Dashboard.html" class="header-nav-link">DASHBOARD</a></li>
+          <li><a href="Billing_Cashier.html" class="header-nav-link">BILLING</a></li>
+          <li><a href="Daily_Cashier.html" class="header-nav-link active">DAILY COLLECTION</a></li>
+          <li><a href="NRDM_Cashier.html" class="header-nav-link">NRDM</a></li>
+          <li><a href="Official_Cashier.html" class="header-nav-link">OFFICIAL RECEIPT</a></li>
+          <li><a href="Reading_Cashier.html" class="header-nav-link">READING REPORTS</a></li>
+        </ul>
+      </nav>
+
+      <!-- Notification Bell Component -->
+      <div class="notification-wrapper">
+        <button class="notif-bell-btn" id="notifBellBtn" onclick="toggleNotificationDropdown()" aria-label="View Notifications">
+          <svg class="svg-icon" viewBox="0 0 24 24">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+          </svg>
+          <span class="notif-badge" id="notifBadge">2</span>
+        </button>
+
+        <div class="notif-dropdown" id="notifDropdown">
+          <div class="notif-header">
+            <h3>Collection Notifications</h3>
+            <button class="mark-read-btn" onclick="markAllNotificationsAsRead()">Mark all as read</button>
+          </div>
+
+          <div class="notif-list">
+            <a href="#" class="notif-item unread">
+              <div class="notif-icon-box info">
+                <svg class="svg-icon" viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+              </div>
+              <div class="notif-content">
+                <span class="notif-title">Daily Summary Generated</span>
+                <span class="notif-text">Daily collection report for September 22, 2026 is ready.</span>
+                <span class="notif-time">10 mins ago</span>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- User Profile Component with Dropdown -->
+      <div class="user-profile-wrapper">
+        <div class="user-profile" id="userProfileBtn" onclick="toggleProfileDropdown()" aria-label="User Profile Menu">
+          <svg class="svg-icon" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+          <span>Gali Adrian Nones</span>
+        </div>
+
+        <div class="profile-dropdown" id="profileDropdown">
+          <div class="profile-dropdown-header">
+            <div class="user-name">Gali Adrian Nones</div>
+            <div class="user-role">Cashier Staff (ID: CSH-001)</div>
+          </div>
+          <a href="#" class="profile-dropdown-item">
+            <svg class="svg-icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="M12 4v16"></path><path d="M2 12h20"></path></svg>
+            <span>My Terminal</span>
+          </a>
+          <a href="#" class="profile-dropdown-item logout" onclick="handleLogout(event)">
+            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+            <span>Log Out</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="app-portal-body">
+    <main class="main-content">
+      <div class="breadcrumb">
+        <a href="Cashier_Dashboard.html">Dashboard</a> / Reports / Daily Collection Overview
+      </div>
+
+      <!-- Page Header Strip -->
+      <div class="page-title-strip">
+        <div class="title-group">
+          <svg class="svg-icon" style="width: 24px; height: 24px;" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"></rect><circle cx="12" cy="12" r="2"></circle><path d="M6 12h.01M18 12h.01"></path></svg>
+          <h1>Daily Collection Overview</h1>
+        </div>
+
+        <span class="user-pill-badge">
+          Logged in as: GALI ADRIAN NONES
+        </span>
+      </div>
+
+      <!-- Summary Metric Widgets Grid -->
+      <div class="summary-grid">
+        <div class="summary-card">
+          <div class="summary-icon icon-water">
+            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg>
+          </div>
+          <div class="summary-info">
+            <span class="summary-title">Water Payments</span>
+            <span class="summary-val">₱ 1,940.00</span>
+          </div>
+        </div>
+
+        <div class="summary-card">
+          <div class="summary-icon icon-fees">
+            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+          </div>
+          <div class="summary-info">
+            <span class="summary-title">Reconnection Fees</span>
+            <span class="summary-val">₱ 150.00</span>
+          </div>
+        </div>
+
+        <div class="summary-card">
+          <div class="summary-icon icon-materials">
+            <svg class="svg-icon" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+          </div>
+          <div class="summary-info">
+            <span class="summary-title">Material Sales</span>
+            <span class="summary-val">₱ 350.00</span>
+          </div>
+        </div>
+
+        <div class="summary-card">
+          <div class="summary-icon icon-cash">
+            <svg class="svg-icon" viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+          </div>
+          <div class="summary-info">
+            <span class="summary-title">Cash on Hand</span>
+            <span class="summary-val">₱ 2,440.00</span>
+            <span class="summary-sub">-Chq: ₱ 0.00</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="main-card">
+        <!-- Export & Action Toolbar -->
+        <div class="toolbar-actions no-print">
+          <button type="button" class="btn btn-outline-success" onclick="alert('Exporting to Excel...')">
+            Excel
+          </button>
+          <button type="button" class="btn btn-outline-primary" onclick="printReportDirect()">
+            <svg class="svg-icon" viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+            Print Report
+          </button>
+        </div>
+
+        <!-- Filter Form Panel -->
+        <div class="filter-card no-print">
+          <div class="filter-grid">
+            <div class="field-group">
+              <label class="field-label" for="month">Month</label>
+              <select id="month" class="form-select">
+                <option value="">All</option>
+                <option value="9" selected>September</option>
+              </select>
+            </div>
+
+            <div class="field-group">
+              <label class="field-label" for="day">Day</label>
+              <select id="day" class="form-select">
+                <option value="">All</option>
+                <option value="22" selected>22</option>
+              </select>
+            </div>
+
+            <div class="field-group">
+              <label class="field-label" for="year">Year</label>
+              <select id="year" class="form-select">
+                <option value="2026" selected>2026</option>
+              </select>
+            </div>
+
+            <div class="field-group">
+              <label class="field-label" for="area">Area</label>
+              <select id="area" class="form-select">
+                <option value="" selected>All Areas</option>
+                <option value="Purok 1">Purok 1</option>
+                <option value="Purok 2">Purok 2</option>
+              </select>
+            </div>
+
+            <div class="field-group">
+              <label class="field-label" for="category">Category</label>
+              <select id="category" class="form-select">
+                <option value="" selected>All</option>
+                <option value="RESIDENTIAL">Residential</option>
+                <option value="COMMERCIAL">Commercial</option>
+              </select>
+            </div>
+
+            <button type="button" class="btn btn-primary" onclick="alert('Filtered collection list!')">Filter</button>
+          </div>
+        </div>
+
+        <!-- Collection Table -->
+        <div class="table-container">
+          <table class="data-table" id="collectionTable">
+            <thead>
+              <tr>
+                <th>Consumer Name</th>
+                <th>Bill Period</th>
+                <th>Date Paid</th>
+                <th>Area</th>
+                <th>O.R. #</th>
+                <th>Amount Paid</th>
+                <th>Category</th>
+                <th class="no-print">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="font-weight: 700;">Alfredo Fuentes Suarez</td>
+                <td>September 2026</td>
+                <td>09/22/2026</td>
+                <td>Purok 2</td>
+                <td style="font-weight: 700; color: #0b6293;">OR-481921</td>
+                <td style="font-family: monospace; font-weight: 700; color: #16a34a;">₱ 720.00</td>
+                <td><span class="badge-category">RESIDENTIAL</span></td>
+                <td class="no-print">
+                  <div style="display: flex; gap: 0.25rem;">
+                    <button type="button" class="btn btn-secondary btn-icon" onclick="viewRow('OR-481921', 'Alfredo Fuentes Suarez', '₱720.00')">View</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td style="font-weight: 700;">Maria Santos Cruz</td>
+                <td>September 2026</td>
+                <td>09/22/2026</td>
+                <td>Purok 1</td>
+                <td style="font-weight: 700; color: #0b6293;">OR-481922</td>
+                <td style="font-family: monospace; font-weight: 700; color: #16a34a;">₱ 1,220.00</td>
+                <td><span class="badge-category">COMMERCIAL</span></td>
+                <td class="no-print">
+                  <div style="display: flex; gap: 0.25rem;">
+                    <button type="button" class="btn btn-secondary btn-icon" onclick="viewRow('OR-481922', 'Maria Santos Cruz', '₱1,220.00')">View</button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="5" style="text-align: right; text-transform: uppercase;">Overall Collection Total:</td>
+                <td style="font-family: monospace; color: #16a34a;">₱ 1,940.00</td>
+                <td colspan="2"></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+
+        <!-- Grand Total Banner Card -->
+        <div class="grand-total-card">
+          <div>
+            <div class="grand-title">Grand Total Collection</div>
+            <div class="grand-amount">₱ 2,440.00</div>
+          </div>
+          <span style="background: rgba(255,255,255,0.2); padding: 0.35rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 800;">
+            Verified Summary
+          </span>
+        </div>
+
+      </div>
+
+      <!-- Detail View Modal -->
+      <div class="modal-backdrop" id="viewModal">
+        <div class="modal-dialog">
+          <div class="modal-header">
+            <div class="modal-title">Collection Row Details</div>
+            <button class="modal-close-btn" onclick="closeViewModal()">&times;</button>
+          </div>
+          <div class="modal-body" id="modalBodyContent">
+            <!-- Populated dynamically -->
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" onclick="closeViewModal()">Close</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Printable Report Area -->
+      <div id="printableReport">
+        <div style="text-align: center; margin-bottom: 1rem;">
+          <h2 style="font-size: 1.1rem; text-transform: uppercase;">JANOPOL ORIENTAL WATERWORKS</h2>
+          <p style="font-size: 0.8rem;">Janopol, Tanauan City, Batangas</p>
+          <h3 style="font-size: 1rem; text-decoration: underline; margin-top: 0.5rem;">DAILY COLLECTION REPORT</h3>
+          <p style="font-size: 0.8rem;">Period: September 22, 2026</p>
+        </div>
+
+        <table style="width: 100%; border-collapse: collapse; font-size: 0.8rem; margin-bottom: 1rem;">
+          <thead>
+            <tr style="border-bottom: 1px solid #000;">
+              <th style="text-align: left; padding: 0.25rem;">OR #</th>
+              <th style="text-align: left; padding: 0.25rem;">Consumer</th>
+              <th style="text-align: right; padding: 0.25rem;">Amount Paid</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="padding: 0.25rem;">OR-481921</td>
+              <td style="padding: 0.25rem;">Alfredo Fuentes Suarez</td>
+              <td style="text-align: right; padding: 0.25rem;">₱ 720.00</td>
+            </tr>
+            <tr>
+              <td style="padding: 0.25rem;">OR-481922</td>
+              <td style="padding: 0.25rem;">Maria Santos Cruz</td>
+              <td style="text-align: right; padding: 0.25rem;">₱ 1,220.00</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div style="display: flex; justify-content: space-between; margin-top: 2rem; font-size: 0.8rem;">
+          <div>
+            <p>Prepared by:</p>
+            <p style="margin-top: 2rem; font-weight: bold; border-top: 1px solid #000; display: inline-block; width: 180px;">GALI ADRIAN NONES</p>
+          </div>
+          <div>
+            <p>Verified by:</p>
+            <p style="margin-top: 2rem; font-weight: bold; border-top: 1px solid #000; display: inline-block; width: 180px;">JESSA L. RIVERA</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="footer">
+        <div class="footer-brand">Janopol Oriental Waterworks</div>
+        <div>Janopol, Tanauan City, Batangas</div>
+        <div>&copy; Copyright 2026. All Rights Reserved</div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    /* Dropdown Functions */
+    function toggleNotificationDropdown() {
+      const dropdown = document.getElementById('notifDropdown');
+      const profileDropdown = document.getElementById('profileDropdown');
+      if (profileDropdown) profileDropdown.classList.remove('show');
+      dropdown.classList.toggle('show');
+    }
+
+    function toggleProfileDropdown() {
+      const dropdown = document.getElementById('profileDropdown');
+      const notifDropdown = document.getElementById('notifDropdown');
+      if (notifDropdown) notifDropdown.classList.remove('show');
+      dropdown.classList.toggle('show');
+    }
+
+    function markAllNotificationsAsRead() {
+      const badge = document.getElementById('notifBadge');
+      if (badge) badge.style.display = 'none';
+      const items = document.querySelectorAll('.notif-item.unread');
+      items.forEach(item => item.classList.remove('unread'));
+    }
+
+    function printReportDirect() {
+      window.print();
+    }
+
+    function viewRow(orNum, name, amount) {
+      document.getElementById('modalBodyContent').innerHTML = `
+        <p><strong>O.R. Number:</strong> ${orNum}</p>
+        <p><strong>Customer Name:</strong> ${name}</p>
+        <p><strong>Amount Paid:</strong> ${amount}</p>
+        <p><strong>Payment Date:</strong> 09/22/2026</p>
+        <p><strong>Processed By:</strong> Gali Adrian Nones</p>
+      `;
+      document.getElementById('viewModal').classList.add('show');
+    }
+
+    function closeViewModal() {
+      document.getElementById('viewModal').classList.remove('show');
+    }
+
+    function handleLogout(event) {
+      event.preventDefault();
+      if (confirm('Are you sure you want to log out?')) {
+        alert('Logged out successfully.');
+      }
+    }
+  </script>
+</body>
+</html>

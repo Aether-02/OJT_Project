@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NRDM Summary - Janopol Oriental Waterworks</title>
+  <link rel="shortcut icon" type="image/x-icon" href="../Customer_Service/JALOGO2.ico">
+  <style>
+    /* Reset & Base Styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: #f1f5f9;
+      color: #1e293b;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .svg-icon {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex-shrink: 0;
+    }
+
+    /* Navbar Header */
+    .app-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background-color: #0b6293;
+      color: #ffffff;
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1.5rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      height: 60px;
+      width: 100%;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-shrink: 0;
+    }
+
+    .logo-circle {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background-color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .logo-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .brand-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-title {
+      font-size: 1rem;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .brand-subtitle {
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.75);
+    }
+
+    /* Header Right Navigation */
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      margin-left: auto;
+    }
+
+    .header-nav {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      list-style: none;
+    }
+
+    .header-nav-link {
+      color: rgba(255, 255, 255, 0.85);
+      text-decoration: none;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.4rem 0.65rem;
+      border-radius: 6px;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .header-nav-link:hover {
+      background-color: rgba(255, 255, 255, 0.15);
+      color: #ffffff;
+    }
+
+    .header-nav-link.active {
+      background-color: #ffffff;
+      color: #0b6293;
+    }
+
+    .notif-bell-btn {
+      background: rgba(255, 255, 255, 0.15);
+      border: none;
+      color: #ffffff;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .notif-badge {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      background-color: #ef4444;
+      color: #ffffff;
+      font-size: 0.65rem;
+      font-weight: 800;
+      min-width: 17px;
+      height: 17px;
+      border-radius: 9999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #0b6293;
+      padding: 0 3px;
+    }
+
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+      background: rgba(255, 255, 255, 0.15);
+      padding: 0.35rem 0.75rem;
+      border-radius: 9999px;
+      white-space: nowrap;
+      cursor: pointer;
+      user-select: none;
+      flex-shrink: 0;
+    }
+
+    /* Main Content Area */
+    .app-portal-body {
+      display: flex;
+      flex: 1;
+    }
+
+    .main-content {
+      width: 100%;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 1.5rem 1rem 2rem 1rem;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .breadcrumb {
+      font-size: 0.8rem;
+      color: #64748b;
+      margin-bottom: 1rem;
+    }
+
+    .breadcrumb a {
+      color: #0284c7;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    /* Page Header Title Strip */
+    .page-header {
+      margin-bottom: 1.25rem;
+    }
+
+    .page-title-group {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .page-title-group h1 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    .page-title-group svg {
+      color: #0b6293;
+    }
+
+    .breadcrumb-text {
+      font-size: 0.825rem;
+      color: #64748b;
+      margin-top: 0.25rem;
+    }
+
+    /* Page Cards */
+    .page-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 1.25rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      margin-bottom: 1.25rem;
+    }
+
+    /* Compact Inline Filter Layout */
+    .filter-inline-form {
+      display: flex;
+      align-items: flex-end;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .filter-group.type-group { width: 180px; }
+    .filter-group.date-group { width: 150px; }
+    .filter-group.area-group { width: 160px; }
+
+    .form-label {
+      font-size: 0.725rem;
+      font-weight: 700;
+      color: #475569;
+      text-transform: uppercase;
+      display: block;
+    }
+
+    .form-select, .form-input {
+      width: 100%;
+      padding: 0.45rem 0.65rem;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 0.825rem;
+      outline: none;
+      background-color: #f8fafc;
+      color: #0f172a;
+    }
+
+    .form-select:focus, .form-input:focus {
+      background-color: #ffffff;
+      border-color: #0284c7;
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+    }
+
+    .filter-buttons {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      padding: 0.48rem 0.85rem;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.15s ease;
+      border: 1px solid transparent;
+      white-space: nowrap;
+    }
+
+    .btn-primary { background-color: #0b6293; color: #ffffff; }
+    .btn-primary:hover { background-color: #084c72; }
+
+    .btn-outline-secondary { background-color: #ffffff; border-color: #cbd5e1; color: #475569; }
+    .btn-outline-secondary:hover { background-color: #f1f5f9; color: #1e293b; }
+
+    /* NRDM Type Status Tags */
+    .tag {
+      display: inline-block;
+      padding: 0.25rem 0.65rem;
+      border-radius: 20px;
+      font-size: 0.725rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+
+    .tag-new {
+      background-color: #dcfce7;
+      color: #15803d;
+      border: 1px solid #86efac;
+    }
+
+    .tag-disconnected {
+      background-color: #fee2e2;
+      color: #b91c1c;
+      border: 1px solid #fca5a5;
+    }
+
+    .tag-reconnected {
+      background-color: #e0f2fe;
+      color: #0369a1;
+      border: 1px solid #7dd3fc;
+    }
+
+    .tag-meter {
+      background-color: #fef3c7;
+      color: #b45309;
+      border: 1px solid #fde68a;
+    }
+
+    .tag-materials {
+      background-color: #f3e8ff;
+      color: #7e22ce;
+      border: 1px solid #d8b4fe;
+    }
+
+    /* Table Component */
+    .table-container {
+      overflow-x: auto;
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      text-align: left;
+    }
+
+    .data-table th {
+      background-color: #f8fafc;
+      color: #475569;
+      font-weight: 700;
+      padding: 0.75rem 0.85rem;
+      border-bottom: 2px solid #e2e8f0;
+      white-space: nowrap;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+    }
+
+    .data-table td {
+      padding: 0.75rem 0.85rem;
+      border-bottom: 1px solid #f1f5f9;
+      color: #334155;
+      white-space: nowrap;
+      vertical-align: middle;
+    }
+
+    .data-table tbody tr:hover {
+      background-color: #f8fafc;
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 24px;
+      font-size: 12px;
+      color: #64748b;
+      margin-top: auto;
+      border-top: 1px solid #cbd5e1;
+    }
+
+    .footer-brand {
+      color: #0b6293;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar Header -->
+  <header class="app-header">
+    <div class="header-left">
+      <div class="logo-circle">
+        <img src="../Customer_Service/JALOGO.png" alt="Janopol Oriental Logo" class="logo-img">
+      </div>
+      <div class="brand-info">
+        <span class="brand-title">Janopol Oriental Waterworks</span>
+        <span class="brand-subtitle">Cashier Portal</span>
+      </div>
+    </div>
+
+    <div class="header-right">
+      <nav>
+        <ul class="header-nav">
+          <li><a href="Cashier_Dashboard.html" class="header-nav-link">DASHBOARD</a></li>
+          <li><a href="Billing_Cashier.html" class="header-nav-link">BILLING</a></li>
+          <li><a href="Daily_Cashier.html" class="header-nav-link">DAILY COLLECTION</a></li>
+          <li><a href="NRDM_Cashier.html" class="header-nav-link active">NRDM</a></li>
+          <li><a href="Official_Cashier.html" class="header-nav-link">OFFICIAL RECEIPT</a></li>
+          <li><a href="Reading_Cashier.html" class="header-nav-link">READING REPORTS</a></li>
+        </ul>
+      </nav>
+
+      <div class="notification-wrapper">
+        <button class="notif-bell-btn" aria-label="View Notifications">
+          <svg class="svg-icon" viewBox="0 0 24 24">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+          </svg>
+          <span class="notif-badge">3</span>
+        </button>
+      </div>
+
+      <div class="user-profile-wrapper">
+        <div class="user-profile">
+          <svg class="svg-icon" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+          <span>Gali Adrian Nones</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="app-portal-body">
+    <main class="main-content">
+      <div class="breadcrumb">
+        <a href="Cashier_Dashboard.html">Dashboard</a> / NRDM Summary
+      </div>
+
+      <!-- Page Header -->
+      <div class="page-header">
+        <div class="page-title-group">
+          <svg class="svg-icon" style="width: 24px; height: 24px;" viewBox="0 0 24 24">
+            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+            <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+            <path d="M9 12h6"></path>
+            <path d="M9 16h6"></path>
+          </svg>
+          <h1>NRDM Summary</h1>
+        </div>
+        <div class="breadcrumb-text">
+          New connection &middot; Disconnection &middot; Reconnection &middot; Meter replacement &middot; Materials — updates automatically from staff actions
+        </div>
+      </div>
+
+      <!-- Filter Controls (Compact Content-Aligned) -->
+      <div class="page-card">
+        <form class="filter-inline-form" onsubmit="event.preventDefault();">
+          <div class="filter-group type-group">
+            <label class="form-label">Type</label>
+            <select class="form-select">
+              <option value="">All Types</option>
+              <option value="NEW">New connection</option>
+              <option value="DISCONNECTED">Disconnection</option>
+              <option value="RECONNECTED">Reconnection</option>
+              <option value="METER_REPLACEMENT">Meter replacement</option>
+              <option value="MATERIALS">Materials</option>
+            </select>
+          </div>
+
+          <div class="filter-group date-group">
+            <label class="form-label">Date</label>
+            <input type="date" class="form-input" value="2026-09-21">
+          </div>
+
+          <div class="filter-group area-group">
+            <label class="form-label">Area</label>
+            <select class="form-select">
+              <option value="">All Areas</option>
+              <option value="1">Purok 1</option>
+              <option value="2">Purok 2</option>
+              <option value="3">Purok 3</option>
+            </select>
+          </div>
+
+          <div class="filter-buttons">
+            <button type="submit" class="btn btn-primary">
+              <svg class="svg-icon" viewBox="0 0 24 24"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
+              Filter
+            </button>
+            <button type="reset" class="btn btn-outline-secondary">Clear</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Summary Info Bar -->
+      <div style="font-size: 0.85rem; color: #64748b; margin-bottom: 1rem;">
+        Showing <strong>5</strong> record(s).
+        This list refreshes when you add a consumer, disconnect, reconnect, replace a meter, or record materials elsewhere.
+      </div>
+
+      <!-- NRDM Table -->
+      <div class="page-card" style="padding: 0; overflow: hidden;">
+        <div class="table-container">
+          <table class="data-table" id="nrdmTable">
+            <thead>
+              <tr>
+                <th style="width: 45px;">#</th>
+                <th>Type</th>
+                <th>Account #</th>
+                <th>Name</th>
+                <th>Area</th>
+                <th>Date</th>
+                <th>Remarks</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="font-family: monospace; font-weight: 700;">1</td>
+                <td><span class="tag tag-new">New connection</span></td>
+                <td style="font-family: monospace; font-weight: 700;">A2-014</td>
+                <td style="font-weight: 600; color: #0f172a;">Alfredo Fuentes Suarez</td>
+                <td>Purok 2</td>
+                <td style="font-family: monospace;">2026-09-21</td>
+                <td>Initial installation completed</td>
+              </tr>
+              <tr>
+                <td style="font-family: monospace; font-weight: 700;">2</td>
+                <td><span class="tag tag-disconnected">Disconnection</span></td>
+                <td style="font-family: monospace; font-weight: 700;">B1-102</td>
+                <td style="font-weight: 600; color: #0f172a;">Maria Santos Mercado</td>
+                <td>Purok 3</td>
+                <td style="font-family: monospace;">2026-09-20</td>
+                <td>Temporary disconnection due to arrears</td>
+              </tr>
+              <tr>
+                <td style="font-family: monospace; font-weight: 700;">3</td>
+                <td><span class="tag tag-reconnected">Reconnection</span></td>
+                <td style="font-family: monospace; font-weight: 700;">C3-005</td>
+                <td style="font-weight: 600; color: #0f172a;">Juan dela Cruz</td>
+                <td>Purok 1</td>
+                <td style="font-family: monospace;">2026-09-18</td>
+                <td>Payment settled, reconnected</td>
+              </tr>
+              <tr>
+                <td style="font-family: monospace; font-weight: 700;">4</td>
+                <td><span class="tag tag-meter">Meter replacement</span></td>
+                <td style="font-family: monospace; font-weight: 700;">A2-014</td>
+                <td style="font-weight: 600; color: #0f172a;">Alfredo Fuentes Suarez</td>
+                <td>Purok 2</td>
+                <td style="font-family: monospace;">2026-09-15</td>
+                <td>Replaced defective meter MTR-9982</td>
+              </tr>
+              <tr>
+                <td style="font-family: monospace; font-weight: 700;">5</td>
+                <td><span class="tag tag-materials">Materials</span></td>
+                <td style="font-family: monospace; font-weight: 700;">B1-102</td>
+                <td style="font-weight: 600; color: #0f172a;">Maria Santos Mercado</td>
+                <td>Purok 3</td>
+                <td style="font-family: monospace;">2026-09-10</td>
+                <td>3/4 Teflon tape &amp; brass valve replacement</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="footer">
+        <div class="footer-brand">Janopol Oriental Waterworks</div>
+        <div>Janopol, Tanauan City, Batangas</div>
+        <div>&copy; Copyright 2026. All Rights Reserved</div>
+      </div>
+    </main>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Consumer Masterlist Database - Janopol Oriental Waterworks</title>
+  <link rel="shortcut icon" type="image/x-icon" href="../Customer_Service/JALOGO2.ico">
+  <style>
+    /* Reset & Base Styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: #f1f5f9;
+      color: #0f172a;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .svg-icon {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* Navbar Header (Sticky) */
+    .app-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background-color: #0b6293;
+      color: #ffffff;
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1.5rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .logo-circle {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background-color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .logo-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .brand-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-title {
+      font-size: 1rem;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .brand-subtitle {
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.85);
+    }
+
+    /* Right-Aligned Navigation Bar */
+    .header-nav {
+      margin-left: auto;
+    }
+
+    .header-nav ul {
+      display: flex;
+      list-style: none;
+      gap: 1.25rem;
+      justify-content: flex-end;
+    }
+
+    .nav-link {
+      color: rgba(255, 255, 255, 0.85);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      padding: 0.25rem 0.5rem;
+      transition: color 0.2s ease;
+    }
+
+    .nav-link:hover, .nav-link.active {
+      color: #ffffff;
+      font-weight: 600;
+      border-bottom: 2px solid #38bdf8;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    /* Notification Bell Component Styles */
+    .notification-wrapper {
+      position: relative;
+    }
+
+    .notif-bell-btn {
+      background: rgba(255, 255, 255, 0.15);
+      border: none;
+      color: #ffffff;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      position: relative;
+      transition: background 0.2s ease;
+    }
+
+    .notif-bell-btn:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    .notif-badge {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      background-color: #ef4444;
+      color: #ffffff;
+      font-size: 0.65rem;
+      font-weight: 800;
+      min-width: 17px;
+      height: 17px;
+      border-radius: 9999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #0b6293;
+      padding: 0 3px;
+    }
+
+    .notif-dropdown {
+      position: absolute;
+      right: 0;
+      top: 48px;
+      width: 340px;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15);
+      display: none;
+      flex-direction: column;
+      z-index: 2000;
+      overflow: hidden;
+      animation: fadeInDown 0.2s ease-out forwards;
+    }
+
+    .notif-dropdown.show {
+      display: flex;
+    }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .notif-header {
+      padding: 0.85rem 1rem;
+      background-color: #f8fafc;
+      border-bottom: 1px solid #e2e8f0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .notif-header h3 {
+      font-size: 0.875rem;
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    .mark-read-btn {
+      font-size: 0.725rem;
+      color: #0284c7;
+      background: none;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .mark-read-btn:hover {
+      text-decoration: underline;
+    }
+
+    .notif-list {
+      max-height: 320px;
+      overflow-y: auto;
+    }
+
+    .notif-item {
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid #f1f5f9;
+      display: flex;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: inherit;
+      transition: background-color 0.15s ease;
+    }
+
+    .notif-item:hover {
+      background-color: #f8fafc;
+    }
+
+    .notif-item.unread {
+      background-color: #f0f9ff;
+    }
+
+    .notif-icon-box {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .notif-icon-box.alert {
+      background-color: #fee2e2;
+      color: #dc2626;
+    }
+
+    .notif-icon-box.info {
+      background-color: #e0f2fe;
+      color: #0284c7;
+    }
+
+    .notif-icon-box.chat {
+      background-color: #dcfce7;
+      color: #16a34a;
+    }
+
+    .notif-content {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+
+    .notif-title {
+      font-size: 0.825rem;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .notif-text {
+      font-size: 0.75rem;
+      color: #475569;
+      line-height: 1.35;
+    }
+
+    .notif-time {
+      font-size: 0.675rem;
+      color: #94a3b8;
+      margin-top: 0.2rem;
+    }
+
+    .notif-footer {
+      padding: 0.65rem;
+      text-align: center;
+      background-color: #f8fafc;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    .notif-footer a {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #0b6293;
+      text-decoration: none;
+    }
+
+    /* User Profile Container & Dropdown Styles */
+    .user-profile-wrapper {
+      position: relative;
+    }
+
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+      background: rgba(255, 255, 255, 0.15);
+      padding: 0.35rem 0.75rem;
+      border-radius: 9999px;
+      white-space: nowrap;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.2s ease;
+    }
+
+    .user-profile:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    .profile-dropdown {
+      position: absolute;
+      right: 0;
+      top: 48px;
+      width: 200px;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15);
+      display: none;
+      flex-direction: column;
+      z-index: 2000;
+      overflow: hidden;
+      animation: fadeInDown 0.2s ease-out forwards;
+    }
+
+    .profile-dropdown.show {
+      display: flex;
+    }
+
+    .profile-dropdown-header {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid #f1f5f9;
+      background-color: #f8fafc;
+    }
+
+    .profile-dropdown-header .user-name {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .profile-dropdown-header .user-role {
+      font-size: 0.75rem;
+      color: #64748b;
+    }
+
+    .profile-dropdown-item {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.65rem 1rem;
+      font-size: 0.825rem;
+      color: #334155;
+      text-decoration: none;
+      font-weight: 500;
+      transition: background-color 0.15s ease;
+    }
+
+    .profile-dropdown-item:hover {
+      background-color: #f8fafc;
+      color: #0284c7;
+    }
+
+    .profile-dropdown-item.logout {
+      color: #dc2626;
+      border-top: 1px solid #f1f5f9;
+    }
+
+    .profile-dropdown-item.logout:hover {
+      background-color: #fee2e2;
+      color: #b91c1c;
+    }
+
+    /* Container */
+    main {
+      max-width: 1350px;
+      margin: 1.5rem auto;
+      padding: 0 1.25rem;
+      width: 100%;
+    }
+
+    /* Zone & Summary KPI Grid */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .kpi-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 1.25rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .kpi-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .kpi-value {
+      font-size: 1.65rem;
+      font-weight: 800;
+      color: #0f172a;
+      margin: 0.4rem 0 0.2rem 0;
+    }
+
+    .kpi-sub {
+      font-size: 0.75rem;
+      color: #0284c7;
+      font-weight: 600;
+    }
+
+    .kpi-sub.warning {
+      color: #dc2626;
+    }
+
+    /* Main Table Container Card */
+    .table-panel {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid #f1f5f9;
+    }
+
+    .panel-title h1 {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    .panel-title p {
+      font-size: 0.8rem;
+      color: #64748b;
+    }
+
+    /* Toolbar Filter & Search Controls */
+    .toolbar-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .search-input {
+      padding: 0.5rem 0.85rem;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      outline: none;
+      width: 240px;
+    }
+
+    .search-input:focus {
+      border-color: #0284c7;
+    }
+
+    .filter-select {
+      padding: 0.5rem 0.85rem;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      outline: none;
+      background-color: #ffffff;
+      color: #334155;
+    }
+
+    .btn-export {
+      background-color: #16a34a;
+      color: #ffffff;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .btn-export:hover {
+      background-color: #15803d;
+    }
+
+    /* Master Table Styling */
+    .table-wrapper {
+      overflow-x: auto;
+      max-height: 580px;
+      overflow-y: auto;
+    }
+
+    .master-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      text-align: left;
+    }
+
+    .master-table th {
+      background-color: #f8fafc;
+      color: #475569;
+      font-weight: 700;
+      padding: 0.75rem 0.85rem;
+      border-bottom: 2px solid #e2e8f0;
+      white-space: nowrap;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .master-table td {
+      padding: 0.7rem 0.85rem;
+      border-bottom: 1px solid #f1f5f9;
+      color: #334155;
+      white-space: nowrap;
+    }
+
+    .master-table tr:hover {
+      background-color: #f1f5f9;
+    }
+
+    /* Status Badges */
+    .badge {
+      display: inline-block;
+      padding: 0.2rem 0.55rem;
+      border-radius: 9999px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .badge-paid {
+      background-color: #dcfce7;
+      color: #15803d;
+    }
+
+    .badge-unpaid {
+      background-color: #fee2e2;
+      color: #b91c1c;
+    }
+
+    .badge-foc {
+      background-color: #e0f2fe;
+      color: #0369a1;
+    }
+
+    .badge-sc {
+      background-color: #fef3c7;
+      color: #92400e;
+    }
+
+    .badge-no-meter {
+      background-color: #f3e8ff;
+      color: #6b21a8;
+    }
+
+    /* Summary Footer */
+    .table-summary-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1rem;
+      padding-top: 0.75rem;
+      font-size: 0.85rem;
+      color: #64748b;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    /* Custom Logout Modal Overlay & Dialog */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(15, 23, 42, 0.5);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 3000;
+      animation: fadeIn 0.2s ease-out forwards;
+    }
+
+    .modal-overlay.show {
+      display: flex;
+    }
+
+    .modal-card {
+      background: #ffffff;
+      border-radius: 16px;
+      width: 90%;
+      max-width: 400px;
+      padding: 1.5rem;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      animation: scaleUp 0.2s ease-out forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes scaleUp {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .modal-icon-circle {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background-color: #fee2e2;
+      color: #dc2626;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1rem auto;
+    }
+
+    .modal-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 0.35rem;
+    }
+
+    .modal-text {
+      font-size: 0.85rem;
+      color: #64748b;
+      margin-bottom: 1.5rem;
+      line-height: 1.4;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .btn-modal {
+      flex: 1;
+      padding: 0.65rem;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      transition: background-color 0.15s ease;
+    }
+
+    .btn-modal-cancel {
+      background-color: #f1f5f9;
+      color: #475569;
+    }
+
+    .btn-modal-cancel:hover {
+      background-color: #e2e8f0;
+    }
+
+    .btn-modal-logout {
+      background-color: #dc2626;
+      color: #ffffff;
+    }
+
+    .btn-modal-logout:hover {
+      background-color: #b91c1c;
+    }
+
+    /* ── Footer ── */
+    .footer {
+      text-align: center;
+      padding: 24px;
+      font-size: 12px;
+      color: var(--text-muted, #64748b);
+      margin-top: 20px;
+      border-top: 1px solid var(--border-color, #e2e8f0);
+    }
+
+    .footer-brand {
+      color: var(--primary, #0b6293);
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Header Bar -->
+  <header class="app-header">
+    <div class="header-left">
+      <div class="logo-circle">
+        <img src="../Customer_Service/JALOGO.png" alt="Janopol Oriental Logo" class="logo-img">
+      </div>
+      <div class="brand-info">
+        <span class="brand-title">Janopol Oriental Waterworks</span>
+        <span class="brand-subtitle">Employee Staff Portal</span>
+      </div>
+    </div>
+
+    <!-- Right Aligned Navbar -->
+    <nav class="header-nav">
+      <ul>
+        <li><a href="employee_service.html" class="nav-link">Dashboard</a></li>
+        <li><a href="masterlist.html" class="nav-link active">Consumer Masterlist</a></li>
+        <li><a href="billing&collection.html" class="nav-link">Billing & Collection</a></li>
+        <li><a href="servicerequest.html" class="nav-link">Service Requests</a></li>
+        <li><a href="field.html" class="nav-link">Field Incidents</a></li>
+        <li><a href="employee_chat.html" class="nav-link">Live Helpdesk Chat</a></li>
+      </ul>
+    </nav>
+
+    <div class="header-right">
+      <!-- Notification Bell Component -->
+      <div class="notification-wrapper">
+        <button class="notif-bell-btn" id="notifBellBtn" onclick="toggleNotificationDropdown()" aria-label="View Notifications">
+          <svg class="svg-icon" viewBox="0 0 24 24">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+          </svg>
+          <span class="notif-badge" id="notifBadge">3</span>
+        </button>
+
+        <!-- Dropdown Menu -->
+        <div class="notif-dropdown" id="notifDropdown">
+          <div class="notif-header">
+            <h3>Staff Notifications</h3>
+            <button class="mark-read-btn" onclick="markAllNotificationsAsRead()">Mark all as read</button>
+          </div>
+
+          <div class="notif-list">
+            <a href="field.html" class="notif-item unread">
+              <div class="notif-icon-box alert">
+                <svg class="svg-icon" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+              </div>
+              <div class="notif-content">
+                <span class="notif-title">Emergency Pipeline Leak</span>
+                <span class="notif-text">Ticket INC-2026-3104 logged at Janopol Oriental Main Road.</span>
+                <span class="notif-time">10 minutes ago</span>
+              </div>
+            </a>
+
+            <a href="employee_chat.html" class="notif-item unread">
+              <div class="notif-icon-box chat">
+                <svg class="svg-icon" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+              </div>
+              <div class="notif-content">
+                <span class="notif-title">New Live Helpdesk Message</span>
+                <span class="notif-text">Ulpiano Pamplona (JP12025-0002UP) inquiring about June OR receipt.</span>
+                <span class="notif-time">25 minutes ago</span>
+              </div>
+            </a>
+
+            <a href="billing&collection.html" class="notif-item unread">
+              <div class="notif-icon-box info">
+                <svg class="svg-icon" viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+              </div>
+              <div class="notif-content">
+                <span class="notif-title">High Arrears Account Alert</span>
+                <span class="notif-text">James Villanueva (JP12024-0030JV) balance exceeds ₱16,000.00 over 60 days.</span>
+                <span class="notif-time">1 hour ago</span>
+              </div>
+            </a>
+          </div>
+
+          <div class="notif-footer">
+            <a href="field.html">View All Field Operations Alerts →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- User Profile Component with Dropdown -->
+      <div class="user-profile-wrapper">
+        <div class="user-profile" id="userProfileBtn" onclick="toggleProfileDropdown()" aria-label="User Profile Menu">
+          <svg class="svg-icon" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+          <span>Staff Admin</span>
+        </div>
+
+        <!-- Profile Dropdown Menu -->
+        <div class="profile-dropdown" id="profileDropdown">
+          <div class="profile-dropdown-header">
+            <div class="user-name">Staff Admin</div>
+            <div class="user-role">Janopol Waterworks</div>
+          </div>
+          <a href="profile.html" class="profile-dropdown-item">
+            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <span>View Profile</span>
+          </a>
+          <a href="#" class="profile-dropdown-item logout" onclick="handleLogout(event)">
+            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+            <span>Log Out</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main>
+
+    <!-- Zone KPI Statistics Cards -->
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">Purok 1 Masterlist</div>
+        <div class="kpi-value">247</div>
+        <div class="kpi-sub">5,358 CuM | ₱ 185,030 Billed</div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-label">Purok 2 Masterlist</div>
+        <div class="kpi-value">270</div>
+        <div class="kpi-sub">5,584 CuM | ₱ 191,825 Billed</div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-label">Purok 3 Masterlist</div>
+        <div class="kpi-value">324</div>
+        <div class="kpi-sub">6,983 CuM | ₱ 236,855 Billed</div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-label">Unmetered Accounts</div>
+        <div class="kpi-value" style="color: #6b21a8;">36</div>
+        <div class="kpi-sub warning">Wala Pang Metro Tagged</div>
+      </div>
+    </div>
+
+    <!-- Master Consumer Table Panel -->
+    <div class="table-panel">
+      
+      <div class="panel-header">
+        <div class="panel-title">
+          <h1>June 2026 Consumer Masterlist Database</h1>
+          <p>Complete record of 841 live accounts across Purok 1, 2, and 3</p>
+        </div>
+
+        <div class="toolbar-controls">
+          <input type="text" id="searchInput" onkeyup="filterMasterlist()" class="search-input" placeholder="Search Account No. or Name...">
+
+          <select id="purokFilter" onchange="filterMasterlist()" class="filter-select">
+            <option value="ALL">All Zones (Purok 1–3)</option>
+            <option value="Purok 1">Purok 1</option>
+            <option value="Purok 2">Purok 2</option>
+            <option value="Purok 3">Purok 3</option>
+          </select>
+
+          <select id="statusFilter" onchange="filterMasterlist()" class="filter-select">
+            <option value="ALL">All Payment Status</option>
+            <option value="Paid">Paid (OR Issued)</option>
+            <option value="Unpaid">Unpaid</option>
+            <option value="FOC">Free of Charge (FOC)</option>
+            <option value="Arrears">Has Arrears</option>
+          </select>
+
+          <button class="btn-export" onclick="alert('Exporting June 2026 Masterlist to Excel...')">
+            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            Export Excel
+          </button>
+        </div>
+      </div>
+
+      <!-- Scrollable Data Table -->
+      <div class="table-wrapper">
+        <table class="master-table" id="masterlistTable">
+          <thead>
+            <tr>
+              <th>Account Number</th>
+              <th>Consumer Name</th>
+              <th>Zone</th>
+              <th>Prev Rdg</th>
+              <th>Pres Rdg</th>
+              <th>CuM</th>
+              <th>Total Bill</th>
+              <th>Arrears</th>
+              <th>OR Number</th>
+              <th>Category</th>
+              <th>Payment Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Sample Live Records from Excel Masterlist -->
+            <tr data-purok="Purok 1" data-status="FOC" data-arrears="0">
+              <td><strong>JP12024-0001UP</strong></td>
+              <td>Ulpiano Pamplona orig.</td>
+              <td>Purok 1</td>
+              <td>328</td>
+              <td>379</td>
+              <td>51 CuM</td>
+              <td>₱ 1,735.00</td>
+              <td>—</td>
+              <td>foc</td>
+              <td><span class="badge badge-foc">SC / FOC</span></td>
+              <td><span class="badge badge-foc">FOC</span></td>
+            </tr>
+
+            <tr data-purok="Purok 1" data-status="Paid" data-arrears="0">
+              <td><strong>JP12025-0002UP</strong></td>
+              <td>Ulpiano Pamplona 1</td>
+              <td>Purok 1</td>
+              <td>135</td>
+              <td>145</td>
+              <td>10 CuM</td>
+              <td>₱ 300.00</td>
+              <td>—</td>
+              <td>0115810</td>
+              <td>Standard</td>
+              <td><span class="badge badge-paid">Paid</span></td>
+            </tr>
+
+            <tr data-purok="Purok 1" data-status="Paid" data-arrears="0">
+              <td><strong>JP12025-0008AB</strong></td>
+              <td>Anacitas Balaquiao</td>
+              <td>Purok 1</td>
+              <td>120</td>
+              <td>174</td>
+              <td>54 CuM</td>
+              <td>₱ 1,840.00</td>
+              <td>—</td>
+              <td>0126027</td>
+              <td>Standard</td>
+              <td><span class="badge badge-paid">Paid</span></td>
+            </tr>
+
+            <tr data-purok="Purok 1" data-status="Unpaid" data-arrears="16035">
+              <td><strong>JP12024-0030JV</strong></td>
+              <td>James Villanueva</td>
+              <td>Purok 1</td>
+              <td>0</td>
+              <td>0</td>
+              <td>0 CuM</td>
+              <td>₱ 0.00</td>
+              <td style="color: #b91c1c; font-weight: 700;">₱ 16,035.00</td>
+              <td>—</td>
+              <td>Standard</td>
+              <td><span class="badge badge-unpaid">Over 60 Days</span></td>
+            </tr>
+
+            <tr data-purok="Purok 2" data-status="FOC" data-arrears="0">
+              <td><strong>JP22024-0001BH</strong></td>
+              <td>Brgy. Hall / Health Center</td>
+              <td>Purok 2</td>
+              <td>325</td>
+              <td>403</td>
+              <td>78 CuM</td>
+              <td>₱ 2,680.00</td>
+              <td>—</td>
+              <td>foc</td>
+              <td><span class="badge badge-foc">Brgy Official</span></td>
+              <td><span class="badge badge-foc">FOC</span></td>
+            </tr>
+
+            <tr data-purok="Purok 2" data-status="Paid" data-arrears="0">
+              <td><strong>JP22024-0002EM</strong></td>
+              <td>Efren Magsino (Farm)</td>
+              <td>Purok 2</td>
+              <td>505</td>
+              <td>563</td>
+              <td>58 CuM</td>
+              <td>₱ 1,980.00</td>
+              <td>—</td>
+              <td>0126170</td>
+              <td>Standard</td>
+              <td><span class="badge badge-paid">Paid</span></td>
+            </tr>
+
+            <tr data-purok="Purok 2" data-status="Paid" data-arrears="0">
+              <td><strong>JP22024-0003RM</strong></td>
+              <td>Romeo Mendoza 1</td>
+              <td>Purok 2</td>
+              <td>314</td>
+              <td>340</td>
+              <td>26 CuM</td>
+              <td>₱ 860.00</td>
+              <td>—</td>
+              <td>0115676</td>
+              <td>Standard</td>
+              <td><span class="badge badge-paid">Paid</span></td>
+            </tr>
+
+            <tr data-purok="Purok 2" data-status="Unpaid" data-arrears="0">
+              <td><strong>JP22024-0270GC</strong></td>
+              <td>Gladys Florian Castillo</td>
+              <td>Purok 2</td>
+              <td>—</td>
+              <td>—</td>
+              <td>0 CuM</td>
+              <td>₱ 0.00</td>
+              <td>—</td>
+              <td>—</td>
+              <td><span class="badge badge-no-meter">No Meter</span></td>
+              <td><span class="badge badge-unpaid">Unpaid</span></td>
+            </tr>
+
+            <tr data-purok="Purok 3" data-status="Paid" data-arrears="0">
+              <td><strong>JP32024-0001MV</strong></td>
+              <td>Myrna Valencia</td>
+              <td>Purok 3</td>
+              <td>326</td>
+              <td>344</td>
+              <td>18 CuM</td>
+              <td>₱ 580.00</td>
+              <td>—</td>
+              <td>0126379</td>
+              <td>Standard</td>
+              <td><span class="badge badge-paid">Paid</span></td>
+            </tr>
+
+            <tr data-purok="Purok 3" data-status="Paid" data-arrears="0">
+              <td><strong>JP32024-0003MC</strong></td>
+              <td>Martina Cabalang</td>
+              <td>Purok 3</td>
+              <td>152</td>
+              <td>167</td>
+              <td>15 CuM</td>
+              <td>₱ 475.00</td>
+              <td>—</td>
+              <td>0115699</td>
+              <td><span class="badge badge-sc">Senior Citizen</span></td>
+              <td><span class="badge badge-paid">Paid</span></td>
+            </tr>
+
+            <tr data-purok="Purok 3" data-status="Unpaid" data-arrears="38930">
+              <td><strong>JP32024-0324AL</strong></td>
+              <td>Aylene Lirio</td>
+              <td>Purok 3</td>
+              <td>—</td>
+              <td>—</td>
+              <td>0 CuM</td>
+              <td>₱ 0.00</td>
+              <td style="color: #b91c1c; font-weight: 700;">₱ 38,930.00</td>
+              <td>—</td>
+              <td><span class="badge badge-no-meter">No Meter</span></td>
+              <td><span class="badge badge-unpaid">Unpaid</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Footer Record Count -->
+      <div class="table-summary-footer">
+        <div>Showing <strong id="visibleCount">11</strong> of <strong>841</strong> total live consumer accounts</div>
+        <div>Masterlist Month: <strong>JUNE 2026</strong></div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Custom Logout Modal -->
+  <div class="modal-overlay" id="logoutModal" role="dialog" aria-modal="true">
+    <div class="modal-card">
+      <div class="modal-icon-circle">
+        <svg class="svg-icon" viewBox="0 0 24 24" style="width: 26px; height: 26px;">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+          <polyline points="16 17 21 12 16 7"></polyline>
+          <line x1="21" y1="12" x2="9" y2="12"></line>
+        </svg>
+      </div>
+      <h3 class="modal-title">Log Out Confirmation</h3>
+      <p class="modal-text">Are you sure you want to log out of the Employee Staff Portal?</p>
+      <div class="modal-actions">
+        <button type="button" class="btn-modal btn-modal-cancel" onclick="closeLogoutModal()">Cancel</button>
+        <button type="button" class="btn-modal btn-modal-logout" onclick="confirmLogout()">Log Out</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="footer-brand">Janopol Oriental Waterworks</div>
+    <div>Janopol, Tanauan City, Batangas</div>
+    <div>&copy; Copyright 2026. All Rights Reserved</div>
+  </div>
+
+  <script>
+    function toggleNotificationDropdown() {
+      const dropdown = document.getElementById('notifDropdown');
+      const profileDropdown = document.getElementById('profileDropdown');
+      if (profileDropdown) profileDropdown.classList.remove('show');
+      dropdown.classList.toggle('show');
+    }
+
+    function toggleProfileDropdown() {
+      const dropdown = document.getElementById('profileDropdown');
+      const notifDropdown = document.getElementById('notifDropdown');
+      if (notifDropdown) notifDropdown.classList.remove('show');
+      dropdown.classList.toggle('show');
+    }
+
+    function handleLogout(event) {
+      event.preventDefault();
+      const profileDropdown = document.getElementById('profileDropdown');
+      if (profileDropdown) profileDropdown.classList.remove('show');
+
+      const modal = document.getElementById('logoutModal');
+      if (modal) modal.classList.add('show');
+    }
+
+    function closeLogoutModal() {
+      const modal = document.getElementById('logoutModal');
+      if (modal) modal.classList.remove('show');
+    }
+
+    function confirmLogout() {
+      window.location.href = "login.html";
+    }
+
+    function markAllNotificationsAsRead() {
+      const items = document.querySelectorAll('.notif-item');
+      items.forEach(item => item.classList.remove('unread'));
+      const badge = document.getElementById('notifBadge');
+      if (badge) {
+        badge.style.display = 'none';
+      }
+    }
+
+    document.addEventListener('click', function(event) {
+      const notifWrapper = document.querySelector('.notification-wrapper');
+      if (notifWrapper && !notifWrapper.contains(event.target)) {
+        const notifDropdown = document.getElementById('notifDropdown');
+        if (notifDropdown) {
+          notifDropdown.classList.remove('show');
+        }
+      }
+
+      const profileWrapper = document.querySelector('.user-profile-wrapper');
+      if (profileWrapper && !profileWrapper.contains(event.target)) {
+        const profileDropdown = document.getElementById('profileDropdown');
+        if (profileDropdown) {
+          profileDropdown.classList.remove('show');
+        }
+      }
+    });
+
+    function filterMasterlist() {
+      const searchVal = document.getElementById('searchInput').value.toLowerCase();
+      const purokVal = document.getElementById('purokFilter').value;
+      const statusVal = document.getElementById('statusFilter').value;
+
+      const rows = document.querySelectorAll('#masterlistTable tbody tr');
+      let visible = 0;
+
+      rows.forEach(row => {
+        const text = row.innerText.toLowerCase();
+        const rowPurok = row.getAttribute('data-purok');
+        const rowStatus = row.getAttribute('data-status');
+        const arrears = parseFloat(row.getAttribute('data-arrears') || 0);
+
+        const matchesSearch = text.includes(searchVal);
+        const matchesPurok = (purokVal === 'ALL' || rowPurok === purokVal);
+        
+        let matchesStatus = true;
+        if (statusVal === 'Paid') matchesStatus = (rowStatus === 'Paid');
+        if (statusVal === 'Unpaid') matchesStatus = (rowStatus === 'Unpaid');
+        if (statusVal === 'FOC') matchesStatus = (rowStatus === 'FOC');
+        if (statusVal === 'Arrears') matchesStatus = (arrears > 0);
+
+        if (matchesSearch && matchesPurok && matchesStatus) {
+          row.style.display = '';
+          visible++;
+        } else {
+          row.style.display = 'none';
+        }
+      });
+
+      document.getElementById('visibleCount').innerText = visible;
+    }
+  </script>
+</body>
+</html>
